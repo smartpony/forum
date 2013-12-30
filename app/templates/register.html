@@ -1,0 +1,14 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Register</h1>
+
+<form action="" method="post" name="edit">
+{{register_form.login(class="r_l_field", placeholder='Login')}}
+{{register_form.email(class="r_l_field", placeholder='email@server.com')}}
+{{register_form.password(class="r_l_field", placeholder='Password')}}
+{{register_form.password_confirm(class="r_l_field", placeholder='Password')}}
+<input class="submit_button" type="submit" value="register">
+</form>
+
+{% endblock %}

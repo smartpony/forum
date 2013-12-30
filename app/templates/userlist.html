@@ -1,0 +1,22 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Users</h1>
+
+<div class="ul_table_head">
+    <div class="ul_table_head_login">Login</div>
+    <div class="ul_table_head_reg_date">Registered</div>
+    <div class="ul_table_head_topic_count">Topics</div>
+    <div class="ul_table_head_message_count">Messages</div>
+</div>
+
+{% for user in users_list %}
+<div class="ul_table_{{loop.cycle('light', 'dark')}}">
+    <a class="ul_table_login" href="/profile_{{user.id}}">{{user.login}}</a>
+    <div class="ul_table_reg_date">{{user.reg_date.strftime('%d %b %Y')}}</div>
+    <div class="ul_table_topic_count">{{user.topic_count}}</div>
+    <div class="ul_table_message_count">{{user.message_count}}</div>
+</div>
+{% endfor %}
+
+{% endblock %}

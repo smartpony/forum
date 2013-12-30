@@ -1,0 +1,38 @@
+﻿/* ПРОСМОТР ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ */
+
+div.pe_avatar {
+ display: inline-table;
+ vertical-align: top;
+ margin: 10px;
+ border: 1px solid #888888;
+}
+
+div.pe_info_block {
+ display: inline-table;
+ margin: 3px;
+}
+
+div.pe_info_login {
+ margin: 0px;
+ font-weight: bold;
+ font-size: 32px;
+}
+
+div.pe_info_text {
+ vertical-align: top;
+}
+
+div.pe_info_text_var {
+ display: inline-table;
+ vertical-align: top;
+ margin: 0px 50px 0px 0px;
+ line-height: 23px;
+ font-size: 16px;
+}
+
+div.pe_info_text_input {
+ display: inline-table;
+ margin: 0px;
+ line-height: 23px;
+ font-size: 16px;
+}

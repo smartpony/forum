@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Forum</h1>
+
+<div class="f_table_head">
+    <div class="f_table_head_main">Topic</div>
+    <div class="f_table_head_counters">Replies and views</div>
+    <div class="f_table_head_editor">Last post</div>
+    <div class="f_table_head_delete">Delete</div>
+</div>
+
+{% for topic in all_topics %}
+<div class="f_table_{{loop.cycle('light', 'dark')}}">
+    <div class="f_table_main">
+        <a class="f_topic" href="/forum/topic_{{topic.id}}">{{topic.name}}</a>
+        <div class="f_detail">posted by <a class="f_author" href="/profile_{{topic.author.id}}">{{topic.author.login}}</a>, {{topic.time_first.strftime('%d %b %Y')}}</div>
+    </div>
+    <div class="f_table_counters">
+        <div class="f_message_counter">replies: {{count[topic.id]-1}}</div>
+        <div class="f_view_counter">views: {{topic.views}}</div>
+    </div>
+    <div class="f_table_editor">
+        {% if topic.editor.id != Null %}
+        by <a class="f_editor" href="/profile_{{topic.editor.id}}">{{topic.editor.login}}</a>
+        <div class="f_detail">{{topic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
+        {% else %}
+        no posts
+        {% endif %}
+    </div>
+    <div class="f_table_delete">
+        <a class="f_delete" href="/delete_t{{topic.id}}"><img src="static/icon_del_body.png" title="Delete"></a>
+    </div>
+</div>
+{% endfor %}
+
+<hr>
+
+{% if user.is_authenticated() %}
+<form action="" method="post" name="edit">
+{{new_topic.topic(placeholder='New topic', class="f_topic")}}
+{{new_topic.message(placeholder='Enter your text here', class="f_t_message")}}
+<input class="submit_button"  type="submit" value="post">
+</form>
+{% endif %}
+
+{% endblock %}

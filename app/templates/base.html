@@ -1,0 +1,36 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/base.css">
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
+    <link rel="stylesheet" type="text/css" href="/static/form.css">
+    <link rel="stylesheet" type="text/css" href="/static/forum.css">
+    <link rel="stylesheet" type="text/css" href="/static/topic.css">
+    <link rel="stylesheet" type="text/css" href="/static/userlist.css">
+    <link rel="stylesheet" type="text/css" href="/static/profile.css">
+    <link rel="stylesheet" type="text/css" href="/static/profile_edit.css">
+    <link rel="shortcut icon" href="/static/icon_main.png">
+    <script src="/static/format.js"></script>
+</head>
+<body>
+
+<div class="b_header">
+    <a class="b_header" href="/index">Home |</a>
+    <a class="b_header" href="/forum">Forum |</a>
+    <a class="b_header" href="/userlist">Users |</a>
+    {% if not user.is_authenticated() %}
+    <a class="b_header" href="/login">Login |</a>
+    <a class="b_header" href="/register">Register |</a>
+    {% else %}
+    <a class="b_header" href="/my_profile">Profile |</a>
+    <a class="b_header" href="/logout">Logout</a>
+    {% endif %}
+</div>
+
+<div class="b_body">
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

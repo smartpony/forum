@@ -1,0 +1,40 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Profile</h1>
+
+<hr>
+
+<div class="p_avatar"><img src="static/avatar/{{avatar}}"></div>
+
+<div class="p_info_block">
+    <div class="p_info_login">{{profile.login}}</div>
+
+    {% if user == profile %}
+    <a class="p_info_edit" href="profile_edit">(edit profile)</a>
+    {% endif %}
+    
+    <div class="p_info_text">
+        <div class="p_info_text_var">
+            City:<br>
+            Country:<br>
+            E-mail:<br>
+            Topics:<br>
+            Messages:<br>
+            Registered:<br>
+            Last seen:
+        </div>
+        
+        <div class="p_info_text_value">
+            {{profile.city}}<br>
+            {{profile.country}}<br>
+            {{profile.email}}<br>
+            {{profile.topic_count}}<br>
+            {{profile.message_count}}<br>
+            {{profile.reg_date.strftime('%H:%M, %d %b %Y')}}<br>
+            {{profile.last_seen.strftime('%H:%M, %d %b %Y')}}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

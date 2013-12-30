@@ -1,0 +1,69 @@
+﻿/* ФОРМЫ */
+
+/* Формы постинга сообщений и тем */
+input.f_topic {
+ display: block;
+ margin: 10px;
+ height: 24px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}
+
+textarea.f_t_message {
+ display: block;
+ margin: 10px;
+ height: 72px;
+ width: 300px;
+ font-size: 14px;
+ font-family: Helvetica;
+ color: #505050;
+}
+
+input.submit_button {
+ display: block;
+ margin: 10px;
+ height: 24px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}
+
+/* Формы входа и регистрации */
+input.r_l_field {
+ display: block;
+ margin: 10px;
+ height: 24px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}
+
+/* Форма изменения профиля */
+input.pe_edit_field {
+ display: block;
+ margin: 0px 0px 3px 0px;
+ height: 21px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}
+
+input.pe_edit_field_last {
+ display: block;
+ margin: 0px 0px 1px 0px;
+ height: 21px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}
+
+input.profile_button {
+ display: block;
+ /* выравнивание по центру */
+ margin: 10px auto;
+ height: 24px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}

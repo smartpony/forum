@@ -1,0 +1,27 @@
+﻿/* ОСНОВНОЕ */
+
+body {
+ margin: 0px;
+ font-family: Helvetica;
+ color: #505050;
+}
+
+div.b_header {
+ padding: 5px;
+ background: #5ba7e9;
+}
+
+a.b_header {
+ font-size: 14px;
+ color: #ffffff;
+ font-weight: bold;
+ text-decoration: none;
+}
+
+div.b_body {
+ margin: 5px;
+}
+
+h1 {
+ margin: 20px 10px;
+}

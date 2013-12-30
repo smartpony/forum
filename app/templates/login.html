@@ -1,0 +1,12 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Login</h1>
+
+<form action="" method="post" name="edit">
+{{login_form.login(class="r_l_field", placeholder='Login')}}
+{{login_form.password(class="r_l_field", placeholder='Password')}}
+<input class="submit_button" type="submit" value="login">
+</form>
+
+{% endblock %}

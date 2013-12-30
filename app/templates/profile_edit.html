@@ -1,0 +1,39 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit profile</h1>
+
+<hr>
+
+<div class="pe_avatar"><img src="static/avatar/{{avatar}}"></div>
+
+<div class="pe_info_block">
+    <form action="" method="post" name="edit">
+    <div class="pe_info_login">{{current_user.login}}</div>
+
+    <div class="pe_info_text">
+        <div class="pe_info_text_var">
+            City:<br>
+            Country:<br>
+            E-mail:<br>
+            Topics:<br>
+            Messages:<br>
+            Registered:<br>
+            Last seen:
+        </div>
+
+        <div class="pe_info_text_input">
+            {{profile_form.city(class="pe_edit_field", value=current_user.city)}}
+            {{profile_form.country(class="pe_edit_field", value=current_user.country)}}
+            {{profile_form.email(class="pe_edit_field_last", value=current_user.email)}}
+            {{current_user.topic_count}}<br>
+            {{current_user.message_count}}<br>
+            {{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}<br>
+            {{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}
+        </div>
+    </div>
+    <input class="profile_button" type="submit" value="save">
+    </form>
+</div>
+
+{% endblock %}
