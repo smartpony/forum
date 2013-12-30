@@ -24,6 +24,7 @@ div.ul_table_head_login {
  display: inline-table;
  width: 51%;
  vertical-align: middle;
+ text-decoration: none;
  font-size: 16px;
  color: #ffffff;
 }
@@ -33,6 +34,7 @@ div.ul_table_head_reg_date {
  width: 18%;
  vertical-align: middle;
  text-align: center;
+ text-decoration: none;
  font-size: 16px;
  color: #ffffff;
 }
@@ -42,6 +44,7 @@ div.ul_table_head_topic_count {
  width: 18%;
  vertical-align: middle;
  text-align: center;
+ text-decoration: none;
  font-size: 16px;
  color: #ffffff;
 }
@@ -51,6 +54,13 @@ div.ul_table_head_message_count {
  width: 10%;
  vertical-align: middle;
  text-align: center;
+ text-decoration: none;
+ font-size: 16px;
+ color: #ffffff;
+}
+
+a.ul_table_head_order {
+ text-decoration: none;
  font-size: 16px;
  color: #ffffff;
 }

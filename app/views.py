@@ -222,6 +222,41 @@ def delete_message(message_id):
     return(redirect(request.referrer))
 
 
+# --- СПИСОК ПОЛЬЗОВАТЕЛЕЙ ----------------------
+@app.route('/userlist')
+def userlist():
+    # Аргументы сортировки из GET-запроса
+    sort_field = request.args.get('sort')
+    sort_order = request.args.get('desc')
+
+    # Сортировка по дате регистрации
+    if sort_field == 'reg_date' and sort_order == 'True':
+        users_list = User.query.order_by(User.reg_date.desc()).all()
+    elif sort_field == 'reg_date':
+        users_list = User.query.order_by(User.reg_date).all()
+    # Сортировка по количеству тем
+    elif sort_field == 'topics' and sort_order == 'True':
+        users_list = User.query.order_by(User.topic_count.desc()).all()
+    elif sort_field == 'topics':
+        users_list = User.query.order_by(User.topic_count).all()
+    # Сортировка по количеству сообщений
+    elif sort_field == 'messages' and sort_order == 'True':
+        users_list = User.query.order_by(User.message_count.desc()).all()
+    elif sort_field == 'messages':
+        users_list = User.query.order_by(User.message_count).all()
+    # Регистронезависимая сортировка по логину
+    elif sort_field == 'login' and sort_order == 'True':
+        users_list = User.query.order_by(User.login.collate('NOCASE').desc()).all()
+    else:
+        users_list = User.query.order_by(User.login.collate('NOCASE')).all()
+
+    # Вернуть страницу
+    return(render_template('/userlist.html',
+        title='Users list',
+        user=current_user,
+        users_list=users_list))
+
+
 # --- ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ ----------------------
 @app.route('/profile_<user_id>')
 def user_profile(user_id):
@@ -270,16 +305,6 @@ def edit_profile():
         user=current_user,
         avatar='anonymous.jpg',
         profile_form=form))
-
-
-# --- СПИСОК ПОЛЬЗОВАТЕЛЕЙ ----------------------
-@app.route('/userlist')
-def userlist():
-    users_list = User.query.all()
-    return(render_template('/userlist.html',
-        title='Users list',
-        user=current_user,
-        users_list=users_list))
 
 
 # --- ВЫХОД -------------------------------------
