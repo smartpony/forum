@@ -291,3 +291,5 @@ def logout():
         title='Logout',
         user=current_user,
         text='Logged out'))
+
+# GIT test
