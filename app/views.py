@@ -39,7 +39,6 @@ def register():
             user_password = hashlib.sha256(user_password).hexdigest()
         else:
             return(render_template('info.html',
-                title='Register',
                 user=current_user,
                 text='"Passwod" and "Confirm password" must be the same'))
             
@@ -55,13 +54,11 @@ def register():
 
         # Сообщение об успешной регистрации
         return(render_template('info.html',
-            title='Register',
             user=current_user,
             text='Registered succesfully'))
 
     # Вернуть страницу
     return(render_template('register.html',
-        title='Register',
         user=current_user,
         register_form=form))
 
@@ -94,13 +91,11 @@ def login():
         # Если пользователь не найден, выдать ошибку
         else:
             return(render_template('info.html',
-                title='Login error',
                 user=current_user,
                 text='Invalid login or password'))
 
     # Вернуть страницу
     return(render_template('login.html',
-        title='Login',
         user=current_user,
         login_form=form))
 
@@ -110,7 +105,6 @@ def login():
 @app.route('/index')
 def index():
     return(render_template('index.html',
-        title='Home',
         user=current_user))
 
 
@@ -148,7 +142,6 @@ def forum():
 
     # Вернуть страницу
     return(render_template('forum.html',
-        title='Forum',
         user=current_user,
         all_topics=all_topics,
         count=count_mes,
@@ -156,7 +149,7 @@ def forum():
 
 
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
-@app.route('/forum/topic_<topic_id>', methods=['GET', 'POST'])
+@app.route('/forum/topic/<topic_id>', methods=['GET', 'POST'])
 def topic(topic_id):
     # Форма добавления нового сообщения
     form = PostingForm()
@@ -176,7 +169,7 @@ def topic(topic_id):
         # Запись последнего автора темы
         ForumTopic.query.get(topic_id).editor_id = current_user.id
         db.session.commit()
-        return(redirect('/forum/topic_' + topic_id))
+        return(redirect('/forum/topic/' + topic_id))
 
     # Счётчик просмотров +1
     current_topic.views += 1
@@ -188,7 +181,6 @@ def topic(topic_id):
 
     # Вернуть страницу
     return(render_template('topic.html',
-        title='Topic: ' + current_topic.name,
         user=current_user,
         name=current_topic.name,
         topic_messages=topic_messages,
@@ -196,7 +188,7 @@ def topic(topic_id):
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------
-@app.route('/delete_t<topic_id>')
+@app.route('/forum/topic/<topic_id>/delete')
 def delete_topic(topic_id):
     del_topic = ForumTopic.query.get(topic_id)
     db.session.delete(del_topic)
@@ -206,7 +198,7 @@ def delete_topic(topic_id):
 
 
 # --- УДАЛЕНИЕ СООБЩЕНИЙ ------------------------
-@app.route('/delete_m<message_id>')
+@app.route('/forum/message/<message_id>/delete')
 def delete_message(message_id):
     del_mes = ForumMessage.query.get(message_id)
     topic_id = del_mes.topic_id
@@ -252,37 +244,34 @@ def userlist():
 
     # Вернуть страницу
     return(render_template('/userlist.html',
-        title='Users list',
         user=current_user,
         users_list=users_list))
 
 
 # --- ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ ----------------------
-@app.route('/profile_<user_id>')
+@app.route('/profile/<user_id>')
 def user_profile(user_id):
     user = User.query.get(user_id)
     # Вернуть страницу
     return(render_template('profile.html',
-        title='User: '+user.login,
         user=current_user,
         profile=user,
         avatar='anonymous.jpg'))
 
 
 # --- СВОЙ ПРОФИЛЬ ------------------------------
-@app.route('/my_profile')
+@app.route('/profile/me')
 @login_required
 def my_profile():
     # Вернуть страницу
     return(render_template('profile.html',
-        title='User: '+current_user.login,
         user=current_user,
         profile=current_user,
         avatar=current_user.avatar))
 
 
 # --- РЕДАКТИРОВАНИЕ ПРОФИЛЯ --------------------
-@app.route('/profile_edit', methods=['GET', 'POST'])
+@app.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     # Форма редактирования профиля
@@ -301,7 +290,6 @@ def edit_profile():
 
     # Вернуть страницу
     return(render_template('profile_edit.html',
-        title='Edit profile',
         user=current_user,
         avatar='anonymous.jpg',
         profile_form=form))
@@ -313,6 +301,5 @@ def edit_profile():
 def logout():
     logout_user()
     return(render_template('info.html',
-        title='Logout',
         user=current_user,
         text='Logged out'))

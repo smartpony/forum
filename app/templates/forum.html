@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+    <title>Forum</title>
+{% endblock %}
+
 {% block content %}
 <h1>Forum</h1>
 
@@ -13,8 +17,8 @@
 {% for topic in all_topics %}
 <div class="f_table_{{loop.cycle('light', 'dark')}}">
     <div class="f_table_main">
-        <a class="f_topic" href="/forum/topic_{{topic.id}}">{{topic.name}}</a>
-        <div class="f_detail">posted by <a class="f_author" href="/profile_{{topic.author.id}}">{{topic.author.login}}</a>, {{topic.time_first.strftime('%d %b %Y')}}</div>
+        <a class="f_topic" href="/forum/topic/{{topic.id}}">{{topic.name}}</a>
+        <div class="f_detail">posted by <a class="f_author" href="/profile/{{topic.author.id}}">{{topic.author.login}}</a>, {{topic.time_first.strftime('%d %b %Y')}}</div>
     </div>
     <div class="f_table_counters">
         <div class="f_message_counter">replies: {{count[topic.id]-1}}</div>
@@ -22,14 +26,14 @@
     </div>
     <div class="f_table_editor">
         {% if topic.editor.id != Null %}
-        by <a class="f_editor" href="/profile_{{topic.editor.id}}">{{topic.editor.login}}</a>
+        by <a class="f_editor" href="/profile/{{topic.editor.id}}">{{topic.editor.login}}</a>
         <div class="f_detail">{{topic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
         {% else %}
         no posts
         {% endif %}
     </div>
     <div class="f_table_delete">
-        <a class="f_delete" href="/delete_t{{topic.id}}"><img src="static/icon_del_body.png" title="Delete"></a>
+        <a class="f_delete" href="/forum/topic/{{topic.id}}/delete"><img src="static/icon_del_body.png" title="Delete"></a>
     </div>
 </div>
 {% endfor %}

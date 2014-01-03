@@ -1,11 +1,15 @@
 ﻿{% extends "base.html" %}
 
+{% block title %}
+    <title>Edit profile</title>
+{% endblock %}
+
 {% block content %}
 <h1>Edit profile</h1>
 
 <hr>
 
-<div class="pe_avatar"><img src="static/avatar/{{avatar}}"></div>
+<div class="pe_avatar"><img src="/static/avatar/{{avatar}}"></div>
 
 <div class="pe_info_block">
     <form action="" method="post" name="edit">

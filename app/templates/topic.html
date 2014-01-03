@@ -1,12 +1,16 @@
 ﻿{% extends "base.html" %}
 
+{% block title %}
+    <title>Topic: {{name}}</title>
+{% endblock %}
+
 {% block content %}
 <h1>{{name}}</h1>
 
 {% for message in topic_messages %}
 <div class="t_message_body">
-    <div class="t_message_info">posted by <a class="t_author" href="/profile_{{message.author.id}}">{{message.author.login}}</a>, {{message.date.strftime('%H:%M, %d %b %Y')}}</div>
-    <div class="t_message_delete"><a class="t_delete" href="/delete_m{{message.id}}">Delete</a></div>
+    <div class="t_message_info">posted by <a class="t_author" href="/profile/{{message.author.id}}">{{message.author.login}}</a>, {{message.date.strftime('%H:%M, %d %b %Y')}}</div>
+    <div class="t_message_delete"><a class="t_delete" href="/forum/message/{{message.id}}/delete">Delete</a></div>
     <hr>
     <div class="t_message_text">{{message.text}}</div>
 </div>
