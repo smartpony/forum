@@ -4,6 +4,9 @@
 
 from flask import render_template, redirect, url_for, request
 from flask.ext.login import login_user, logout_user, current_user, login_required
+#from sqlalchemy.sql import func
+from flask.ext.sqlalchemy import sqlalchemy
+func = sqlalchemy.func
 from datetime import datetime
 import hashlib
 
@@ -132,19 +135,23 @@ def forum():
         db.session.commit()
         return(redirect('/forum/topic_'+str(new_topic.id)))
 
-    # Выбрать все темы из базы с обратной сортировкой по последнему времени изменения
-    all_topics = ForumTopic.query.order_by(ForumTopic.time_last.desc()).all()
-    # Счётчики сообщений, время создания и последнего ответа,
-    # счётчик просмотров для каждой темы
-    count_mes = {}
-    for topic in all_topics:
-        count_mes[topic.id] = len(ForumTopic.query.get(topic.id).message)
+    # Выборка всех тем с счётчиком сообщений для каждой
+    # Подзапрос
+    all_topics_subq = db.session.query(
+        ForumMessage.topic_id, func.count(ForumMessage.id).label('mes_count')). \
+        group_by(ForumMessage.topic_id). \
+        subquery()
+    # Основной запрос
+    all_topics = db.session.query(
+        ForumTopic, all_topics_subq.c.mes_count). \
+        join(all_topics_subq, ForumTopic.id == all_topics_subq.c.topic_id). \
+        order_by(ForumTopic.time_last.desc()).all()
+
 
     # Вернуть страницу
     return(render_template('forum.html',
         user=current_user,
         all_topics=all_topics,
-        count=count_mes,
         new_topic=form))
 
 
