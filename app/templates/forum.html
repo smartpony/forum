@@ -33,7 +33,7 @@
         {% endif %}
     </div>
     <div class="f_table_delete">
-        <a class="f_delete" href="{{url_for('delete_message', message_id=topic.ForumTopic.id)}}"><img src="static/icon_del_body.png" title="Delete"></a>
+        <a class="f_delete" href="{{url_for('delete_topic', topic_id=topic.ForumTopic.id)}}"><img src="static/icon_del_body.png" title="Delete"></a>
     </div>
 </div>
 {% endfor %}

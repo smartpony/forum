@@ -20,8 +20,9 @@ a.b_header {
 }
 
 div.b_header_login {
+ margin-right: 10px;
  display: inline-block;
- text-align: right;
+ float: right;
 }
 
 div.b_body {

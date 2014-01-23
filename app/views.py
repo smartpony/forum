@@ -133,7 +133,7 @@ def forum():
         new_mes = ForumMessage(topic_id=new_topic.id, author_id=current_user.id, text=form_message)
         db.session.add(new_mes)
         db.session.commit()
-        return(redirect('/forum/topic_'+str(new_topic.id)))
+        return(redirect(url_for('topic', topic_id=str(new_topic.id))))
 
     # Выборка всех тем с счётчиком сообщений для каждой
     # Подзапрос
@@ -176,7 +176,7 @@ def topic(topic_id):
         # Запись последнего автора темы
         ForumTopic.query.get(topic_id).editor_id = current_user.id
         db.session.commit()
-        return(redirect('/forum/topic/' + topic_id))
+        return(redirect(url_for('topic', topic_id=topic_id)))
 
     # Счётчик просмотров +1
     current_topic.views += 1
@@ -331,3 +331,17 @@ def logout():
     return(render_template('info.html',
         user=current_user,
         text='Logged out'))
+
+
+# --- ОШИБКА 401 --------------------------------
+@app.errorhandler(401)
+def error_401(error_code):
+    return(render_template('401.html',
+        user=current_user))
+
+
+# --- ОШИБКА 404 --------------------------------
+@app.errorhandler(404)
+def error_404(error_code):
+    return(render_template('404.html',
+        user=current_user))
