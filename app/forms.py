@@ -4,11 +4,11 @@
 
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField
-
+from wtforms.validators import DataRequired
 
 class PostingForm(Form):
-    topic = TextField()
-    message = TextAreaField()
+    topic = TextField(validators=[DataRequired()])
+    message = TextAreaField(validators=[DataRequired()])
 
 class LoginForm(Form):
     login = TextField()

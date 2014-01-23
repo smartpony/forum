@@ -118,7 +118,8 @@ def forum():
     form = PostingForm()
 
     # Если отправлена форма постинга
-    if request.method == 'POST':
+    #if request.method == 'POST':
+    if form.validate_on_submit():
         # Данные из формы
         form_topic = form.topic.data
         form_message = form.message.data
@@ -138,13 +139,13 @@ def forum():
     # Выборка всех тем с счётчиком сообщений для каждой
     # Подзапрос
     all_topics_subq = db.session.query(
-        ForumMessage.topic_id, func.count(ForumMessage.id).label('mes_count')). \
-        group_by(ForumMessage.topic_id). \
+        ForumMessage.topic_id, func.count(ForumMessage.id).label('mes_count')).\
+        group_by(ForumMessage.topic_id).\
         subquery()
     # Основной запрос
     all_topics = db.session.query(
-        ForumTopic, all_topics_subq.c.mes_count). \
-        join(all_topics_subq, ForumTopic.id == all_topics_subq.c.topic_id). \
+        ForumTopic, all_topics_subq.c.mes_count).\
+        join(all_topics_subq, ForumTopic.id == all_topics_subq.c.topic_id).\
         order_by(ForumTopic.time_last.desc()).all()
 
 

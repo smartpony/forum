@@ -42,8 +42,20 @@
 
 {% if user.is_authenticated() %}
 <form action="" method="post" name="edit">
-{{new_topic.topic(placeholder='New topic', class="f_topic")}}
-{{new_topic.message(placeholder='Enter your text here', class="f_t_message")}}
+<div>
+    {{new_topic.topic(placeholder='New topic', class="f_form_topic")}}
+    {% for error in new_topic.errors.topic %}
+    <div class="f_form_error">{{error}}</div>
+    {% endfor %}
+</div>
+
+<div>
+    {{new_topic.message(placeholder='Enter your text here', class="f_form_message")}}
+    {% for error in new_topic.errors.message %}
+    <div class="f_form_error">{{error}}</div>
+    {% endfor %}
+</div>
+
 <input class="submit_button"  type="submit" value="post">
 </form>
 {% endif %}

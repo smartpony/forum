@@ -1,18 +1,21 @@
 ﻿/* ФОРМЫ */
 
 /* Формы постинга сообщений и тем */
-input.f_topic {
- display: block;
- margin: 10px;
+div.f_form_block {
+}
+
+input.f_form_topic {
+ margin: 5px 10px;
+ display: inline-table;
  height: 24px;
  width: 150px;
  font-size: 14px;
  color: #505050;
 }
 
-textarea.f_t_message {
- display: block;
- margin: 10px;
+textarea.f_form_message {
+ margin: 5px 10px;
+ display: inline-table;
  height: 72px;
  width: 300px;
  font-size: 14px;
@@ -20,9 +23,18 @@ textarea.f_t_message {
  color: #505050;
 }
 
+div.f_form_error {
+ margin-top: 8px;
+ display: inline-table;
+ vertical-align: top;
+ font-size: 11px;
+ font-family: Helvetica;
+ color: #ff0000;
+}
+
 input.submit_button {
  display: block;
- margin: 10px;
+ margin: 5px 10px;
  height: 24px;
  width: 150px;
  font-size: 14px;
@@ -66,4 +78,11 @@ input.profile_button {
  width: 150px;
  font-size: 14px;
  color: #505050;
+}
+
+/* Ошибки валидаторов форм */
+div.f_form_error {
+ display:
+ font-size: 14px;
+ color: #ff0000;
 }
