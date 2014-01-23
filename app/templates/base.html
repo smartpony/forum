@@ -16,16 +16,21 @@
 <body>
 
 <div class="b_header">
-    <a class="b_header" href="/index">Home |</a>
-    <a class="b_header" href="/forum">Forum |</a>
-    <a class="b_header" href="/userlist">Users |</a>
-    {% if not user.is_authenticated() %}
-    <a class="b_header" href="/login">Login |</a>
-    <a class="b_header" href="/register">Register |</a>
-    {% else %}
-    <a class="b_header" href="/profile/me">Profile |</a>
-    <a class="b_header" href="/logout">Logout</a>
+    <a class="b_header" href="{{url_for('index')}}">Home</a>
+    <a class="b_header" href="{{url_for('forum')}}">Forum</a>
+    <a class="b_header" href="{{url_for('userlist')}}">Users</a>
+    {% if user.is_authenticated() %}
+    <a class="b_header" href="{{url_for('my_profile')}}">Profile</a>
     {% endif %}
+
+    <div class="b_header_login">
+        {% if user.is_authenticated() %}
+        <a class="b_header" href="{{url_for('logout')}}">Logout</a>
+        {% else %}
+        <a class="b_header" href="{{url_for('login')}}">Login</a>
+        <a class="b_header" href="{{url_for('register')}}">Register</a>
+        {% endif %}
+    </div>
 </div>
 
 <div class="b_body">

@@ -12,10 +12,16 @@ div.b_header {
 }
 
 a.b_header {
+ margin-left: 10px;
  font-size: 14px;
  color: #ffffff;
  font-weight: bold;
  text-decoration: none;
+}
+
+div.b_header_login {
+ display: inline-block;
+ text-align: right;
 }
 
 div.b_body {

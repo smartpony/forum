@@ -13,7 +13,7 @@ from flask.ext.login import LoginManager
 # аргумент помогает определить роль (место вызова) - либо это
 # модуль, либо standalone-приложение
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////krivak_do/python/mgp/base.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////python/mgp/base.db'
 db = SQLAlchemy(app)
 
 # Отключение CSRF для WTF-Forms

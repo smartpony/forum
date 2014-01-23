@@ -9,8 +9,8 @@
 
 {% for message in topic_messages %}
 <div class="t_message_body">
-    <div class="t_message_info">posted by <a class="t_author" href="/profile/{{message.author.id}}">{{message.author.login}}</a>, {{message.date.strftime('%H:%M, %d %b %Y')}}</div>
-    <div class="t_message_delete"><a class="t_delete" href="/forum/message/{{message.id}}/delete">Delete</a></div>
+    <div class="t_message_info">posted by <a class="t_author" href="{{url_for('user_profile', user_id=message.author.id)}}">{{message.author.login}}</a>, {{message.date.strftime('%H:%M, %d %b %Y')}}</div>
+    <div class="t_message_delete"><a class="t_delete" href="{{url_for('delete_message', message_id=message.id)}}">Delete</a></div>
     <hr>
     <div class="t_message_text">{{message.text}}</div>
 </div>

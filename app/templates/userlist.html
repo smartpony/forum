@@ -10,29 +10,29 @@
 <div class="ul_table_head">
     <div class="ul_table_head_login">
         Login
-        <a class="ul_table_head_order" href="/userlist?sort=login&desc=True"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="/userlist?sort=login&desc=False"><img src="/static/icon_sort_asc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='login', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='login', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
     <div class="ul_table_head_reg_date">
         Registered
-        <a class="ul_table_head_order" href="/userlist?sort=reg_date&desc=True"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="/userlist?sort=reg_date&desc=False"><img src="/static/icon_sort_asc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='reg_date', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='reg_date', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
     <div class="ul_table_head_topic_count">
         Topics
-        <a class="ul_table_head_order" href="/userlist?sort=topics&desc=True"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="/userlist?sort=topics&desc=False"><img src="/static/icon_sort_asc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='topics', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='topics', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
     <div class="ul_table_head_message_count">
         Messages
-        <a class="ul_table_head_order" href="/userlist?sort=messages&desc=True"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="/userlist?sort=messages&desc=False"><img src="/static/icon_sort_asc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='messages', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='messages', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
 </div>
 
 {% for user in users_list %}
 <div class="ul_table_{{loop.cycle('light', 'dark')}}">
-    <a class="ul_table_login" href="/profile/{{user.id}}">{{user.login}}</a>
+    <a class="ul_table_login" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
     <div class="ul_table_reg_date">{{user.reg_date.strftime('%d %b %Y')}}</div>
     <div class="ul_table_topic_count">{{user.topic_count}}</div>
     <div class="ul_table_message_count">{{user.message_count}}</div>

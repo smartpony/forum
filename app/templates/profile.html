@@ -15,7 +15,7 @@
     <div class="p_info_login">{{profile.login}}</div>
 
     {% if user == profile %}
-    <a class="p_info_edit" href="/profile/edit">(edit profile)</a>
+    <a class="p_info_edit" href="{{url_for('edit_profile')}}">(edit profile)</a>
     {% endif %}
     
     <div class="p_info_text">

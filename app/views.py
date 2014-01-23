@@ -156,7 +156,7 @@ def forum():
 
 
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
-@app.route('/forum/topic/<topic_id>', methods=['GET', 'POST'])
+@app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
 def topic(topic_id):
     # Форма добавления нового сообщения
     form = PostingForm()
@@ -195,29 +195,50 @@ def topic(topic_id):
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------
-@app.route('/forum/topic/<topic_id>/delete')
+# Примечание: сообщения топика каскадно удаляются
+# следом за топиком (см. model.py)
+@app.route('/forum/topic/delete/<topic_id>')
+@login_required
 def delete_topic(topic_id):
     del_topic = ForumTopic.query.get(topic_id)
-    db.session.delete(del_topic)
-    db.session.commit()
+    # Является ли пользователь автором топика
+    if del_topic.author == current_user:
+        db.session.delete(del_topic)
+        db.session.commit()
+    # Если пользователь не является автором, выдать ошибку
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text="You can't delete topic if you are not it's author"))
     # Вернуться в корень форума
     return(redirect(url_for('forum')))
 
 
 # --- УДАЛЕНИЕ СООБЩЕНИЙ ------------------------
-@app.route('/forum/message/<message_id>/delete')
+@app.route('/forum/message/delete/<message_id>')
+@login_required
 def delete_message(message_id):
     del_mes = ForumMessage.query.get(message_id)
     topic_id = del_mes.topic_id
-    db.session.delete(del_mes)
-    db.session.commit()
-    # Если сообщение было последним, то удалить топик и вернуться в корень форума
-    if ForumTopic.query.get(topic_id).message == []:
-        db.session.delete(ForumTopic.query.get(topic_id))
+    # Является ли пользователь автором сообщения
+    if del_mes.author == current_user:
+        db.session.delete(del_mes)
         db.session.commit()
-        return(redirect(url_for('forum')))
+        # Если сообщение было последним, то удалить топик и вернуться в корень форума
+        if ForumTopic.query.get(topic_id).message == []:
+            db.session.delete(ForumTopic.query.get(topic_id))
+            db.session.commit()
+            return(redirect(url_for('forum')))
+        # Вернуться на страницу, откуда было вызвано удаление
+        # (если это было последнее сообщение темы, то возврат в корень форума)
+        return(redirect(request.referrer))
+    # Если пользователь не является автором, выдать ошибку
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text="You can't delete message if you are not it's author"))
+
     # Вернуться на страницу, откуда было вызвано удаление
-    # (если это было последнее сообщение темы, то возврат в корень форума)
     return(redirect(request.referrer))
 
 
