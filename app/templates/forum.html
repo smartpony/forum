@@ -33,7 +33,7 @@
         {% endif %}
     </div>
     <div class="f_table_delete">
-        <a class="f_delete" href="{{url_for('delete_topic', topic_id=topic.ForumTopic.id)}}"><img src="static/icon_del_body.png" title="Delete"></a>
+        <a name="f111" class="f_delete" href="{{url_for('delete_topic', topic_id=topic.ForumTopic.id)}}"><img src="static/icon_del_body.png" title="Delete"></a>
     </div>
 </div>
 {% endfor %}
@@ -41,22 +41,10 @@
 <hr>
 
 {% if user.is_authenticated() %}
-<form action="" method="post" name="edit">
-<div>
-    {{new_topic.topic(placeholder='New topic', class="f_form_topic")}}
-    {% for error in new_topic.errors.topic %}
-    <div class="f_form_error">{{error}}</div>
-    {% endfor %}
-</div>
-
-<div>
-    {{new_topic.message(placeholder='Enter your text here', class="f_form_message")}}
-    {% for error in new_topic.errors.message %}
-    <div class="f_form_error">{{error}}</div>
-    {% endfor %}
-</div>
-
-<input class="submit_button"  type="submit" value="post">
+<form action="" method="post" name="edit" onsubmit="return ValidatePostingForm()">
+    {{new_topic.topic(placeholder='New topic', class='f_form_topic')}}
+    {{new_topic.message(placeholder='Enter your text here', class='f_t_form_message')}}
+    <input class="submit_button"  type="submit" value="post">
 </form>
 {% endif %}
 

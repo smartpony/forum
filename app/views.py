@@ -118,7 +118,6 @@ def forum():
     form = PostingForm()
 
     # Если отправлена форма постинга
-    #if request.method == 'POST':
     if form.validate_on_submit():
         # Данные из формы
         form_topic = form.topic.data
@@ -166,7 +165,7 @@ def topic(topic_id):
     current_topic = ForumTopic.query.get(topic_id)
 
     # Если отправлена форма постинга
-    if request.method == 'POST':
+    if form.validate_on_submit():
         # Данные из формы
         form_message = form.message.data
         # Создание сообщения
