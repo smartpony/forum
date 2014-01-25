@@ -9,11 +9,19 @@ from flask.ext.sqlalchemy import SQLAlchemy
 # Аутентификация пользователей
 from flask.ext.login import LoginManager
 
+# Стандартные модули
+import os
+
 # Создать экземпляр класса, который будет WSGI-приложением,
 # аргумент помогает определить роль (место вызова) - либо это
 # модуль, либо standalone-приложение
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////krivak_do/python/mgp/base.db'
+
+# Файл БД
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'base.db')
+
+# Инициализация работы ОРМ
 db = SQLAlchemy(app)
 
 # Отключение CSRF для WTF-Forms

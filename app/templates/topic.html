@@ -20,7 +20,7 @@
 
 {% if user.is_authenticated() %}
 <form action="" method="post" name="edit" onsubmit="return ValidatePostingForm()">
-    {{add_message.message(placeholder='Enter your text here', class="f_t_form_message")}}
+    {{add_message.message(placeholder='Enter your text here', class="f_t_form_message", onkeyup="ValidateInput(this)")}}
     <input class="submit_button" type="submit" value="send">
 </form>
 {% endif %}

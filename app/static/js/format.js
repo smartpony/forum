@@ -17,3 +17,11 @@ function ValidatePostingForm() {
     }
     return res;
 }
+
+// При вводе данных снимать красное выделение.
+function ValidateInput(object) {
+  if(object.value != "") {
+    object.style.border = "1px solid #abadb3";
+    object.style.boxShadow = "";
+  }
+}

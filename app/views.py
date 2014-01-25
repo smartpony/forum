@@ -4,11 +4,11 @@
 
 from flask import render_template, redirect, url_for, request
 from flask.ext.login import login_user, logout_user, current_user, login_required
-#from sqlalchemy.sql import func
 from flask.ext.sqlalchemy import sqlalchemy
 func = sqlalchemy.func
 from datetime import datetime
 import hashlib
+import os
 
 # Импорт других файлов проекта
 from app import app, db, lm
@@ -321,6 +321,31 @@ def edit_profile():
         user=current_user,
         avatar='anonymous.jpg',
         profile_form=form))
+
+
+# --- ЗАГРУЗКА АВАТАРА --------------------------
+@app.route('/profile/edit/avatar', methods=['GET', 'POST'])
+@login_required
+def avatar_upload():
+    if request.method == 'POST':
+        # Загруженный файл из HTTP POST
+        file = request.files['file']
+        # Проверить расширение файла
+        allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
+        file_ext = file.filename.split('.')[-1]
+        if '.' in file.filename and file_ext in allowed_file_ext:
+            file.save(os.path.join('avatar/', \
+                'user_'+current_user.login+file_ext)
+            return(render_template('info.html',
+                user=current_user,
+                text='Avatar uploaded'))
+        else:
+            return(render_template('info.html',
+                user=current_user,
+                text='Allowed file types: JPG, GIF, PNG'))
+    return(render_template('avatar_upload.html',
+        user=current_user))
+
 
 
 # --- ВЫХОД -------------------------------------

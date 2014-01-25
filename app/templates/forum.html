@@ -42,8 +42,8 @@
 
 {% if user.is_authenticated() %}
 <form action="" method="post" name="edit" onsubmit="return ValidatePostingForm()">
-    {{new_topic.topic(placeholder='New topic', class='f_form_topic')}}
-    {{new_topic.message(placeholder='Enter your text here', class='f_t_form_message')}}
+    {{new_topic.topic(placeholder='New topic', class='f_form_topic', onkeyup="ValidateInput(this)")}}
+    {{new_topic.message(placeholder='Enter your text here', class='f_t_form_message', onkeyup="ValidateInput(this)")}}
     <input class="submit_button"  type="submit" value="post">
 </form>
 {% endif %}
