@@ -9,36 +9,44 @@
 
 <hr>
 
-<div class="pe_avatar"><img src="/static/avatar/{{avatar}}"></div>
 
-<div class="pe_info_block">
-    <form action="" method="post" name="edit">
-    <div class="pe_info_login">{{current_user.login}}</div>
-    <a class="p_info_edit" href="{{url_for('avatar_upload')}}">(change avatar)</a>
-
-    <div class="pe_info_text">
-        <div class="pe_info_text_var">
-            City:<br>
-            Country:<br>
-            E-mail:<br>
-            Topics:<br>
-            Messages:<br>
-            Registered:<br>
-            Last seen:
+<form action="" method="post" name="edit" enctype=multipart/form-data onSubmit="return ProfileFormValidate()">
+    <div class="pe_avatar_block">
+        <div class="pe_avatar"><img src="/static/avatar/{{user.avatar}}"></div>
+        <div class="pe_avatar_wrap">
+            <div class="pe_avatar_text">change</div>
+            {{profile_form.avatar(class="pe_avatar_button", onChange="ShowAvatarName()")}}
         </div>
-
-        <div class="pe_info_text_input">
-            {{profile_form.city(class="pe_edit_field", value=current_user.city)}}
-            {{profile_form.country(class="pe_edit_field", value=current_user.country)}}
-            {{profile_form.email(class="pe_edit_field_last", value=current_user.email)}}
-            {{current_user.topic_count}}<br>
-            {{current_user.message_count}}<br>
-            {{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}<br>
-            {{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}
-        </div>
+        <div class="pe_new_avatar" id="pe_new_avatar"></div>
     </div>
-    <input class="profile_button" type="submit" value="save">
-    </form>
-</div>
+
+    <div class="pe_info_block">
+        <div class="pe_info_login">{{current_user.login}}</div>
+
+        <div class="pe_info_text">
+            <div class="pe_info_text_var">
+                City:<br>
+                Country:<br>
+                E-mail:<br>
+                Topics:<br>
+                Messages:<br>
+                Registered:<br>
+                Last seen:
+            </div>
+
+            <div class="pe_info_text_input">
+                {{profile_form.city(class="pe_edit_field", value=current_user.city)}}
+                {{profile_form.country(class="pe_edit_field", value=current_user.country)}}
+                {{profile_form.email(class="pe_edit_field_last", value=current_user.email)}}
+                {{current_user.topic_count}}<br>
+                {{current_user.message_count}}<br>
+                {{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}<br>
+                {{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}
+            </div>
+        </div>
+        <input class="submit_button" type="submit" value="save">
+
+    </div>
+</form>
 
 {% endblock %}

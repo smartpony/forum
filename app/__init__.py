@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 # Файл БД
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'base.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '../base.db')
 
 # Инициализация работы ОРМ
 db = SQLAlchemy(app)

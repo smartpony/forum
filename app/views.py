@@ -311,6 +311,21 @@ def edit_profile():
         current_user.city = form.city.data
         current_user.country = form.country.data
         current_user.email = form.email.data
+
+        # Загружен ли новый аватар
+        if form.avatar.data:
+            # Загруженный файл из HTTP POST
+            file = request.files[form.avatar.name]
+            # Проверить расширение файла
+            allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
+            file_ext = file.filename.split('.')[-1].lower()
+            # Если расширение допустимое, то закачать файл и сделать его
+            # аватаром для текущего пользователя
+            if '.' in file.filename and file_ext in allowed_file_ext:
+                file_name = 'user_' + current_user.login + '.' + file_ext
+                file.save('app/static/avatar/'+file_name)
+                current_user.avatar = file_name
+
         # Сохранение данных
         db.session.commit()
         # Редирект на страницу профиля
@@ -319,33 +334,7 @@ def edit_profile():
     # Вернуть страницу
     return(render_template('profile_edit.html',
         user=current_user,
-        avatar='anonymous.jpg',
         profile_form=form))
-
-
-# --- ЗАГРУЗКА АВАТАРА --------------------------
-@app.route('/profile/edit/avatar', methods=['GET', 'POST'])
-@login_required
-def avatar_upload():
-    if request.method == 'POST':
-        # Загруженный файл из HTTP POST
-        file = request.files['file']
-        # Проверить расширение файла
-        allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
-        file_ext = file.filename.split('.')[-1]
-        if '.' in file.filename and file_ext in allowed_file_ext:
-            file.save(os.path.join('avatar/', \
-                'user_'+current_user.login+file_ext)
-            return(render_template('info.html',
-                user=current_user,
-                text='Avatar uploaded'))
-        else:
-            return(render_template('info.html',
-                user=current_user,
-                text='Allowed file types: JPG, GIF, PNG'))
-    return(render_template('avatar_upload.html',
-        user=current_user))
-
 
 
 # --- ВЫХОД -------------------------------------
