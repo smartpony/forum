@@ -11,7 +11,6 @@
     <div class="f_table_head_main">Topic</div>
     <div class="f_table_head_counters">Replies and views</div>
     <div class="f_table_head_editor">Last post</div>
-    <div class="f_table_head_delete">Delete</div>
 </div>
 
 {% for topic in all_topics %}
@@ -32,19 +31,18 @@
         no posts
         {% endif %}
     </div>
-    <div class="f_table_delete">
-        <a name="f111" class="f_delete" href="{{url_for('delete_topic', topic_id=topic.ForumTopic.id)}}"><img src="static/icon_del_body.png" title="Delete"></a>
-    </div>
 </div>
 {% endfor %}
 
 <hr>
 
 {% if user.is_authenticated() %}
-<form action="" method="post" name="edit" onsubmit="return PostingFormValidate()">
-    {{new_topic.topic(placeholder='New topic', class='f_form_topic', onkeyup="PostingFormUnmark(this)")}}
-    {{new_topic.message(placeholder='Enter your text here', class='f_t_form_message', onkeyup="PostingFormUnmark(this)")}}
-    <input class="submit_button"  type="submit" value="post">
+<form method="post" onsubmit="return PostingFormValidate()">
+    {{form_topic.hidden_tag()}}
+    {{form_message.hidden_tag()}}
+    {{form_topic.topic(placeholder='New topic', class='f_form_topic', onkeyup="PostingFormUnmark(this)")}}
+    {{form_message.message(placeholder='Enter your text here', class='f_t_form_message', onkeyup="PostingFormUnmark(this)")}}
+    <input class="submit_button" type="submit" value="post">
 </form>
 {% endif %}
 

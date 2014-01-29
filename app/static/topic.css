@@ -1,5 +1,14 @@
 ﻿/* ТЕМА */
 
+a.t_delete_topic {
+ margin-left: 0px;
+ display: inline;
+ font-size: 10px;
+ color: #980000;
+ font-weight: normal;
+ text-decoration: none;
+}
+
 div.t_message_body {
  margin: 10px;
  padding: 8px;
@@ -13,7 +22,7 @@ div.t_message_info {
  font-size: 10px;
 }
 
-div.t_message_delete {
+div.t_message_options {
  display: inline-table;
  width: 19%;
  text-align: right;
@@ -31,7 +40,8 @@ a.t_author {
  text-decoration: none;
 }
 
-a.t_delete {
+a.t_edit_del {
+ margin-left: 8px;
  font-size: 10px;
  color: #980000;
  text-decoration: none;

@@ -6,8 +6,10 @@ from flask_wtf import Form
 from wtforms import TextField, TextAreaField, FileField
 from wtforms.validators import DataRequired
 
-class PostingForm(Form):
+class TopicForm(Form):
     topic = TextField(validators=[DataRequired()])
+
+class MessageForm(Form):
     message = TextAreaField(validators=[DataRequired()])
 
 class LoginForm(Form):

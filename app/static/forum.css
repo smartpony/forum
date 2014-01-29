@@ -22,7 +22,7 @@ div.f_table_light {
 /* Текст в ячейках заголовка */
 div.f_table_head_main {
  display: inline-table;
- width: 51%;
+ width: 61%;
  vertical-align: middle;
  font-size: 16px;
  color: #ffffff;
@@ -46,19 +46,10 @@ div.f_table_head_editor {
  color: #ffffff;
 }
 
-div.f_table_head_delete {
- display: inline-table;
- width: 10%;
- vertical-align: middle;
- text-align: center;
- font-size: 16px;
- color: #ffffff;
-}
-
 /* Разметка столбцов */
 div.f_table_main {
  display: inline-table;
- width: 51%;
+ width: 61%;
  vertical-align: middle;
 }
 
@@ -75,13 +66,6 @@ div.f_table_editor {
  vertical-align: middle;
  text-align: center;
  font-size: 14px;
-}
-
-div.f_table_delete {
- display: inline-table;
- vertical-align: middle;
- width: 10%;
- text-align: center;
 }
 
 /* Текст в ячейках таблицы */
@@ -117,11 +101,5 @@ a.f_editor {
  line-height: 22px;
  font-size: 15px;
  color: #294aa6;
- text-decoration: none;
-}
-
-a.f_delete {
- font-size: 10px;
- color: #980000;
  text-decoration: none;
 }

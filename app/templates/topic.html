@@ -1,16 +1,26 @@
 ﻿{% extends "base.html" %}
 
 {% block title %}
-    <title>Topic: {{name}}</title>
+    <title>Topic: {{topic.name}}</title>
 {% endblock %}
 
 {% block content %}
-<h1>{{name}}</h1>
+<h1>{{topic.name}}
+{% if topic.author == current_user %}
+<a class="t_delete_topic" href="">(delete)</a>
+{% endif %}
+</h1>
 
-{% for message in topic_messages %}
+
+{% for message in topic.message %}
 <div class="t_message_body">
     <div class="t_message_info">posted by <a class="t_author" href="{{url_for('user_profile', user_id=message.author.id)}}">{{message.author.login}}</a>, {{message.date.strftime('%H:%M, %d %b %Y')}}</div>
-    <div class="t_message_delete"><a class="t_delete" href="{{url_for('delete_message', message_id=message.id)}}">Delete</a></div>
+    {% if message.author == current_user %}
+    <div class="t_message_options">
+        <a class="t_edit_del" href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
+        <a class="t_edit_del" href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
+    </div>
+    {% endif %}
     <hr>
     <div class="t_message_text">{{message.text}}</div>
 </div>
@@ -19,8 +29,9 @@
 <hr>
 
 {% if user.is_authenticated() %}
-<form action="" method="post" name="edit" onsubmit="return PostingFormValidate()">
-    {{add_message.message(placeholder='Enter your text here', class="f_t_form_message", onkeyup="PostingFormUnmark(this)")}}
+<form method="post" onsubmit="return PostingFormValidate()">
+    {{form_message.hidden_tag()}}
+    {{form_message.message(placeholder='Enter your text here', class="f_t_form_message", onkeyup="PostingFormUnmark(this)")}}
     <input class="submit_button" type="submit" value="send">
 </form>
 {% endif %}

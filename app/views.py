@@ -13,7 +13,7 @@ import os
 # Импорт других файлов проекта
 from app import app, db, lm
 from models import User, ForumTopic, ForumMessage
-from forms import PostingForm, LoginForm, RegisterForm, ProfileForm
+from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm
 
 
 # --- ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ---------------------
@@ -115,22 +115,23 @@ def index():
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
     # Форма для постинга сообщений
-    form = PostingForm()
+    form_topic = TopicForm()
+    form_message = MessageForm()
 
     # Если отправлена форма постинга
-    if form.validate_on_submit():
+    if form_topic.validate_on_submit() and form_message.validate_on_submit():
         # Данные из формы
-        form_topic = form.topic.data
-        form_message = form.message.data
+        data_topic = form_topic.topic.data
+        data_message = form_message.message.data
         # Создание темы и обновление счётчиков у пользователя
-        new_topic = ForumTopic(name=form_topic, author_id=current_user.id)
+        new_topic = ForumTopic(name=data_topic, author_id=current_user.id)
         current_user.message_count += 1
         current_user.topic_count += 1
         db.session.add(new_topic)
         # Коммит в этом месте нужен, чтобы появился ID
         db.session.commit()
         # Создание сообщения
-        new_mes = ForumMessage(topic_id=new_topic.id, author_id=current_user.id, text=form_message)
+        new_mes = ForumMessage(topic_id=new_topic.id, author_id=current_user.id, text=data_message)
         db.session.add(new_mes)
         db.session.commit()
         return(redirect(url_for('topic', topic_id=str(new_topic.id))))
@@ -147,29 +148,29 @@ def forum():
         join(all_topics_subq, ForumTopic.id == all_topics_subq.c.topic_id).\
         order_by(ForumTopic.time_last.desc()).all()
 
-
     # Вернуть страницу
     return(render_template('forum.html',
         user=current_user,
         all_topics=all_topics,
-        new_topic=form))
+        form_topic=form_topic,
+        form_message=form_message))
 
 
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
 def topic(topic_id):
     # Форма добавления нового сообщения
-    form = PostingForm()
+    form_message = MessageForm()
 
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
 
     # Если отправлена форма постинга
-    if form.validate_on_submit():
+    if form_message.validate_on_submit():
         # Данные из формы
-        form_message = form.message.data
+        data_message = form_message.message.data
         # Создание сообщения
-        new_mes = ForumMessage(topic_id=topic_id, author_id=current_user.id, text=form_message)
+        new_mes = ForumMessage(topic_id=topic_id, author_id=current_user.id, text=data_message)
         current_topic.time_last = datetime.utcnow()
         current_user.message_count += 1
         db.session.add(new_mes)
@@ -182,16 +183,11 @@ def topic(topic_id):
     current_topic.views += 1
     db.session.commit()
 
-    # Выборка сообщений
-    topic_name = current_topic.name
-    topic_messages = ForumTopic.query.get(topic_id).message
-
     # Вернуть страницу
     return(render_template('topic.html',
         user=current_user,
-        name=current_topic.name,
-        topic_messages=topic_messages,
-        add_message=form))
+        topic=current_topic,
+        form_message=form_message))
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------
@@ -212,6 +208,15 @@ def delete_topic(topic_id):
             text="You can't delete topic if you are not it's author"))
     # Вернуться в корень форума
     return(redirect(url_for('forum')))
+
+
+# --- РЕДАКТИРОВАНИЕ СООБЩЕНИЙ ------------------
+@app.route('/forum/message/edit/<message_id>')
+@login_required
+def edit_message(message_id):
+    return(render_template('info.html',
+        user=current_user,
+        text='Edit page'))
 
 
 # --- УДАЛЕНИЕ СООБЩЕНИЙ ------------------------
