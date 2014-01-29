@@ -7,7 +7,7 @@
 {% block content %}
 <h1>{{topic.name}}
 {% if topic.author == current_user %}
-<a class="t_delete_topic" href="">(delete)</a>
+<a class="t_delete_topic" href="{{url_for('delete_topic', topic_id=topic.id)}}">(delete)</a>
 {% endif %}
 </h1>
 

@@ -214,7 +214,7 @@ def delete_topic(topic_id):
 @app.route('/forum/message/edit/<message_id>')
 @login_required
 def edit_message(message_id):
-    return(render_template('info.html',
+    return(render_template('message_edit.html',
         user=current_user,
         text='Edit page'))
 
