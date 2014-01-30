@@ -1,10 +1,18 @@
 ﻿{% extends "base.html" %}
 
 {% block title %}
-    <title>Info</title>
+    <title>Message #{{message.id}}</title>
 {% endblock %}
 
 {% block content %}
-<h1>{{text}}</h1>
+<h1>Edit message</h1>
+
+{% if user.is_authenticated() %}
+<form method="post">
+    {{form_message.hidden_tag()}}
+    {{form_message.message(class="f_t_form_message")}}
+    <input class="submit_button" type="submit" value="apply">
+</form>
+{% endif %}
 
 {% endblock %}

@@ -2,7 +2,7 @@
 # Обработка запросов клиентов
 #
 
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, abort
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from flask.ext.sqlalchemy import sqlalchemy
 func = sqlalchemy.func
@@ -159,12 +159,16 @@ def forum():
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
 def topic(topic_id):
-    # Форма добавления нового сообщения
-    form_message = MessageForm()
-
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
 
+    # Проверка существования объекта
+    if not current_topic:
+        abort(404)
+
+    # Форма добавления нового сообщения
+    form_message = MessageForm()
+    
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
         # Данные из формы
@@ -197,6 +201,11 @@ def topic(topic_id):
 @login_required
 def delete_topic(topic_id):
     del_topic = ForumTopic.query.get(topic_id)
+
+    # Проверка существования объекта
+    if not del_topic:
+        abort(404)
+
     # Является ли пользователь автором топика
     if del_topic.author == current_user:
         db.session.delete(del_topic)
@@ -206,17 +215,46 @@ def delete_topic(topic_id):
         return(render_template('info.html',
             user=current_user,
             text="You can't delete topic if you are not it's author"))
+
     # Вернуться в корень форума
     return(redirect(url_for('forum')))
 
 
 # --- РЕДАКТИРОВАНИЕ СООБЩЕНИЙ ------------------
-@app.route('/forum/message/edit/<message_id>')
+@app.route('/forum/message/edit/<message_id>', methods=['GET', 'POST'])
 @login_required
 def edit_message(message_id):
-    return(render_template('message_edit.html',
-        user=current_user,
-        text='Edit page'))
+    edit_message = ForumMessage.query.get(message_id)
+
+    # Проверка существования объекта
+    if not edit_message:
+        abort(404)
+
+    # Форма постинга сообщения
+    form_message = MessageForm()
+
+    # Если отправлена форма постинга
+    if form_message.validate_on_submit():
+        # Сохранить данные из формы
+        edit_message.text = form_message.message.data
+        db.session.commit()
+        # Вернуть страницу топика
+        return(redirect(url_for('topic', topic_id=edit_message.topic_id)))
+
+    # Является ли пользователь автором сообщения
+    if edit_message.author == current_user:
+        # Вывод старого сообщения в форме
+        form_message.message.data = edit_message.text
+        # Вывод странички
+        return(render_template('message_edit.html',
+            user=current_user,
+            message=edit_message,
+            form_message=form_message))
+    # Если нет, то выдать ошибку
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text="You can't edit message if you are not it's author"))
 
 
 # --- УДАЛЕНИЕ СООБЩЕНИЙ ------------------------
@@ -225,6 +263,11 @@ def edit_message(message_id):
 def delete_message(message_id):
     del_mes = ForumMessage.query.get(message_id)
     topic_id = del_mes.topic_id
+
+    # Проверка существования объекта
+    if not del_message:
+        abort(404)
+
     # Является ли пользователь автором сообщения
     if del_mes.author == current_user:
         db.session.delete(del_mes)
@@ -285,6 +328,11 @@ def userlist():
 @app.route('/profile/<user_id>')
 def user_profile(user_id):
     user = User.query.get(user_id)
+
+    # Проверка существования объекта
+    if not user:
+        abort(404)
+
     # Вернуть страницу
     return(render_template('profile.html',
         user=current_user,
