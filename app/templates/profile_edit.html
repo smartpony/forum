@@ -12,7 +12,7 @@
 
 <form action="" method="post" name="edit" enctype=multipart/form-data onSubmit="return ProfileFormValidate()">
     <div class="pe_avatar_block">
-        <div class="pe_avatar"><img src="/static/avatar/{{user.avatar}}"></div>
+        <div class="pe_avatar"><img src="{{user.avatar}}"></div>
         <div class="pe_avatar_wrap">
             <div class="pe_avatar_text">change</div>
             {{profile_form.avatar(class="pe_avatar_button", onChange="ShowAvatarName()")}}

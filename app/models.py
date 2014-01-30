@@ -26,7 +26,7 @@ class User(db.Model):
     # Страна
     country = db.Column(db.Text, default='unknouwn')
     # Аватар
-    avatar = db.Column(db.Text, default='anonymous.jpg')
+    avatar = db.Column(db.Text, default='/static/avatar/anonymous.jpg')
 
     # Количество тем
     topic_count = db.Column(db.Integer, default=0)

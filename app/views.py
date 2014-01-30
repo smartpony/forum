@@ -336,8 +336,7 @@ def user_profile(user_id):
     # Вернуть страницу
     return(render_template('profile.html',
         user=current_user,
-        profile=user,
-        avatar='anonymous.jpg'))
+        profile=user))
 
 
 # --- СВОЙ ПРОФИЛЬ ------------------------------
@@ -347,8 +346,7 @@ def my_profile():
     # Вернуть страницу
     return(render_template('profile.html',
         user=current_user,
-        profile=current_user,
-        avatar=current_user.avatar))
+        profile=current_user))
 
 
 # --- РЕДАКТИРОВАНИЕ ПРОФИЛЯ --------------------
@@ -372,12 +370,14 @@ def edit_profile():
             # Проверить расширение файла
             allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
             file_ext = file.filename.split('.')[-1].lower()
-            # Если расширение допустимое, то закачать файл и сделать его
-            # аватаром для текущего пользователя
+            # Если расширение допустимое, то удалить старый файл
+            # закачать новый и сделать его аватаром для текущего пользователя
             if '.' in file.filename and file_ext in allowed_file_ext:
+                if current_user.avatar != '/static/avatar/anonymous.jpg':
+                    os.remove('app' + current_user.avatar)
                 file_name = 'user_' + current_user.login + '.' + file_ext
                 file.save('app/static/avatar/'+file_name)
-                current_user.avatar = file_name
+                current_user.avatar = '/static/avatar/' + file_name
 
         # Сохранение данных
         db.session.commit()
