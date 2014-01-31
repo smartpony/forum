@@ -237,6 +237,8 @@ def edit_message(message_id):
     if form_message.validate_on_submit():
         # Сохранить данные из формы
         edit_message.text = form_message.message.data
+        # Отметка о дате изменения
+        edit_message.date_edit =  datetime.utcnow()
         db.session.commit()
         # Вернуть страницу топика
         return(redirect(url_for('topic', topic_id=edit_message.topic_id)))

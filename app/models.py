@@ -94,6 +94,8 @@ class ForumMessage(db.Model):
     text = db.Column(db.Text, nullable=False)
     # Время постинга
     date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    # Время изменения
+    date_edit = db.Column(db.DateTime)
 
     # Вывод при обращении к объекту класса
     def __repr__(self):
