@@ -208,6 +208,10 @@ def delete_topic(topic_id):
 
     # Является ли пользователь автором топика
     if del_topic.author == current_user:
+        # Убавить счётчики
+        current_user.topic_count -= 1
+        for del_message in del_topic.message:
+            del_message.author.message_count -=1
         db.session.delete(del_topic)
         db.session.commit()
     # Если пользователь не является автором, выдать ошибку
