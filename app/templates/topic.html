@@ -26,7 +26,7 @@
     </div>
     {% endif %}
     <hr>
-    <div class="t_message_text">{{message.text}}</div>
+    <div class="t_message_text">{{message.text|safe}}</div>
 </div>
 {% endfor %}
 
@@ -34,6 +34,11 @@
 
 {% if user.is_authenticated() %}
 <form method="post" onsubmit="return PostingFormValidate()">
+    <div class="t_format_block">
+        <img src="/static/bold.png">
+        <img src="/static/italic.png">
+        <img src="/static/underlined.png">
+    </div>
     {{form_message.hidden_tag()}}
     {{form_message.message(placeholder='Enter your text here', class="f_t_form_message", onkeyup="PostingFormUnmark(this)")}}
     <input class="submit_button" type="submit" value="send">

@@ -9,6 +9,7 @@ func = sqlalchemy.func
 from datetime import datetime
 import hashlib
 import os
+from cgi import escape
 
 # Импорт других файлов проекта
 from app import app, db, lm
@@ -171,8 +172,17 @@ def topic(topic_id):
     
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
-        # Данные из формы
-        data_message = form_message.message.data
+        # Данные из формы c экранированием спецсимволов
+        data_message = escape(form_message.message.data)
+        # Применение форматирования
+        forum_format = {'[b]':'<b>',
+            '[/b]':'</b>',
+            '[i]':'<i>',
+            '[/i]':'</i>',
+            '[u]':'<u>',
+            '[/u]':'</u>'}
+        for tag in forum_format.keys():
+            data_message = data_message.replace(tag, forum_format[tag])
         # Создание сообщения
         new_mes = ForumMessage(topic_id=topic_id, author_id=current_user.id, text=data_message)
         current_topic.time_last = datetime.utcnow()
@@ -271,7 +281,7 @@ def delete_message(message_id):
     topic_id = del_mes.topic_id
 
     # Проверка существования объекта
-    if not del_message:
+    if not del_mes:
         abort(404)
 
     # Является ли пользователь автором сообщения
