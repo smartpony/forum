@@ -35,9 +35,9 @@
 {% if user.is_authenticated() %}
 <form method="post" onsubmit="return PostingFormValidate()">
     <div class="t_format_block">
-        <img src="/static/bold.png">
-        <img src="/static/italic.png">
-        <img src="/static/underlined.png">
+        <img class="t_format_button" src="/static/bold.png" onclick="makeFormated('b')">
+        <img class="t_format_button" src="/static/italic.png" onclick="makeFormated('i')">
+        <img class="t_format_button" src="/static/underlined.png" onclick="makeFormated('u')">
     </div>
     {{form_message.hidden_tag()}}
     {{form_message.message(placeholder='Enter your text here', class="f_t_form_message", onkeyup="PostingFormUnmark(this)")}}

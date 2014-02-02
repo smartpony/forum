@@ -40,6 +40,10 @@ div.t_format_block {
  margin: 5px 0px 0px 10px;
 }
 
+img.t_format_button:hover {
+ opacity: 0.85;
+}
+
 /* Формы входа и регистрации */
 input.r_l_field {
  display: block;

@@ -1,61 +1,13 @@
-﻿// --- ФОРМЫ ПОСТИНГА ---------------------------
-// Обработка сабмита формы. Если найдены пустые поля - выделить их красным и вернуть false.
-function PostingFormValidate() {
-    var res = true;
-    // Введён ли текст сообщения
-    var message = document.getElementById("message");
-    if(message.value == "") {
-        message.style.border = "1px solid #f06565";
-        message.style.boxShadow = "0 0 1px 1px #f5b3b3";
-        res = false;
-    }
-    // Введена ли тема + проверка наличия темы (для страницы топика)
-    var topic = document.getElementById("topic");
-    if(topic != null && topic.value == "") {
-        topic.style.border = "1px solid #f06565";
-        topic.style.boxShadow = "0 0 1px 1px #f5b3b3";
-        res = false;
-    }
-    return res;
-}
-
-// При вводе данных снимать красное выделение.
-function PostingFormUnmark(object) {
-  if(object.value != "") {
-    object.style.border = "1px solid #abadb3";
-    object.style.boxShadow = "";
-  }
-}
-
-
-// --- РЕДАКТИРОВАНИЕ ПРОФИЛЯ -------------------
-// Выбран ли аватар
-function ProfileFormValidate() {
-    if(document.getElementById("pe_new_avatar").innerHTML == "Only JPG, GIF or PNG")
-        return false;
-    else
-        return true;
-}
-
-// Вывод имени выбранного файла аватара
-function ShowAvatarName() {
-    var new_avatar = document.getElementById("avatar").value;
-    var allowed_ext = ["jpg", "jpeg", "gif", "png"];
-    // Исключить полный путь и оставить только имя
-    new_avatar = new_avatar.replace(/^.*[\\\/]/, "");
-
-    if(new_avatar.value != "") {
-        var avatar_ext = new_avatar.split(".").pop().toLowerCase();
-        if(allowed_ext.indexOf(avatar_ext) != -1) {
-            document.getElementById("pe_new_avatar").style.color = "#505050";
-            document.getElementById("pe_new_avatar").innerHTML = new_avatar;
-        }
-        else {
-            document.getElementById("pe_new_avatar").style.color = "#f06565";
-            document.getElementById("pe_new_avatar").innerHTML = "Only JPG, GIF or PNG";
-        }
-    }
-    else
-        document.getElementById("pe_new_avatar").innerHTML = "";
-
+﻿// --- ФОРМАТИРОВАНИЕ ---------------------------
+function makeFormated(tag) {
+    // Выбор элемента
+    var textarea = document.getElementById("message");
+    // Начало и конец выделения
+    var start_pos = textarea.selectionStart;
+    var end_pos = textarea.selectionEnd;
+    // Вставка тегов
+    edited_text = textarea.value.substring(0, start_pos) +
+        '[' + tag + ']' + textarea.value.substring(start_pos, end_pos) + '[/' + tag + ']' +
+        textarea.value.substring(end_pos, textarea.value.length);
+    textarea.value = edited_text;
 }
