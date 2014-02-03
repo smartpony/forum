@@ -121,9 +121,11 @@ def forum():
 
     # Если отправлена форма постинга
     if form_topic.validate_on_submit() and form_message.validate_on_submit():
-        # Данные из формы
+        # Данные из формы c экранированием спецсимволов
         data_topic = form_topic.topic.data
-        data_message = form_message.message.data
+        data_message = escape(form_message.message.data)
+        # Применение форматирования
+        data_message = data_message.replace('[', '<').replace(']', '>')
         # Создание темы и обновление счётчиков у пользователя
         new_topic = ForumTopic(name=data_topic, author_id=current_user.id)
         current_user.message_count += 1
@@ -175,18 +177,7 @@ def topic(topic_id):
         # Данные из формы c экранированием спецсимволов
         data_message = escape(form_message.message.data)
         # Применение форматирования
-        forum_format = {'[b]':'<b>',
-            '[/b]':'</b>',
-            '[i]':'<i>',
-            '[/i]':'</i>',
-            '[u]':'<u>',
-            '[/u]':'</u>',
-            '[url]':'<url>',
-            '[/url]':'</url>',
-            '[img]':'<img>',
-            '[/img]':'</img>'}
-        for tag in forum_format.keys():
-            data_message = data_message.replace(tag, forum_format[tag])
+        data_message = data_message.replace('[', '<').replace(']', '>')
         # Создание сообщения
         new_mes = ForumMessage(topic_id=topic_id, author_id=current_user.id, text=data_message)
         current_topic.time_last = datetime.utcnow()
