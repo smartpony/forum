@@ -19,6 +19,9 @@ class User(db.Model):
     # Пароль
     password = db.Column(db.Text, nullable=False)
 
+    # Статус (0 - админ, 1 - модератор, 2 - пользователь)
+    role = db.Column(db.Integer, default=2, nullable=False)
+
     # Почта
     email = db.Column(db.Text, nullable=False)
     # Город

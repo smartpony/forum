@@ -180,7 +180,11 @@ def topic(topic_id):
             '[i]':'<i>',
             '[/i]':'</i>',
             '[u]':'<u>',
-            '[/u]':'</u>'}
+            '[/u]':'</u>',
+            '[url]':'<url>',
+            '[/url]':'</url>',
+            '[img]':'<img>',
+            '[/img]':'</img>'}
         for tag in forum_format.keys():
             data_message = data_message.replace(tag, forum_format[tag])
         # Создание сообщения
