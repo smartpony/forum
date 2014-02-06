@@ -90,9 +90,11 @@ class ForumMessage(db.Model):
     # ID топика (обратная связь с таблицей тем)
     topic_id = db.Column(db.Integer, db.ForeignKey(ForumTopic.id))
     topic = db.relationship('ForumTopic', backref=db.backref('message', cascade='delete'))
-    # Автор (обратная связь с таблицей пользователей)
+    # Автор и последний редактор (обратная связь с таблицей пользователей)
     author_id = db.Column(db.Integer, db.ForeignKey('User.id'))
-    author = db.relationship('User', backref='message')
+    editor_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    author = db.relationship('User', foreign_keys=[author_id], backref='message')
+    editor = db.relationship('User', foreign_keys=[editor_id])
     # Текст
     text = db.Column(db.Text, nullable=False)
     # Время постинга

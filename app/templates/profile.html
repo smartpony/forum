@@ -20,6 +20,7 @@
     
     <div class="p_info_text">
         <div class="p_info_text_var">
+            Role:<br>
             City:<br>
             Country:<br>
             E-mail:<br>
@@ -30,6 +31,13 @@
         </div>
         
         <div class="p_info_text_value">
+            {% if profile.role == 0 %}
+            admin<br>
+            {% elif profile.role == 1 %}
+            moderator<br>
+            {% else %}
+            user<br>
+            {% endif %}
             {{profile.city}}<br>
             {{profile.country}}<br>
             {{profile.email}}<br>

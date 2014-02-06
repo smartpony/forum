@@ -211,10 +211,10 @@ def delete_topic(topic_id):
     if not del_topic:
         abort(404)
 
-    # Является ли пользователь автором топика
-    if del_topic.author == current_user:
+    # Является ли пользователь автором топика или админом/модером
+    if del_topic.author == current_user or current_user.role < 2:
         # Убавить счётчики
-        current_user.topic_count -= 1
+        del_topic.author.topic_count -= 1
         for del_message in del_topic.message:
             del_message.author.message_count -=1
         db.session.delete(del_topic)
@@ -248,12 +248,14 @@ def edit_message(message_id):
         edit_message.text = form_message.message.data
         # Отметка о дате изменения
         edit_message.date_edit =  datetime.utcnow()
+        # Отметка о последнем редакторе
+        edit_message.editor_id = current_user.id
         db.session.commit()
         # Вернуть страницу топика
         return(redirect(url_for('topic', topic_id=edit_message.topic_id)))
 
-    # Является ли пользователь автором сообщения
-    if edit_message.author == current_user:
+    # Является ли пользователь автором сообщения или админом/модером
+    if edit_message.author == current_user or current_user.role < 2:
         # Вывод старого сообщения в форме
         form_message.message.data = edit_message.text
         # Вывод странички

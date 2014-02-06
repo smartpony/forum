@@ -25,6 +25,7 @@
 
         <div class="pe_info_text">
             <div class="pe_info_text_var">
+                Role:<br>
                 City:<br>
                 Country:<br>
                 E-mail:<br>
@@ -35,6 +36,13 @@
             </div>
 
             <div class="pe_info_text_input">
+                {% if current_user.role == 0 %}
+                admin<br>
+                {% elif current_user.role == 1 %}
+                moderator<br>
+                {% else %}
+                user<br>
+                {% endif %}
                 {{profile_form.city(class="pe_edit_field", value=current_user.city)}}
                 {{profile_form.country(class="pe_edit_field", value=current_user.country)}}
                 {{profile_form.email(class="pe_edit_field_last", value=current_user.email)}}
