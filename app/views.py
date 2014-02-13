@@ -10,11 +10,52 @@ from datetime import datetime
 import hashlib
 import os
 from cgi import escape
+from math import ceil
 
 # Импорт других файлов проекта
 from app import app, db, lm
 from models import User, ForumTopic, ForumMessage
 from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm
+
+
+# --- ПАГИНАЦИЯ ---------------------------------
+class Pagination(object):
+    # Инициализация
+    def __init__(self, page, per_page, iter_object):
+        self.page = page
+        self.per_page = per_page
+        self.total_count = len(iter_object)
+        self.iter_object = iter_object
+
+    # Количество страниц
+    @property
+    def pages(self):
+        return(int(ceil(float(self.total_count)/self.per_page)))
+
+    # Есть ли страницы раньше
+    @property
+    def has_prev(self):
+        return(salf.page > 1)
+
+    # Есть ли страницы дальше
+    @property
+    def has_next(self):
+        return(self.page < self.pages)
+
+    # Вернуть список списков объектов по страницам
+    def page_items(self):
+        res = []
+        for num in range(0, self.pages-1):
+            res.append(self.iter_object[
+                num*self.per_page:
+                (num+1)*self.per_page])
+        res.append(self.iter_object[
+            (self.pages-1)*self.per_page:
+            self.total_count])
+        if self.page <= self.pages:
+            return(res[self.page-1])
+        else:
+            return(None)
 
 
 # --- ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ---------------------
@@ -161,7 +202,8 @@ def forum():
 
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
-def topic(topic_id):
+@app.route('/forum/topic/show/<topic_id>/<int:page>', methods=['GET', 'POST'])
+def topic(topic_id, page=1):
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
 
@@ -192,11 +234,15 @@ def topic(topic_id):
     current_topic.views += 1
     db.session.commit()
 
+    #test = (Pagination(3, 4, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']).page_items())
+    test = (Pagination(page, 4, current_topic.message).page_items())
+
     # Вернуть страницу
     return(render_template('topic.html',
         user=current_user,
         topic=current_topic,
-        form_message=form_message))
+        form_message=form_message,
+        test=test))
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------
