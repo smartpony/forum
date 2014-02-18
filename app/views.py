@@ -42,20 +42,23 @@ class Pagination(object):
     def has_next(self):
         return(self.page < self.pages)
 
-    # Вернуть список списков объектов по страницам
-    def page_items(self):
-        res = []
-        for num in range(0, self.pages-1):
-            res.append(self.iter_object[
-                num*self.per_page:
-                (num+1)*self.per_page])
-        res.append(self.iter_object[
-            (self.pages-1)*self.per_page:
-            self.total_count])
-        if self.page <= self.pages:
-            return(res[self.page-1])
+    # Номер начального элемента для страницы
+    @property
+    def first(self):
+        if self.page == 1:
+            return(0)
         else:
+            return((self.page-1)*self.per_page)
+
+    # Номер последнего элемента (+1) для страницы
+    # +1 - чтобы не писать при вызове [first:last+1]
+    @property
+    def last(self):
+        if self.page == self.pages:
+            # Чтобы в результате был диапазон [число:None] эквивалентно [число:]
             return(None)
+        else:
+            return(self.page*self.per_page)
 
 
 # --- ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ---------------------
@@ -202,10 +205,14 @@ def forum():
 
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
-@app.route('/forum/topic/show/<topic_id>/<int:page>', methods=['GET', 'POST'])
+#@app.route('/forum/topic/show/<topic_id>/<int:page>', methods=['GET', 'POST'])
 def topic(topic_id, page=1):
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
+
+    # Нужная страница
+    if request.args.get('page'):
+        page = int(request.args.get('page'))
 
     # Проверка существования объекта
     if not current_topic:
@@ -234,15 +241,15 @@ def topic(topic_id, page=1):
     current_topic.views += 1
     db.session.commit()
 
-    #test = (Pagination(3, 4, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']).page_items())
-    test = (Pagination(page, 4, current_topic.message).page_items())
+    # Разбиение на страницы
+    pagination = Pagination(page, 4, current_topic.message)
 
     # Вернуть страницу
     return(render_template('topic.html',
         user=current_user,
         topic=current_topic,
         form_message=form_message,
-        test=test))
+        pagination=pagination))
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------
