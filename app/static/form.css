@@ -41,6 +41,7 @@ div.f_t_format_block {
 }
 
 img.t_format_button:hover {
+ cursor: pointer;
  opacity: 0.85;
 }
 

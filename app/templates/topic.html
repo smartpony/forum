@@ -12,10 +12,8 @@
 </h1>
 
 <hr>
-{{pagination}}
-<hr>
 
-{% for message in topic.message %}
+{% for message in topic.message[pagination.first:pagination.last] %}
 <div class="t_message_body">
     <div class="t_message_info">posted by <a class="t_author" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
         {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
@@ -36,6 +34,18 @@
     <div class="t_message_text">{{message.text|safe}}</div>
 </div>
 {% endfor %}
+
+<div class="t_pages">
+    <a class="t_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=1)}}">First</a>
+{% for page_number in pagination.pages_list %}
+    {% if page_number == pagination.page %}
+    <a class="t_current_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    {% else %}
+    <a class="t_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    {% endif %}
+{% endfor %}
+    <a class="t_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">Last</a>
+</div>
 
 <hr>
 

@@ -21,26 +21,26 @@ from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm
 # --- ПАГИНАЦИЯ ---------------------------------
 class Pagination(object):
     # Инициализация
-    def __init__(self, page, per_page, iter_object):
+    def __init__(self, page, per_page, total_count):
         self.page = page
         self.per_page = per_page
-        #self.total_count = len(iter_object)
-        self.total_count = func.count(iter_object)
+        self.total_count = total_count
 
     # Количество страниц
     @property
     def pages(self):
         return(int(ceil(float(self.total_count)/self.per_page)))
 
-    # Есть ли страницы раньше
+    # Список номеров страниц, которые будут внизу страницы
     @property
-    def has_prev(self):
-        return(salf.page > 1)
-
-    # Есть ли страницы дальше
-    @property
-    def has_next(self):
-        return(self.page < self.pages)
+    def pages_list(self):
+        if self.page < 3:
+            res = range(1, self.page+3)
+        elif self.page > self.pages-3:
+            res = range(self.page-2, self.pages+1)
+        else:
+            res = range(self.page-2, self.page+3)
+        return(res)
 
     # Номер начального элемента для страницы
     @property
@@ -59,6 +59,14 @@ class Pagination(object):
             return(None)
         else:
             return(self.page*self.per_page)
+
+    # Заполнена ли последняя страница до конца
+    @property
+    def last_full(self):
+        if self.total_count % self.per_page == 0:
+            return(True)
+        else:
+            return(False)
 
 
 # --- ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ---------------------
@@ -207,6 +215,9 @@ def forum():
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
 #@app.route('/forum/topic/show/<topic_id>/<int:page>', methods=['GET', 'POST'])
 def topic(topic_id, page=1):
+    # Сообщений на странице
+    PER_PAGE = 3
+
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
 
@@ -220,7 +231,10 @@ def topic(topic_id, page=1):
 
     # Форма добавления нового сообщения
     form_message = MessageForm()
-    
+
+    # Разбиение на страницы
+    pagination = Pagination(page, PER_PAGE, current_topic.message.count())
+
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
         # Данные из формы c экранированием спецсимволов
@@ -235,21 +249,23 @@ def topic(topic_id, page=1):
         # Запись последнего автора темы
         ForumTopic.query.get(topic_id).editor_id = current_user.id
         db.session.commit()
-        return(redirect(url_for('topic', topic_id=topic_id)))
+
+        # Вернуть последнюю страницу
+        if pagination.last_full:
+            return(redirect(url_for('topic', topic_id=topic_id, page=pagination.pages+1)))
+        else:
+            return(redirect(url_for('topic', topic_id=topic_id, page=pagination.pages)))
 
     # Счётчик просмотров +1
     current_topic.views += 1
     db.session.commit()
-
-    # Разбиение на страницы
-    pagination = Pagination(page, 4, current_topic.message)
 
     # Вернуть страницу
     return(render_template('topic.html',
         user=current_user,
         topic=current_topic,
         form_message=form_message,
-        pagination=current_topic.message.query.count()))
+        pagination=pagination))
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------
