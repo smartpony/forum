@@ -12,10 +12,10 @@
 </h1>
 
 <hr>
-{{test}}
+{{pagination}}
 <hr>
 
-{% for message in topic.message[] %}
+{% for message in topic.message %}
 <div class="t_message_body">
     <div class="t_message_info">posted by <a class="t_author" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
         {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},

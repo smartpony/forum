@@ -24,8 +24,8 @@ class Pagination(object):
     def __init__(self, page, per_page, iter_object):
         self.page = page
         self.per_page = per_page
-        self.total_count = len(iter_object)
-        self.iter_object = iter_object
+        #self.total_count = len(iter_object)
+        self.total_count = func.count(iter_object)
 
     # Количество страниц
     @property
@@ -89,7 +89,7 @@ def register():
             return(render_template('info.html',
                 user=current_user,
                 text='"Passwod" and "Confirm password" must be the same'))
-            
+
         # Регистрация
         new_user = User(login=user_login,
             password=user_password,
@@ -249,7 +249,7 @@ def topic(topic_id, page=1):
         user=current_user,
         topic=current_topic,
         form_message=form_message,
-        pagination=pagination))
+        pagination=current_topic.message.query.count()))
 
 
 # --- УДАЛЕНИЕ ТЕМ ------------------------------

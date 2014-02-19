@@ -67,7 +67,9 @@ class ForumTopic(db.Model):
     # Автор и последний редактор (обратная связь с таблицей пользователей)
     author_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     editor_id = db.Column(db.Integer, db.ForeignKey('User.id'))
-    author = db.relationship('User', foreign_keys=[author_id], backref='topic')
+    author = db.relationship('User',
+        foreign_keys=[author_id],
+        backref=db.backref('topic', lazy='dynamic'))
     editor = db.relationship('User', foreign_keys=[editor_id])
     # Первый пост
     time_first = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
@@ -89,11 +91,14 @@ class ForumMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # ID топика (обратная связь с таблицей тем)
     topic_id = db.Column(db.Integer, db.ForeignKey(ForumTopic.id))
-    topic = db.relationship('ForumTopic', backref=db.backref('message', cascade='delete'))
+    topic = db.relationship('ForumTopic',
+        backref=db.backref('message', cascade='delete', lazy='dynamic'))
     # Автор и последний редактор (обратная связь с таблицей пользователей)
     author_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     editor_id = db.Column(db.Integer, db.ForeignKey('User.id'))
-    author = db.relationship('User', foreign_keys=[author_id], backref='message')
+    author = db.relationship('User',
+        foreign_keys=[author_id],
+        backref=db.backref('message', lazy='dynamic'))
     editor = db.relationship('User', foreign_keys=[editor_id])
     # Текст
     text = db.Column(db.Text, nullable=False)
