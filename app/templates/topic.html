@@ -35,16 +35,16 @@
 </div>
 {% endfor %}
 
-<div class="t_pages">
-    <a class="t_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=1)}}">First</a>
+<div class="c_pages">
+    <a class="c_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=1)}}">First</a>
 {% for page_number in pagination.pages_list %}
     {% if page_number == pagination.page %}
-    <a class="t_current_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    <a class="c_current_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
     {% else %}
-    <a class="t_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    <a class="c_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
     {% endif %}
 {% endfor %}
-    <a class="t_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">Last</a>
+    <a class="c_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">Last</a>
 </div>
 
 <hr>

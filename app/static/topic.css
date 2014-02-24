@@ -34,10 +34,6 @@ div.t_message_text {
  font-size: 16px;
 }
 
-div.t_pages {
- margin: 10px;
- text-align: center;
-}
 
 a.t_author {
  font-size: 10px;
@@ -50,29 +46,4 @@ a.t_edit_del {
  font-size: 10px;
  color: #980000;
  text-decoration: none;
-}
-
-a.t_page_number {
- padding: 3px 6px;
- font-size: 12px;
- color: #ffffff;
- text-decoration: none;
- background: #5ba7e9;
-}
-
-a.t_current_page_number {
- padding: 3px 6px;
- font-size: 12px;
- color: #ffffff;
- text-decoration: none;
- background: #888888;
-}
-
-a.t_page_firstlast {
- margin: 10px;
- padding: 3px 6px;
- font-size: 12px;
- color: #ffffff;
- text-decoration: none;
- background: #5ba7e9;
 }

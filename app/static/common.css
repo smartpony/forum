@@ -1,0 +1,33 @@
+﻿/* ОБЩЕЕ */
+
+/* Пагинация (номера страниц) */
+
+div.c_pages {
+ margin: 10px;
+ text-align: center;
+}
+
+a.c_page_number {
+ padding: 3px 6px;
+ font-size: 12px;
+ color: #ffffff;
+ text-decoration: none;
+ background: #888888;
+}
+
+a.c_current_page_number {
+ padding: 3px 6px;
+ font-size: 12px;
+ color: #ffffff;
+ text-decoration: none;
+ background: #5ba7e9;
+}
+
+a.c_page_firstlast {
+ margin: 10px;
+ padding: 3px 6px;
+ font-size: 12px;
+ color: #ffffff;
+ text-decoration: none;
+ background: #888888;
+}

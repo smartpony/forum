@@ -67,7 +67,17 @@ a.ul_table_head_order {
 }
 
 /* Разметка столбцов */
-a.ul_table_login {
+a.ul_table_login_admin {
+ display: inline-table;
+ width: 51%;
+ vertical-align: middle;
+ color: #294aa6;
+ font-weight: bold;
+ text-decoration: none;
+ font-size: 16px;
+}
+
+a.ul_table_login_user {
  display: inline-table;
  width: 51%;
  vertical-align: middle;

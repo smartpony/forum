@@ -13,7 +13,7 @@
     <div class="f_table_head_editor">Last post</div>
 </div>
 
-{% for topic in all_topics %}
+{% for topic in all_topics[pagination.first:pagination.last] %}
 <div class="f_table_{{loop.cycle('light', 'dark')}}">
     <div class="f_table_main">
         <a class="f_topic" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
@@ -33,6 +33,18 @@
     </div>
 </div>
 {% endfor %}
+
+<div class="c_pages">
+    <a class="c_page_firstlast" href="{{url_for('forum', page=1)}}">First</a>
+{% for page_number in pagination.pages_list %}
+    {% if page_number == pagination.page %}
+    <a class="c_current_page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    {% else %}
+    <a class="c_page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    {% endif %}
+{% endfor %}
+    <a class="c_page_firstlast" href="{{url_for('forum', page=pagination.pages)}}">Last</a>
+</div>
 
 <hr>
 

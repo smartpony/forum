@@ -34,12 +34,17 @@ class Pagination(object):
     # Список номеров страниц, которые будут внизу страницы
     @property
     def pages_list(self):
-        if self.page < 3:
+        if self.pages < 4:
+            res = range(1, self.pages+1)
+        elif self.page < 3 and self.page+2 < self.pages:
             res = range(1, self.page+3)
+        elif self.page < 3 and self.page+2 >= self.pages:
+            res = range(1, self.pages+1)
         elif self.page > self.pages-3:
             res = range(self.page-2, self.pages+1)
         else:
             res = range(self.page-2, self.page+3)
+
         return(res)
 
     # Номер начального элемента для страницы
@@ -156,17 +161,21 @@ def login():
         login_form=form))
 
 
-# --- КОРЕНЬ ------------------------------------
+# --- ФОРУМ -------------------------------------
 @app.route('/')
 @app.route('/index')
-def index():
-    return(render_template('index.html',
-        user=current_user))
-
-
-# --- ФОРУМ -------------------------------------
 @app.route('/forum', methods=['GET', 'POST'])
-def forum():
+def forum(page=1):
+    # Тем на странице
+    PER_PAGE = 3
+
+    # Нужная страница
+    if request.args.get('page'):
+        page = int(request.args.get('page'))
+
+    # Разбиение на страницы
+    pagination = Pagination(page, PER_PAGE, ForumTopic.query.count())
+
     # Форма для постинга сообщений
     form_topic = TopicForm()
     form_message = MessageForm()
@@ -208,12 +217,12 @@ def forum():
         user=current_user,
         all_topics=all_topics,
         form_topic=form_topic,
-        form_message=form_message))
+        form_message=form_message,
+        pagination=pagination))
 
 
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
-#@app.route('/forum/topic/show/<topic_id>/<int:page>', methods=['GET', 'POST'])
 def topic(topic_id, page=1):
     # Сообщений на странице
     PER_PAGE = 3
@@ -374,7 +383,17 @@ def delete_message(message_id):
 
 # --- СПИСОК ПОЛЬЗОВАТЕЛЕЙ ----------------------
 @app.route('/userlist')
-def userlist():
+def userlist(page=1):
+    # Пользователей на странице
+    PER_PAGE = 3
+
+    # Нужная страница
+    if request.args.get('page'):
+        page = int(request.args.get('page'))
+
+    # Разбиение на страницы
+    pagination = Pagination(page, PER_PAGE, User.query.count())
+
     # Аргументы сортировки из GET-запроса
     sort_field = request.args.get('sort')
     sort_order = request.args.get('desc')
@@ -403,7 +422,8 @@ def userlist():
     # Вернуть страницу
     return(render_template('/userlist.html',
         user=current_user,
-        users_list=users_list))
+        users_list=users_list,
+        pagination=pagination))
 
 
 # --- ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ ----------------------

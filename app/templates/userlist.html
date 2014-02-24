@@ -30,14 +30,29 @@
     </div>
 </div>
 
-{% for user in users_list %}
+{% for user in users_list[pagination.first:pagination.last] %}
 <div class="ul_table_{{loop.cycle('light', 'dark')}}">
-    <a class="ul_table_login" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
+    {% if user.role == 2 %}
+    <a class="ul_table_login_user" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
+    {% else %}
+    <a class="ul_table_login_admin" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
+    {% endif %}
     <div class="ul_table_reg_date">{{user.reg_date.strftime('%d %b %Y')}}</div>
     <div class="ul_table_topic_count">{{user.topic_count}}</div>
     <div class="ul_table_message_count">{{user.message_count}}</div>
 </div>
 {% endfor %}
 
+<div class="c_pages">
+    <a class="c_page_firstlast" href="{{url_for('userlist', page=1)}}">First</a>
+{% for page_number in pagination.pages_list %}
+    {% if page_number == pagination.page %}
+    <a class="c_current_page_number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
+    {% else %}
+    <a class="c_page_number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
+    {% endif %}
+{% endfor %}
+    <a class="c_page_firstlast" href="{{url_for('userlist', page=pagination.pages)}}">Last</a>
+</div>
 
 {% endblock %}
