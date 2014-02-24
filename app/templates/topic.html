@@ -14,8 +14,9 @@
 <hr>
 
 {% for message in topic.message[pagination.first:pagination.last] %}
-<div class="t_message_body">
-    <div class="t_message_info">posted by <a class="t_author" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
+<div class="t_message_body" id="{{message.id}}">
+    <div class="t_message_info"><a class="t_message_number" href="{{request.path}}#{{message.id}}">#{{message.id}}:</a>
+        posted by <a class="t_author" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
         {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
         edited
         {% if message.editor and message.editor != message.author %}

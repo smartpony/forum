@@ -225,7 +225,7 @@ def forum(page=1):
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
 def topic(topic_id, page=1):
     # Сообщений на странице
-    PER_PAGE = 3
+    PER_PAGE = 10
 
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
