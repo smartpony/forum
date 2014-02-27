@@ -17,6 +17,14 @@ from app import app, db, lm
 from models import User, ForumTopic, ForumMessage
 from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm
 
+# --- ОФОРМЛЕНИЕ --------------------------------
+# Тем на странице
+TOPIC_PER_PAGE = 5
+# Сообщений на странице
+MESSAGE_PER_PAGE = 5
+# Пользователей на странице
+USER_PER_PAGE = 10
+
 
 # --- ПАГИНАЦИЯ ---------------------------------
 class Pagination(object):
@@ -166,15 +174,12 @@ def login():
 @app.route('/index')
 @app.route('/forum', methods=['GET', 'POST'])
 def forum(page=1):
-    # Тем на странице
-    PER_PAGE = 3
-
     # Нужная страница
     if request.args.get('page'):
         page = int(request.args.get('page'))
 
     # Разбиение на страницы
-    pagination = Pagination(page, PER_PAGE, ForumTopic.query.count())
+    pagination = Pagination(page, TOPIC_PER_PAGE, ForumTopic.query.count())
 
     # Форма для постинга сообщений
     form_topic = TopicForm()
@@ -224,9 +229,6 @@ def forum(page=1):
 # --- ТЕМА НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----------------
 @app.route('/forum/topic/show/<topic_id>', methods=['GET', 'POST'])
 def topic(topic_id, page=1):
-    # Сообщений на странице
-    PER_PAGE = 10
-
     # Объект текущего топика
     current_topic = ForumTopic.query.get(topic_id)
 
@@ -242,7 +244,7 @@ def topic(topic_id, page=1):
     form_message = MessageForm()
 
     # Разбиение на страницы
-    pagination = Pagination(page, PER_PAGE, current_topic.message.count())
+    pagination = Pagination(page, MESSAGE_PER_PAGE, current_topic.message.count())
 
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
@@ -384,15 +386,12 @@ def delete_message(message_id):
 # --- СПИСОК ПОЛЬЗОВАТЕЛЕЙ ----------------------
 @app.route('/userlist')
 def userlist(page=1):
-    # Пользователей на странице
-    PER_PAGE = 3
-
     # Нужная страница
     if request.args.get('page'):
         page = int(request.args.get('page'))
 
     # Разбиение на страницы
-    pagination = Pagination(page, PER_PAGE, User.query.count())
+    pagination = Pagination(page, USER_PER_PAGE, User.query.count())
 
     # Аргументы сортировки из GET-запроса
     sort_field = request.args.get('sort')
