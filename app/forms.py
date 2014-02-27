@@ -6,6 +6,9 @@ from flask_wtf import Form
 from wtforms import TextField, TextAreaField, FileField
 from wtforms.validators import DataRequired
 
+class RecepientForm(Form):
+    recepient = TextField(validators=[DataRequired()])
+
 class TopicForm(Form):
     topic = TextField(validators=[DataRequired()])
 

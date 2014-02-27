@@ -110,3 +110,29 @@ class ForumMessage(db.Model):
     # Вывод при обращении к объекту класса
     def __repr__(self):
         return('<Message ID%d>' % self.id)
+
+
+# Личные сообщения
+class Mailbox(db.Model):
+    __tablename__ = 'Mailbox'
+
+    # ID сообщения
+    id = db.Column(db.Integer, primary_key=True)
+    # Автор
+    sender_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    sender = db.relationship('User',
+        foreign_keys=[sender_id],
+        backref=db.backref('mail_sent', lazy='dynamic'))
+    # Получатель
+    recipient_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    recipient = db.relationship('User',
+        foreign_keys=[recipient_id],
+        backref=db.backref('mail_recieved', lazy='dynamic'))
+    # Тема
+    subject = db.Column(db.Text)
+    # Текст
+    text = db.Column(db.Text, nullable=False)
+    # Время отправки
+    date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    # Прочитано получателем
+    read = db.Column(db.Boolean, default=False)

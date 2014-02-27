@@ -14,8 +14,8 @@ from math import ceil
 
 # Импорт других файлов проекта
 from app import app, db, lm
-from models import User, ForumTopic, ForumMessage
-from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm
+from models import User, ForumTopic, ForumMessage, Mailbox
+from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm, RecepientForm
 
 # --- ОФОРМЛЕНИЕ --------------------------------
 # Тем на странице
@@ -361,8 +361,8 @@ def delete_message(message_id):
     if not del_mes:
         abort(404)
 
-    # Является ли пользователь автором сообщения
-    if del_mes.author == current_user:
+    # Является ли пользователь автором сообщения или админом/модером
+    if del_mes.author == current_user or current_user.role < 2:
         db.session.delete(del_mes)
         db.session.commit()
         # Если сообщение было последним, то удалить топик и вернуться в корень форума
@@ -489,6 +489,57 @@ def edit_profile():
     return(render_template('profile_edit.html',
         user=current_user,
         profile_form=form))
+
+
+# --- ЛИЧНЫЕ СООБЩЕНИЯ --------------------------
+@app.route('/mailbox', methods=['GET', 'POST'])
+@login_required
+def mailbox():
+    # Форма для нового сообщения
+    form_recepient = RecepientForm()
+    form_subject = TopicForm()
+    form_message = MessageForm()
+
+    # Если отправлена форма с новым сообщением
+    if form_recepient.validate_on_submit() and \
+        form_subject.validate_on_submit() and \
+        form_message.validate_on_submit():
+            # Данные из формы c экранированием спецсимволов
+            data_recipient = form_recepient.recepient.data
+            data_subject = form_subject.topic.data
+            data_message = escape(form_message.message.data)
+            # Применение форматирования
+            data_message = data_message.replace('[', '<').replace(']', '>')
+            # Создание темы и обновление счётчиков у пользователя
+            new_message = Mailbox(sender_id=current_user.id,
+                recipient_id=1,#User.query.get(data_recipient),
+                subject=data_subject,
+                text=data_message)
+            db.session.add(new_message)
+            # Коммит в этом месте нужен, чтобы появился ID
+            db.session.commit()
+            return(redirect(url_for('mailbox')))
+
+    # Все сообщения для текущего пользователя
+    messages = current_user.mail_recieved
+
+    return(render_template('mailbox.html',
+        user=current_user,
+        messages=messages,
+        form_recepient=form_recepient,
+        form_subject=form_subject,
+        form_message=form_message))
+
+
+# --- ЛИЧНОЕ СООБЩЕНИЕ НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----
+@app.route('/mailbox/message/show/<message_id>')
+@login_required
+def mail_read(message_id):
+    message = Mailbox.query.get(message_id)
+
+    return(render_template('mail_read.html',
+        user=current_user,
+        message=message))
 
 
 # --- ВЫХОД -------------------------------------

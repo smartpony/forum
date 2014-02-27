@@ -1,0 +1,19 @@
+﻿{% extends "base.html" %}
+
+{% block title %}
+    <title>Info</title>
+{% endblock %}
+
+{% block content %}
+<h1>{{message.subject}}</h1>
+
+<div class="mr_message_body">
+    <div class="mr_message_info">
+        from <a class="mr_sender" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>,
+        {{message.date.strftime('%H:%M, %d %b %Y')}}
+    </div>
+    <hr>
+    <div class="mr_message_text">{{message.text}}</div>
+</div>
+
+{% endblock %}

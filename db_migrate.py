@@ -3,11 +3,11 @@
 #
 
 # Порядок выполнения миграции:
-# python db_migrate.py init       инициализация системы (только первый раз)
-# python db_migrate.py migrate    создать новый скрипт миграции
-# python db_migrate.py upgrade    перейти на новую весрию
+# python db_migrate.py db init       инициализация системы (только первый раз)
+# python db_migrate.py db migrate    создать новый скрипт миграции
+# python db_migrate.py db upgrade    перейти на новую весрию
 # Справка по всем командам:
-# python db_migrate.py --help
+# python db_migrate.py db --help
 
 # Импорт сервера приложения и объекта ОРМ
 from app import app, db

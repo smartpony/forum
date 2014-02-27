@@ -53,14 +53,14 @@
 {% if user.is_authenticated() %}
 <form method="post" onsubmit="return PostingFormValidate()">
     {{form_message.hidden_tag()}}
-    <div class="f_t_format_block">
-        <img class="t_format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
-        <img class="t_format_button" src="/static/button_italic.png" onclick="makeFormated('i')">
-        <img class="t_format_button" src="/static/button_underlined.png" onclick="makeFormated('u')">
-        <img class="t_format_button" src="/static/button_url.png" onclick="makeURL('url')">
-        <img class="t_format_button" src="/static/button_img.png" onclick="makeIMG('img')">
+    <div class="format_block">
+        <img class="format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
+        <img class="format_button" src="/static/button_italic.png" onclick="makeFormated('i')">
+        <img class="format_button" src="/static/button_underlined.png" onclick="makeFormated('u')">
+        <img class="format_button" src="/static/button_url.png" onclick="makeURL('url')">
+        <img class="format_button" src="/static/button_img.png" onclick="makeIMG('img')">
     </div>
-    {{form_message.message(placeholder='Enter your text here', class="f_t_form_message", onkeyup="PostingFormUnmark(this)")}}
+    {{form_message.message(placeholder='Enter your text here', class="form_message", onkeyup="PostingFormUnmark(this)")}}
     <input class="submit_button" type="submit" value="send">
 </form>
 {% endif %}

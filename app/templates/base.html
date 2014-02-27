@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" href="/static/userlist.css">
     <link rel="stylesheet" type="text/css" href="/static/profile.css">
     <link rel="stylesheet" type="text/css" href="/static/profile_edit.css">
+    <link rel="stylesheet" type="text/css" href="/static/mailbox.css">
+    <link rel="stylesheet" type="text/css" href="/static/mail_read.css">
     <link rel="shortcut icon" href="/static/icon_main.png">
     <script type="text/javascript" src="/static/js/validation.js"></script>
     <script type="text/javascript" src="/static/js/format.js"></script>
@@ -21,6 +23,7 @@
     <a class="b_header" href="{{url_for('userlist')}}">Users</a>
     {% if user.is_authenticated() %}
     <a class="b_header" href="{{url_for('my_profile')}}">Profile</a>
+    <a class="b_header" href="{{url_for('mailbox')}}">Mailbox</a>
     {% endif %}
 
     <div class="b_header_login">

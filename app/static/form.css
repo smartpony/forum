@@ -1,7 +1,7 @@
 ﻿/* ФОРМЫ */
 
 /* Формы постинга сообщений и тем */
-input.f_form_topic {
+input.form_recepient {
  display: block;
  margin: 10px;
  height: 24px;
@@ -10,7 +10,16 @@ input.f_form_topic {
  color: #505050;
 }
 
-textarea.f_t_form_message {
+input.form_topic {
+ display: block;
+ margin: 10px;
+ height: 24px;
+ width: 150px;
+ font-size: 14px;
+ color: #505050;
+}
+
+textarea.form_message {
  display: block;
  margin: 3px 0px 10px 10px;
  height: 72px;
@@ -36,11 +45,11 @@ input.submit_button:hover {
 }
 
 /* Кнопки форматирования сообщений */
-div.f_t_format_block {
+div.format_block {
  margin: 5px 0px 0px 10px;
 }
 
-img.t_format_button:hover {
+img.format_button:hover {
  cursor: pointer;
  opacity: 0.85;
 }
