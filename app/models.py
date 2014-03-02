@@ -118,6 +118,14 @@ class Mailbox(db.Model):
 
     # ID сообщения
     id = db.Column(db.Integer, primary_key=True)
+    # Пользователь, в ящике которого хранится сообщение
+    owner_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    owner = db.relationship('User',
+        foreign_keys=[owner_id],
+        backref=db.backref('mail_all', lazy='dynamic'))
+    # Папка, в которой хранится сообщение
+    # 0 - входящие, 1 - отправленные, 2 - архив, 3 - корзина
+    directory = db.Column(db.Integer, nullable=False)
     # Автор
     sender_id = db.Column(db.Integer, db.ForeignKey('User.id'))
     sender = db.relationship('User',

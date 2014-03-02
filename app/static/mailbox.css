@@ -20,15 +20,25 @@ div.mb_table_light {
 }
 
 /* Текст в ячейках заголовка */
-div.mb_table_head_main {
- display: inline-table;
- width: 95%;
- vertical-align: middle;
+a.mb_table_head_link {
+ margin-left: 0px;
+ margin-right: 12px;
  font-size: 16px;
  color: #ffffff;
+ text-decoration: none;
+}
+
+a.mb_table_head_link:hover {
+ text-decoration: underline;
 }
 
 /* Разметка столбцов */
+div.mb_table_main {
+ display: inline-table;
+ width: 90%;
+ vertical-align: middle;
+}
+
 div.mb_table_select {
  display: inline-table;
  width: 5%;
@@ -36,14 +46,9 @@ div.mb_table_select {
  text-align: center;
 }
 
-div.mb_table_main {
- display: inline-table;
- width: 90%;
- vertical-align: middle;
-}
-
 /* Текст в ячейках таблицы */
 div.mb_message_select {
+ padding-left: 0px;
  line-height: 22px;
  font-size: 15px;
 }

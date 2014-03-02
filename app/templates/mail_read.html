@@ -13,7 +13,7 @@
         {{message.date.strftime('%H:%M, %d %b %Y')}}
     </div>
     <hr>
-    <div class="mr_message_text">{{message.text}}</div>
+    <div class="mr_message_text">{{message.text|safe}}</div>
 </div>
 
 {% endblock %}

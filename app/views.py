@@ -492,9 +492,13 @@ def edit_profile():
 
 
 # --- ЛИЧНЫЕ СООБЩЕНИЯ --------------------------
-@app.route('/mailbox', methods=['GET', 'POST'])
+@app.route('/mail', methods=['GET', 'POST'])
 @login_required
-def mailbox():
+def mailbox(box='inbox'):
+    # Нужный ящик
+    if request.args.get('box'):
+        box = request.args.get('box')
+
     # Форма для нового сообщения
     form_recepient = RecepientForm()
     form_subject = TopicForm()
@@ -510,21 +514,52 @@ def mailbox():
             data_message = escape(form_message.message.data)
             # Применение форматирования
             data_message = data_message.replace('[', '<').replace(']', '>')
-            # Создание темы и обновление счётчиков у пользователя
+            # От кого и кому отправлено сообщение
+            sender_id = current_user.id
+            recipient_id = User.query.filter_by(login=data_recipient).first()
+            if recipient_id:
+                recipient_id = recipient_id.id
+            else:
+                return(render_template('info.html',
+                    user=current_user,
+                    text='No such user'))
+            # Создание сообщений в отправленных у посылающего и
+            # во входящих у того, кому адресовано письмо
             new_message = Mailbox(sender_id=current_user.id,
-                recipient_id=1,#User.query.get(data_recipient),
+                owner_id=sender_id,
+                directory=1,
+                recipient_id=recipient_id,
                 subject=data_subject,
                 text=data_message)
             db.session.add(new_message)
-            # Коммит в этом месте нужен, чтобы появился ID
+            new_message = Mailbox(sender_id=current_user.id,
+                owner_id=recipient_id,
+                directory=0,
+                recipient_id=recipient_id,
+                subject=data_subject,
+                text=data_message)
+            db.session.add(new_message)
             db.session.commit()
-            return(redirect(url_for('mailbox')))
+            # Перейти в отправленные
+            return(redirect(url_for('mailbox', box='sent')))
 
-    # Все сообщения для текущего пользователя
-    messages = current_user.mail_recieved
+    # Все сообщения для текущего пользователя в указанном ящике
+    if box == 'inbox':
+        messages = current_user.mail_all.filter(Mailbox.directory=='0').\
+            order_by(Mailbox.date.desc()).all()
+    elif box == 'sent':
+        messages = current_user.mail_all.filter(Mailbox.directory=='1').\
+            order_by(Mailbox.date.desc()).all()
+    elif box == 'archive':
+        messages = current_user.mail_all.filter(Mailbox.directory=='2').\
+            order_by(Mailbox.date.desc()).all()
+    elif box == 'trash':
+        messages = current_user.mail_all.filter(Mailbox.directory=='3').\
+            order_by(Mailbox.date.desc()).all()
 
     return(render_template('mailbox.html',
         user=current_user,
+        box=box,
         messages=messages,
         form_recepient=form_recepient,
         form_subject=form_subject,
@@ -537,9 +572,51 @@ def mailbox():
 def mail_read(message_id):
     message = Mailbox.query.get(message_id)
 
-    return(render_template('mail_read.html',
-        user=current_user,
-        message=message))
+    # Проверка существования объекта
+    if not message:
+        abort(404)
+
+    # Является ли пользователь владельцем сообщения
+    if message.owner == current_user:
+        return(render_template('mail_read.html',
+            user=current_user,
+            message=message))
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text="You can't view message if you are not it's owner"))
+
+
+# --- УДАЛЕНИЕ ЛИЧНЫХ СООБЩЕНИЙ -----------------
+@app.route('/mailbox/message/delete/<message_id>')
+@login_required
+def mail_delete(message_id):
+    del_mes = Mailbox.query.get(message_id)
+
+    # Проверка существования объекта
+    if not del_mes:
+        abort(404)
+
+    # Является ли пользователь владельцем сообщения
+    if del_mes.owner == current_user:
+        # Если сообщение в любой папке, то переместить его в корзину
+        if del_mes.directory != 3:
+            del_mes.directory = 3
+        # Если сообщение в корзине, то удалить безвозвратно
+        else:
+            db.session.delete(del_mes)
+        db.session.commit()
+        # Вернуться на страницу, откуда было вызвано удаление
+        # (если это было последнее сообщение темы, то возврат в корень форума)
+        return(redirect(request.referrer))
+    # Если пользователь не является автором, выдать ошибку
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text="You can't delete message if you are not it's owner"))
+
+    # Вернуться на страницу, откуда было вызвано удаление
+    return(redirect(request.referrer))
 
 
 # --- ВЫХОД -------------------------------------

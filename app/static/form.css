@@ -36,12 +36,13 @@ input.submit_button {
  width: 150px;
  color: #ffffff;
  font-size: 14px;
+ cursor: pointer;
  background: #5ba7e9;
  border: none;
 }
 
 input.submit_button:hover {
-  background: #6ab1eb;
+ background: #6ab1eb;
 }
 
 /* Кнопки форматирования сообщений */

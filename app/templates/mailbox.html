@@ -5,20 +5,23 @@
 {% endblock %}
 
 {% block content %}
-<h1>Mailbox</h1>
+<h1>Mail ({{box}})</h1>
 
-<div class="f_table_head">
-    <div class="mb_table_head_main">Messages</div>
+<div class="mb_table_head">
+    <a class="mb_table_head_link" href="{{url_for('mailbox', box='inbox')}}">Inbox</a>
+    <a class="mb_table_head_link" href="{{url_for('mailbox', box='sent')}}">Sent</a>
+    <a class="mb_table_head_link" href="{{url_for('mailbox', box='archive')}}">Archive</a>
+    <a class="mb_table_head_link" href="{{url_for('mailbox', box='trash')}}">Trash</a>
 </div>
 
 {% for message in messages %}
 <div class="mb_table_{{loop.cycle('light', 'dark')}}">
-    <div class="mb_table_select">
-        <div class="mb_message_select"><input class="checkbox" type="checkbox"></div>
-    </div>
     <div class="mb_table_main">
         <a class="mb_subject" href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a>
         <div class="mb_detail">from <a class="mb_sender" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>, {{message.date.strftime('%d %b %Y')}}</div>
+    </div>
+    <div class="mb_table_select">
+        <div class="mb_message_select"><a href="{{url_for('mail_delete', message_id=message.id)}}"><img src="/static/icon_del_body.png"></a></div>
     </div>
 </div>
 {% endfor %}
