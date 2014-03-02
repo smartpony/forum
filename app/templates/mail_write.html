@@ -1,0 +1,27 @@
+﻿{% extends "base.html" %}
+
+{% block title %}
+    <title>Info</title>
+{% endblock %}
+
+{% block content %}
+<h1>New message</h1>
+
+<form method="post" onsubmit="return PostingFormValidate()">
+    {{form_recepient.hidden_tag()}}
+    {{form_subject.hidden_tag()}}
+    {{form_message.hidden_tag()}}
+    {{form_recepient.recepient(placeholder='Username', class='form_recepient', onkeyup="PostingFormUnmark(this)")}}
+    {{form_subject.topic(placeholder='Subject', class='form_topic', onkeyup="PostingFormUnmark(this)")}}
+    <div class="format_block">
+        <img class="format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
+        <img class="format_button" src="/static/button_italic.png" onclick="makeFormated('i')">
+        <img class="format_button" src="/static/button_underlined.png" onclick="makeFormated('u')">
+        <img class="format_button" src="/static/button_url.png" onclick="makeURL('url')">
+        <img class="format_button" src="/static/button_img.png" onclick="makeIMG('img')">
+    </div>
+    {{form_message.message(placeholder='Enter your text here', class="form_message", onkeyup="PostingFormUnmark(this)")}}
+    <input class="submit_button" type="submit" value="Send">
+</form>
+
+{% endblock %}

@@ -16,6 +16,13 @@ function PostingFormValidate() {
         topic.style.boxShadow = "0 0 1px 1px #f5b3b3";
         res = false;
     }
+    // Введён ли адресат сообщения + проверка наличия поля адреса (для личных сообщений)
+    var recepient = document.getElementById("recepient");
+    if(recepient != null && recepient.value == "") {
+        recepient.style.border = "1px solid #f06565";
+        recepient.style.boxShadow = "0 0 1px 1px #f5b3b3";
+        res = false;
+    }
     return res;
 }
 

@@ -71,3 +71,21 @@ a.mb_sender {
 div.mb_detail {
  font-size: 10px;
 }
+
+/* Создать новое сообщение */
+a.mb_new {
+ display: inline-block;
+ margin: 10px;
+ padding: 4px;
+ width: 142px;
+ font-size: 14px;
+ text-align: center;
+ color: #ffffff;
+ cursor: pointer;
+ text-decoration: none;
+ background: #5ba7e9;
+}
+
+a.mb_new:hover {
+ background: #6ab1eb;
+}

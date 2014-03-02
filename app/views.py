@@ -499,6 +499,51 @@ def mailbox(box='inbox'):
     if request.args.get('box'):
         box = request.args.get('box')
 
+    # Все сообщения для текущего пользователя в указанном ящике
+    if box == 'inbox':
+        messages = current_user.mail_all.filter(Mailbox.directory=='0').\
+            order_by(Mailbox.date.desc()).all()
+    elif box == 'sent':
+        messages = current_user.mail_all.filter(Mailbox.directory=='1').\
+            order_by(Mailbox.date.desc()).all()
+    elif box == 'archive':
+        messages = current_user.mail_all.filter(Mailbox.directory=='2').\
+            order_by(Mailbox.date.desc()).all()
+    elif box == 'trash':
+        messages = current_user.mail_all.filter(Mailbox.directory=='3').\
+            order_by(Mailbox.date.desc()).all()
+
+    return(render_template('mailbox.html',
+        user=current_user,
+        box=box,
+        messages=messages))
+
+
+# --- ЛИЧНОЕ СООБЩЕНИЕ НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----
+@app.route('/mailbox/message/show/<message_id>')
+@login_required
+def mail_read(message_id):
+    message = Mailbox.query.get(message_id)
+
+    # Проверка существования объекта
+    if not message:
+        abort(404)
+
+    # Является ли пользователь владельцем сообщения
+    if message.owner == current_user:
+        return(render_template('mail_read.html',
+            user=current_user,
+            message=message))
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text="You can't view message if you are not it's owner"))
+
+
+# --- НАПИСАТЬ ЛИЧНОЕ СООБЩЕНИЕ -----------------
+@app.route('/mailbox/message/new')
+@login_required
+def mail_write():
     # Форма для нового сообщения
     form_recepient = RecepientForm()
     form_subject = TopicForm()
@@ -543,48 +588,11 @@ def mailbox(box='inbox'):
             # Перейти в отправленные
             return(redirect(url_for('mailbox', box='sent')))
 
-    # Все сообщения для текущего пользователя в указанном ящике
-    if box == 'inbox':
-        messages = current_user.mail_all.filter(Mailbox.directory=='0').\
-            order_by(Mailbox.date.desc()).all()
-    elif box == 'sent':
-        messages = current_user.mail_all.filter(Mailbox.directory=='1').\
-            order_by(Mailbox.date.desc()).all()
-    elif box == 'archive':
-        messages = current_user.mail_all.filter(Mailbox.directory=='2').\
-            order_by(Mailbox.date.desc()).all()
-    elif box == 'trash':
-        messages = current_user.mail_all.filter(Mailbox.directory=='3').\
-            order_by(Mailbox.date.desc()).all()
-
-    return(render_template('mailbox.html',
+    return(render_template('mail_write.html',
         user=current_user,
-        box=box,
-        messages=messages,
         form_recepient=form_recepient,
         form_subject=form_subject,
         form_message=form_message))
-
-
-# --- ЛИЧНОЕ СООБЩЕНИЕ НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----
-@app.route('/mailbox/message/show/<message_id>')
-@login_required
-def mail_read(message_id):
-    message = Mailbox.query.get(message_id)
-
-    # Проверка существования объекта
-    if not message:
-        abort(404)
-
-    # Является ли пользователь владельцем сообщения
-    if message.owner == current_user:
-        return(render_template('mail_read.html',
-            user=current_user,
-            message=message))
-    else:
-        return(render_template('info.html',
-            user=current_user,
-            text="You can't view message if you are not it's owner"))
 
 
 # --- УДАЛЕНИЕ ЛИЧНЫХ СООБЩЕНИЙ -----------------
