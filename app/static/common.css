@@ -1,7 +1,6 @@
 ﻿/* ОБЩЕЕ */
 
 /* Пагинация (номера страниц) */
-
 div.c_pages {
  margin: 10px;
  text-align: center;
@@ -12,7 +11,11 @@ a.c_page_number {
  font-size: 12px;
  color: #ffffff;
  text-decoration: none;
- background: #888888;
+ background: #707070;
+}
+
+a.c_page_number:hover {
+ background: #7c7c7c;
 }
 
 a.c_current_page_number {
@@ -23,11 +26,39 @@ a.c_current_page_number {
  background: #5ba7e9;
 }
 
+a.c_current_page_number:hover {
+ background: #6ab1eb;
+}
+
 a.c_page_firstlast {
  margin: 10px;
  padding: 3px 6px;
  font-size: 12px;
  color: #ffffff;
  text-decoration: none;
- background: #888888;
+ background: #707070;
+}
+
+a.c_page_firstlast:hover {
+ background: #7c7c7c;
+}
+
+/* Тема и детализации сообщения */
+a.c_topic {
+ margin-right: 10px;
+ line-height: 22px;
+ font-size: 16px;
+ font-weight: bold;
+ color: #505050;
+ text-decoration: none;
+}
+
+div.c_detail {
+ font-size: 10px;
+}
+
+a.c_user {
+ font-size: 10px;
+ color: #294aa6;
+ text-decoration: none;
 }

@@ -69,25 +69,6 @@ div.f_table_editor {
 }
 
 /* Текст в ячейках таблицы */
-a.f_topic {
- margin-right: 10px;
- line-height: 22px;
- font-size: 16px;
- font-weight: bold;
- color: #505050;
- text-decoration: none;
-}
-
-a.f_author {
- font-size: 10px;
- color: #294aa6;
- text-decoration: none;
-}
-
-div.f_detail {
- font-size: 10px;
-}
-
 div.f_message_counter {
  line-height: 22px;
  font-size: 15px;

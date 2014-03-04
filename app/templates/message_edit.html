@@ -10,7 +10,7 @@
 {% if user.is_authenticated() %}
 <form method="post">
     {{form_message.hidden_tag()}}
-    {{form_message.message(class="f_t_form_message")}}
+    {{form_message.message(class="form_message")}}
     <input class="submit_button" type="submit" value="apply">
 </form>
 {% endif %}

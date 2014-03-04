@@ -28,8 +28,9 @@ class User(db.Model):
     city = db.Column(db.Text, default='unknouwn')
     # Страна
     country = db.Column(db.Text, default='unknouwn')
-    # Аватар
-    avatar = db.Column(db.Text, default='/static/avatar/anonymous.jpg')
+    # Аватар, 0 - /static/avatar/system_anonymous.jpg,
+    # 1 - /static/avatar/user_username.ext
+    db_avatar = db.Column(db.Boolean, default=False)
 
     # Количество тем
     topic_count = db.Column(db.Integer, default=0)
@@ -50,6 +51,22 @@ class User(db.Model):
         return(False)
     def get_id(self):
         return(unicode(self.id))
+
+    # Вернуть нужную строчку для аватара
+    @property
+    def avatar(self):
+        if self.db_avatar:
+            return('/static/avatar/user_%s.png' % self.login)
+        else:
+            return('/static/avatar/system_anonymous.png')
+
+    # Вернуть нужную строчку для уменьшенного аватара
+    @property
+    def avatar_thumb(self):
+        if self.db_avatar:
+            return('/static/avatar/user_%s_thumb.png' % self.login)
+        else:
+            return('/static/avatar/system_anonymous_thumb.png')
 
     # Вывод при обращении к объекту класса
     def __repr__(self):

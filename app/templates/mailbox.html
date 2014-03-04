@@ -7,24 +7,45 @@
 {% block content %}
 <h1>Mail ({{box}})</h1>
 
-<div class="mb_table_head">
-    <a class="mb_table_head_link" href="{{url_for('mailbox', box='inbox')}}">Inbox</a>
-    <a class="mb_table_head_link" href="{{url_for('mailbox', box='sent')}}">Sent</a>
-    <a class="mb_table_head_link" href="{{url_for('mailbox', box='archive')}}">Archive</a>
-    <a class="mb_table_head_link" href="{{url_for('mailbox', box='trash')}}">Trash</a>
+<div class="mb_box_select">
+    <a {% if box == 'inbox' %}class="mb_box_item_selected"{% else %}class="mb_box_item"{% endif %} href="{{url_for('mailbox', box='inbox')}}">Inbox</a>
+    <a {% if box == 'sent' %}class="mb_box_item_selected"{% else %}class="mb_box_item"{% endif %} href="{{url_for('mailbox', box='sent')}}">Sent</a>
+    <a {% if box == 'archive' %}class="mb_box_item_selected"{% else %}class="mb_box_item"{% endif %} href="{{url_for('mailbox', box='archive')}}">Archive</a>
+    <a {% if box == 'trash' %}class="mb_box_item_selected"{% else %}class="mb_box_item"{% endif %} href="{{url_for('mailbox', box='trash')}}">Trash</a>
 </div>
 
-{% for message in messages %}
+<div class="mb_table_head">
+    <div class="mb_table_head_main">Message</div>
+    <div class="mb_table_head_archive">To archive</div>
+    <div class="mb_table_head_trash">To trash</div>
+</div>
+
+{% for message in messages[pagination.first:pagination.last] %}
 <div class="mb_table_{{loop.cycle('light', 'dark')}}">
     <div class="mb_table_main">
-        <a class="mb_subject" href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a>
-        <div class="mb_detail">from <a class="mb_sender" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>, {{message.date.strftime('%d %b %Y')}}</div>
+        <a class="c_topic" href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a>
+        <div class="c_detail">from <a class="c_user" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a> to <a class="c_user" href="{{url_for('user_profile', user_id=message.recipient_id)}}">{{message.recipient.login}}</a>, {{message.date.strftime('%d %b %Y')}}</div>
     </div>
-    <div class="mb_table_select">
-        <div class="mb_message_select"><a href="{{url_for('mail_delete', message_id=message.id)}}"><img src="/static/icon_del_body.png"></a></div>
+    <div class="mb_table_archive">
+        <div class="mb_message_select"><a href="{{url_for('mail_move', message_id=message.id, directory=2)}}"><img src="/static/icon_archive.png"></a></div>
+    </div>
+    <div class="mb_table_trash">
+        <div class="mb_message_select"><a href="{{url_for('mail_move', message_id=message.id, directory=3)}}"><img src="/static/icon_del.png"></a></div>
     </div>
 </div>
 {% endfor %}
+
+<div class="c_pages">
+    <a class="c_page_firstlast" href="{{url_for('mailbox', page=1, box=box)}}">First</a>
+{% for page_number in pagination.pages_list %}
+    {% if page_number == pagination.page %}
+    <a class="c_current_page_number" href="{{url_for('mailbox', page=page_number, box=box)}}">{{page_number}}</a>
+    {% else %}
+    <a class="c_page_number" href="{{url_for('mailbox', page=page_number, box=box)}}">{{page_number}}</a>
+    {% endif %}
+{% endfor %}
+    <a class="c_page_firstlast" href="{{url_for('mailbox', page=pagination.pages, box=box)}}">Last</a>
+</div>
 
 <a class="mb_new" href="{{url_for('mail_write')}}">New message</a>
 

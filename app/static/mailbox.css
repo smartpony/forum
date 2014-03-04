@@ -1,5 +1,34 @@
 ﻿/* ЛИЧНЫЕ СООБЩЕНИЯ */
 
+/* Выбор ящика */
+div.mb_box_select {
+ margin: 10px 10px 15px 10px;
+}
+
+a.mb_box_item {
+ padding: 3px 6px;
+ font-size: 16px;
+ color: #ffffff;
+ text-decoration: none;
+ background: #707070;
+}
+
+a.mb_box_item:hover {
+ background: #7c7c7c;
+}
+
+a.mb_box_item_selected {
+ padding: 3px 6px;
+ font-size: 16px;
+ color: #ffffff;
+ text-decoration: none;
+ background: #5ba7e9;
+}
+
+a.mb_box_item_selected:hover {
+ background: #6ab1eb;
+}
+
 /* Строки таблицы (заголовок, тёмное, светлое) */
 div.mb_table_head {
  margin: 0px 10px;
@@ -20,28 +49,46 @@ div.mb_table_light {
 }
 
 /* Текст в ячейках заголовка */
-a.mb_table_head_link {
- margin-left: 0px;
- margin-right: 12px;
+div.mb_table_head_main {
+ display: inline-table;
+ width: 61%;
  font-size: 16px;
  color: #ffffff;
- text-decoration: none;
 }
 
-a.mb_table_head_link:hover {
- text-decoration: underline;
+div.mb_table_head_archive {
+ display: inline-table;
+ width: 18%;
+ font-size: 16px;
+ text-align: center;
+ color: #ffffff;
+}
+
+div.mb_table_head_trash {
+ display: inline-table;
+ width: 18%;
+ font-size: 16px;
+ text-align: center;
+ color: #ffffff;
 }
 
 /* Разметка столбцов */
 div.mb_table_main {
  display: inline-table;
- width: 90%;
+ width: 61%;
  vertical-align: middle;
 }
 
-div.mb_table_select {
+div.mb_table_archive {
  display: inline-table;
- width: 5%;
+ width: 18%;
+ vertical-align: middle;
+ text-align: center;
+}
+
+div.mb_table_trash {
+ display: inline-table;
+ width: 18%;
  vertical-align: middle;
  text-align: center;
 }
@@ -51,25 +98,6 @@ div.mb_message_select {
  padding-left: 0px;
  line-height: 22px;
  font-size: 15px;
-}
-
-a.mb_subject {
- margin-right: 10px;
- line-height: 22px;
- font-size: 16px;
- font-weight: bold;
- color: #505050;
- text-decoration: none;
-}
-
-a.mb_sender {
- font-size: 10px;
- color: #294aa6;
- text-decoration: none;
-}
-
-div.mb_detail {
- font-size: 10px;
 }
 
 /* Создать новое сообщение */

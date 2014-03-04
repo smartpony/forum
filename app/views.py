@@ -11,11 +11,13 @@ import hashlib
 import os
 from cgi import escape
 from math import ceil
+from PIL import Image, ImageOps
 
 # Импорт других файлов проекта
 from app import app, db, lm
 from models import User, ForumTopic, ForumMessage, Mailbox
 from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm, RecepientForm
+
 
 # --- ОФОРМЛЕНИЕ --------------------------------
 # Тем на странице
@@ -24,6 +26,8 @@ TOPIC_PER_PAGE = 5
 MESSAGE_PER_PAGE = 5
 # Пользователей на странице
 USER_PER_PAGE = 10
+# Писем на странице
+MAIL_PER_PAGE = 5
 
 
 # --- ПАГИНАЦИЯ ---------------------------------
@@ -471,17 +475,24 @@ def edit_profile():
             # Проверить расширение файла
             allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
             file_ext = file.filename.split('.')[-1].lower()
-            # Если расширение допустимое, то удалить старый файл
-            # закачать новый и сделать его аватаром для текущего пользователя
+            # Если расширение допустимое, то удалить старые файлы, закачать
+            # новый аватар, сделать для него превью и поставить пользователю
             if '.' in file.filename and file_ext in allowed_file_ext:
-                if current_user.avatar != '/static/avatar/anonymous.jpg':
+                if not current_user.avatar:
                     os.remove('app' + current_user.avatar)
+                    os.remove('app' + current_user.avatar_thumb)
                 file_name = 'user_' + current_user.login + '.' + file_ext
                 file.save('app/static/avatar/'+file_name)
-                current_user.avatar = '/static/avatar/' + file_name
+                current_user.db_avatar = True
+                db.session.commit()
+                # Круглое превью
+                avatar = Image.open('app' + current_user.avatar)
+                mask = Image.open('app/static/avatar/system_alpha.png').convert('L')
+                avatar = ImageOps.fit(avatar, mask.size, centering=(0.5, 0.5))
+                avatar.putalpha(mask)
+                avatar.save('app' + current_user.avatar_thumb)
 
-        # Сохранение данных
-        db.session.commit()
+
         # Редирект на страницу профиля
         return(redirect(url_for('my_profile')))
 
@@ -492,12 +503,15 @@ def edit_profile():
 
 
 # --- ЛИЧНЫЕ СООБЩЕНИЯ --------------------------
-@app.route('/mail', methods=['GET', 'POST'])
+@app.route('/mail')
 @login_required
-def mailbox(box='inbox'):
+def mailbox(page=1, box='inbox'):
     # Нужный ящик
     if request.args.get('box'):
         box = request.args.get('box')
+    # Нужная страница
+    if request.args.get('page'):
+        page = int(request.args.get('page'))
 
     # Все сообщения для текущего пользователя в указанном ящике
     if box == 'inbox':
@@ -513,10 +527,14 @@ def mailbox(box='inbox'):
         messages = current_user.mail_all.filter(Mailbox.directory=='3').\
             order_by(Mailbox.date.desc()).all()
 
+    # Разбиение на страницы
+    pagination = Pagination(page, MAIL_PER_PAGE, len(messages))
+
     return(render_template('mailbox.html',
         user=current_user,
         box=box,
-        messages=messages))
+        messages=messages,
+        pagination=pagination))
 
 
 # --- ЛИЧНОЕ СООБЩЕНИЕ НА ОТДЕЛЬНОЙ СТРАНИЦЕ ----
@@ -541,7 +559,7 @@ def mail_read(message_id):
 
 
 # --- НАПИСАТЬ ЛИЧНОЕ СООБЩЕНИЕ -----------------
-@app.route('/mailbox/message/new')
+@app.route('/mailbox/message/new', methods=['GET', 'POST'])
 @login_required
 def mail_write():
     # Форма для нового сообщения
@@ -595,24 +613,24 @@ def mail_write():
         form_message=form_message))
 
 
-# --- УДАЛЕНИЕ ЛИЧНЫХ СООБЩЕНИЙ -----------------
-@app.route('/mailbox/message/delete/<message_id>')
+# --- ПЕРЕМЕСТИТЬ СООБЩЕНИЕ В ДРУГУЮ ПАПКУ ------
+@app.route('/mailbox/message/move/<directory>/<message_id>')
 @login_required
-def mail_delete(message_id):
-    del_mes = Mailbox.query.get(message_id)
+def mail_move(directory, message_id):
+    message = Mailbox.query.get(message_id)
 
     # Проверка существования объекта
-    if not del_mes:
+    if not message or not directory in ['0', '1', '2', '3']:
         abort(404)
 
     # Является ли пользователь владельцем сообщения
-    if del_mes.owner == current_user:
-        # Если сообщение в любой папке, то переместить его в корзину
-        if del_mes.directory != 3:
-            del_mes.directory = 3
-        # Если сообщение в корзине, то удалить безвозвратно
+    if message.owner == current_user:
+        # Окончательное удаление (перемещение из корзины в корзину)
+        if message.directory == 3 and directory == 3:
+            db.session.delete(message)
+        # Просто перемещение в указанную папку
         else:
-            db.session.delete(del_mes)
+            message.directory = directory
         db.session.commit()
         # Вернуться на страницу, откуда было вызвано удаление
         # (если это было последнее сообщение темы, то возврат в корень форума)
@@ -621,7 +639,7 @@ def mail_delete(message_id):
     else:
         return(render_template('info.html',
             user=current_user,
-            text="You can't delete message if you are not it's owner"))
+            text="You are not owner of this message"))
 
     # Вернуться на страницу, откуда было вызвано удаление
     return(redirect(request.referrer))

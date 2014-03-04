@@ -16,17 +16,17 @@
 {% for topic in all_topics[pagination.first:pagination.last] %}
 <div class="f_table_{{loop.cycle('light', 'dark')}}">
     <div class="f_table_main">
-        <a class="f_topic" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
-        <div class="f_detail">posted by <a class="f_author" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
+        <a class="c_topic" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
+        <div class="c_detail">posted by <a class="c_user" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
     </div>
     <div class="f_table_counters">
         <div class="f_message_counter">replies: {{topic.mes_count-1}}</div>
-        <div class="f_view_counter">views: {{topic.ForumTopic.views}}</div>
+        <div class="c_detail">views: {{topic.ForumTopic.views}}</div>
     </div>
     <div class="f_table_editor">
         {% if topic.ForumTopic.editor.id != Null %}
         by <a class="f_editor" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
-        <div class="f_detail">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
+        <div class="c_detail">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
         {% else %}
         no posts
         {% endif %}
