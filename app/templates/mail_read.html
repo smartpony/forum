@@ -16,4 +16,6 @@
     <div class="mr_message_text">{{message.text|safe}}</div>
 </div>
 
+<a class="mr_new" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject)}}">Reply</a>
+
 {% endblock %}

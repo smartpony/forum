@@ -11,8 +11,16 @@
     {{form_recepient.hidden_tag()}}
     {{form_subject.hidden_tag()}}
     {{form_message.hidden_tag()}}
-    {{form_recepient.recepient(placeholder='Username', class='form_recepient', onkeyup="PostingFormUnmark(this)")}}
-    {{form_subject.topic(placeholder='Subject', class='form_topic', onkeyup="PostingFormUnmark(this)")}}
+    {% if recepient %}
+        {{form_recepient.recepient(value=recepient.login, class='form_recepient', onkeyup='PostingFormUnmark(this)')}}
+    {% else %}
+        {{form_recepient.recepient(placeholder='Username', class='form_recepient', onkeyup='PostingFormUnmark(this)')}}
+    {% endif %}
+    {% if subject %}
+        {{form_subject.topic(value=subject, class='form_topic', onkeyup='PostingFormUnmark(this)')}}
+    {% else %}
+        {{form_subject.topic(placeholder='Subject', class='form_topic', onkeyup='PostingFormUnmark(this)')}}
+    {% endif %}
     <div class="format_block">
         <img class="format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
         <img class="format_button" src="/static/button_italic.png" onclick="makeFormated('i')">

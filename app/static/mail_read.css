@@ -23,3 +23,21 @@ a.mr_sender {
  color: #294aa6;
  text-decoration: none;
 }
+
+/* Ответить */
+a.mr_new {
+ display: inline-block;
+ margin: 10px;
+ padding: 4px;
+ width: 142px;
+ font-size: 14px;
+ text-align: center;
+ color: #ffffff;
+ cursor: pointer;
+ text-decoration: none;
+ background: #5ba7e9;
+}
+
+a.mr_new:hover {
+ background: #6ab1eb;
+}

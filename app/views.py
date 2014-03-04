@@ -561,11 +561,17 @@ def mail_read(message_id):
 # --- НАПИСАТЬ ЛИЧНОЕ СООБЩЕНИЕ -----------------
 @app.route('/mailbox/message/new', methods=['GET', 'POST'])
 @login_required
-def mail_write():
+def mail_write(recepient=None, subject=None):
     # Форма для нового сообщения
     form_recepient = RecepientForm()
     form_subject = TopicForm()
     form_message = MessageForm()
+
+    # Пользователь, которому предназначен ответ
+    if request.args.get('recepient'):
+        recepient = User.query.get(request.args.get('recepient'))
+    if request.args.get('subject'):
+        subject = 'Re: ' + request.args.get('subject')
 
     # Если отправлена форма с новым сообщением
     if form_recepient.validate_on_submit() and \
@@ -608,6 +614,8 @@ def mail_write():
 
     return(render_template('mail_write.html',
         user=current_user,
+        recepient=recepient,
+        subject=subject,
         form_recepient=form_recepient,
         form_subject=form_subject,
         form_message=form_message))
