@@ -4,3 +4,4 @@ flask-sqlalchemy
 flask-wtf
 flask-login
 flask-migrate
+PIL
