@@ -22,8 +22,18 @@ div.ul_table_light {
 /* Текст в ячейках заголовка */
 div.ul_table_head_login {
  display: inline-table;
- width: 51%;
+ width: 36%;
  vertical-align: middle;
+ text-decoration: none;
+ font-size: 16px;
+ color: #ffffff;
+}
+
+div.ul_table_head_last_seen {
+ display: inline-table;
+ width: 18%;
+ vertical-align: middle;
+ text-align: center;
  text-decoration: none;
  font-size: 16px;
  color: #ffffff;
@@ -41,7 +51,7 @@ div.ul_table_head_reg_date {
 
 div.ul_table_head_topic_count {
  display: inline-table;
- width: 18%;
+ width: 13%;
  vertical-align: middle;
  text-align: center;
  text-decoration: none;
@@ -51,7 +61,7 @@ div.ul_table_head_topic_count {
 
 div.ul_table_head_message_count {
  display: inline-table;
- width: 10%;
+ width: 13%;
  vertical-align: middle;
  text-align: center;
  text-decoration: none;
@@ -69,7 +79,7 @@ a.ul_table_head_order {
 /* Разметка столбцов */
 a.ul_table_login_admin {
  display: inline-table;
- width: 51%;
+ width: 36%;
  vertical-align: middle;
  color: #294aa6;
  font-weight: bold;
@@ -79,10 +89,18 @@ a.ul_table_login_admin {
 
 a.ul_table_login_user {
  display: inline-table;
- width: 51%;
+ width: 36%;
  vertical-align: middle;
  color: #294aa6;
  text-decoration: none;
+ font-size: 16px;
+}
+
+div.ul_table_last_seen {
+ display: inline-table;
+ width: 18%;
+ vertical-align: middle;
+ text-align: center;
  font-size: 16px;
 }
 
@@ -96,7 +114,7 @@ div.ul_table_reg_date {
 
 div.ul_table_topic_count {
  display: inline-table;
- width: 18%;
+ width: 13%;
  vertical-align: middle;
  text-align: center;
  font-size: 16px;
@@ -105,7 +123,7 @@ div.ul_table_topic_count {
 div.ul_table_message_count {
  display: inline-table;
  vertical-align: middle;
- width: 10%;
+ width: 13%;
  text-align: center;
  font-size: 16px;
 }

@@ -87,6 +87,25 @@ class Pagination(object):
 
 
 # --- ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ---------------------
+# Кастомный анонимный пользователь с добавлением поля role
+class CustomAnonymous():
+    role = 65535
+    # Методы для работы Flask-login
+    def is_authenticated(self):
+        return(False)
+    def is_active(self):
+        return(True)
+    def is_anonymous(self):
+        return(True)
+    def get_id(self):
+        return(65535)
+    # Вывод при обращении к объекту класса
+    def __repr__(self):
+        return('<Anonymous>')
+
+# Переопределение анонимного пользователя
+lm.anonymous_user = CustomAnonymous
+
 # Функция загружает объект пользователя по его ID,
 # который хранится в памяти
 @lm.user_loader
@@ -401,8 +420,13 @@ def userlist(page=1):
     sort_field = request.args.get('sort')
     sort_order = request.args.get('desc')
 
+    # Сортировка по дате последней активности
+    if sort_field == 'last_seen' and sort_order == 'True':
+        users_list = User.query.order_by(User.last_seen.desc()).all()
+    elif sort_field == 'last_seen':
+        users_list = User.query.order_by(User.last_seen).all()
     # Сортировка по дате регистрации
-    if sort_field == 'reg_date' and sort_order == 'True':
+    elif sort_field == 'reg_date' and sort_order == 'True':
         users_list = User.query.order_by(User.reg_date.desc()).all()
     elif sort_field == 'reg_date':
         users_list = User.query.order_by(User.reg_date).all()
@@ -518,7 +542,7 @@ def edit_profile():
 
 
 # --- ЛИЧНЫЕ СООБЩЕНИЯ --------------------------
-@app.route('/mail')
+@app.route('/mailbox')
 @login_required
 def mailbox(page=1, box='inbox'):
     # Нужный ящик

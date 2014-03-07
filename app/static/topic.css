@@ -10,6 +10,8 @@ a.t_delete_topic {
 }
 
 div.t_message_block {
+ display: left;
+ margin-left: 65px;
  margin-bottom: 10px;
  border: 1px dashed #888888;
  background: #eeeeee;
@@ -17,13 +19,11 @@ div.t_message_block {
 
 div.t_avatar {
  float: left;
- padding: 5px;
- vertical-align: top;
+ padding: 12px 5px 5px 5px;
  width: 50px;
 }
 
 div.t_message_body {
- margin-left: 55px;
  padding: 8px;
 }
 

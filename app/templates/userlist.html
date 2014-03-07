@@ -13,6 +13,11 @@
         <a class="ul_table_head_order" href="{{url_for('userlist', sort='login', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
         <a class="ul_table_head_order" href="{{url_for('userlist', sort='login', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
+    <div class="ul_table_head_last_seen">
+        Last seen
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='last_seen', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a class="ul_table_head_order" href="{{url_for('userlist', sort='last_seen', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
+    </div>
     <div class="ul_table_head_reg_date">
         Registered
         <a class="ul_table_head_order" href="{{url_for('userlist', sort='reg_date', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
@@ -37,6 +42,7 @@
     {% else %}
     <a class="ul_table_login_admin" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
     {% endif %}
+    <div class="ul_table_last_seen">{{user.last_seen.strftime('%d %b %Y')}}</div>
     <div class="ul_table_reg_date">{{user.reg_date.strftime('%d %b %Y')}}</div>
     <div class="ul_table_topic_count">{{user.topic_count}}</div>
     <div class="ul_table_message_count">{{user.message_count}}</div>

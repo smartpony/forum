@@ -14,12 +14,15 @@
 <hr>
 
 {% for message in topic.message[pagination.first:pagination.last] %}
-<div class="t_message_block">
+
     <div class="t_avatar">
         <a href="{{url_for('user_profile', user_id=message.author.id)}}">
             <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
         </a>
     </div>
+
+<div class="t_message_block">
+
     <div class="t_message_body" id="{{loop.index}}">
         <div class="t_message_info"><a class="t_message_number" href="{{request.url}}#{{loop.index}}">#{{loop.index}}:</a>
             posted by <a class="c_user" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
