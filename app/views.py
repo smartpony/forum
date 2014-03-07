@@ -481,16 +481,28 @@ def edit_profile():
                 if not current_user.avatar:
                     os.remove('app' + current_user.avatar)
                     os.remove('app' + current_user.avatar_thumb)
-                file_name = 'user_' + current_user.login + '.' + file_ext
-                file.save('app/static/avatar/'+file_name)
+                file_path_name = 'app/static/avatar/user_' + current_user.login + '.' + file_ext
+                file.save(file_path_name)
                 current_user.db_avatar = True
                 db.session.commit()
-                # Круглое превью
+                # Превью
                 # Конвертирование в RGB из-за того, что индексированные изображения
                 # сильно теряют в качестве при ресайзе
-                avatar = Image.open('app' + current_user.avatar).convert('RGB')
-                # Маска должна быть не RGB, а в градациях серого, это можно сделать
-                # на ходу, добавив в конец .convert('L') или заранее (как здесь)
+                avatar = Image.open(file_path_name).convert('RGB')
+                os.remove(file_path_name)
+                # Обрезать до квадрата (порядок для кропа - лево, верх, право, низ)
+                # и уменьшить до 150х150
+                av_size = avatar.size
+                delta = abs(av_size[0] - av_size[1])
+                if av_size[0] > av_size[1]:
+                    box = (delta/2, 0, delta/2 + av_size[1], av_size[1])
+                else:
+                    box = (0, delta/2, av_size[0], delta/2 + av_size[0])
+                avatar = avatar.crop(box).resize((150,150), Image.ANTIALIAS)
+                avatar.save('app' + current_user.avatar)
+                # Создание прозрачности по кругу через заготовленную маску,
+                # маска должна быть не RGB, а в градациях серого, это можно сделать
+                # на ходу, добавив в конец .convert('L'), или заранее (как здесь)
                 mask = Image.open('app/static/avatar/system_alpha.png')
                 avatar.thumbnail(mask.size, Image.ANTIALIAS)
                 avatar.putalpha(mask)
