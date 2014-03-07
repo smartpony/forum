@@ -486,12 +486,15 @@ def edit_profile():
                 current_user.db_avatar = True
                 db.session.commit()
                 # Круглое превью
-                avatar = Image.open('app' + current_user.avatar)
-                mask = Image.open('app/static/avatar/system_alpha.png').convert('L')
-                avatar = ImageOps.fit(avatar, mask.size, centering=(0.5, 0.5))
+                # Конвертирование в RGB из-за того, что индексированные изображения
+                # сильно теряют в качестве при ресайзе
+                avatar = Image.open('app' + current_user.avatar).convert('RGB')
+                # Маска должна быть не RGB, а в градациях серого, это можно сделать
+                # на ходу, добавив в конец .convert('L') или заранее (как здесь)
+                mask = Image.open('app/static/avatar/system_alpha.png')
+                avatar.thumbnail(mask.size, Image.ANTIALIAS)
                 avatar.putalpha(mask)
                 avatar.save('app' + current_user.avatar_thumb)
-
 
         # Редирект на страницу профиля
         return(redirect(url_for('my_profile')))

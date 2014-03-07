@@ -9,7 +9,7 @@ div.f_table_head {
 
 div.f_table_dark {
  margin: 0px 10px;
- padding: 8px;
+ padding: 8px 4px;
  background: #ebebeb;
 }
 
@@ -47,6 +47,13 @@ div.f_table_head_editor {
 }
 
 /* Разметка столбцов */
+div.f_table_avatar {
+ display: inline-table;
+ width: 55px;
+ text-align: center;
+ vertical-align: middle;
+}
+
 div.f_table_main {
  display: inline-table;
  width: 61%;
@@ -55,14 +62,14 @@ div.f_table_main {
 
 div.f_table_counters {
  display: inline-table;
- width: 18%;
+ width: 16%;
  vertical-align: middle;
  text-align: center;
 }
 
 div.f_table_editor {
  display: inline-table;
- width: 18%;
+ width: 16%;
  vertical-align: middle;
  text-align: center;
  font-size: 14px;

@@ -15,6 +15,11 @@
 
 {% for topic in all_topics[pagination.first:pagination.last] %}
 <div class="f_table_{{loop.cycle('light', 'dark')}}">
+    <div class="f_table_avatar">
+        <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
+            <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
+        </a>
+    </div>
     <div class="f_table_main">
         <a class="c_topic" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
         <div class="c_detail">posted by <a class="c_user" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
