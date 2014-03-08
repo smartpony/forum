@@ -22,13 +22,15 @@ PASSWORD = '1'
 admin = User(login='Administrator',
     role=0,
     password=hashlib.sha256(PASSWORD).hexdigest(),
-    email=ADMIN_EMAIL)
+    email=ADMIN_EMAIL,
+    db_avatar=True)
 db.session.add(admin)
 # Модер
 moder = User(login='Moderator',
     role=1,
     password=hashlib.sha256(PASSWORD).hexdigest(),
-    email=MODER_EMAIL)
+    email=MODER_EMAIL,
+    db_avatar=True)
 db.session.add(moder)
 # Просто пользователь
 user = User(login='user',

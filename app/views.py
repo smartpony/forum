@@ -651,13 +651,17 @@ def mail_write(recepient=None, subject=None):
             # Перейти в отправленные
             return(redirect(url_for('mailbox', box='sent')))
 
+    # Все пользователей для выбора в качестве адреса
+    all_users = User.query.all()
+
     return(render_template('mail_write.html',
         user=current_user,
         recepient=recepient,
         subject=subject,
         form_recepient=form_recepient,
         form_subject=form_subject,
-        form_message=form_message))
+        form_message=form_message,
+        all_users=all_users))
 
 
 # --- ПЕРЕМЕСТИТЬ СООБЩЕНИЕ В ДРУГУЮ ПАПКУ ------

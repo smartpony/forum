@@ -12,9 +12,9 @@
     {{form_subject.hidden_tag()}}
     {{form_message.hidden_tag()}}
     {% if recepient %}
-        {{form_recepient.recepient(value=recepient.login, class='form_recepient', onkeyup='PostingFormUnmark(this)')}}
+        {{form_recepient.recepient(value=recepient.login, class='form_recepient', onclick='PostingFormUnmark(this); selectUserOpen()')}}
     {% else %}
-        {{form_recepient.recepient(placeholder='Username', class='form_recepient', onkeyup='PostingFormUnmark(this)')}}
+        {{form_recepient.recepient(placeholder='Username', class='form_recepient', onclick='PostingFormUnmark(this); selectUserOpen()')}}
     {% endif %}
     {% if subject %}
         {{form_subject.topic(value=subject, class='form_topic', onkeyup='PostingFormUnmark(this)')}}
@@ -31,5 +31,17 @@
     {{form_message.message(placeholder='Enter your text here', class="form_message", onkeyup="PostingFormUnmark(this)")}}
     <input class="submit_button" type="submit" value="Send">
 </form>
+
+<div id="mw_dialog_overlay"></div>
+<div id="mw_dialog_box">
+    <div class="mw_select_header">Select recepient</div>
+    <input id="mw_dialog_input" type="text" onkeyup="selectSearch()">
+    <select id="mw_dialog_select" size="8" onclick="selectUser(this)" ondblclick="selectUserClose()">
+        {% for user in all_users %}
+        <option>{{user.login}}</option>
+        {% endfor %}
+    </select>
+    <div class="mw_dialog_close" onclick="selectUserClose()">Ok</div>
+</div>
 
 {% endblock %}

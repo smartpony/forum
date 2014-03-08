@@ -1,0 +1,59 @@
+﻿/* НОВОЕ ЛИЧНОЕ СООБЩЕНИЕ */
+
+/* Диалог выбора пользователя */
+#mw_dialog_overlay {
+ display: none;
+ opacity: 0.6;
+ position: fixed;
+ top: 0px;
+ left: 0px;
+ background: #ffffff;
+ height: 100%;
+ width: 100%;
+}
+
+#mw_dialog_box {
+ display: none;
+ position: absolute;
+ left: 40%;
+ top: 30%;
+ padding: 15px;
+ width: 200px;
+ height: 250px;
+ text-align: center;
+ border: solid black 1px;
+ background: #eeeeee;
+}
+
+div.mw_select_header {
+ margin-bottom: 10px;
+ font-size: 16px;
+ font-weight: bold;
+}
+
+#mw_dialog_input {
+ margin-left: 0px;
+ margin-bottom: 10px;
+ width: 200px;
+}
+
+#mw_dialog_select {
+ width: 200px;
+ margin-bottom: 10px;
+}
+
+div.mw_dialog_close {
+ display: inline-block;
+ margin: 10px;
+ padding: 4px;
+ width: 142px;
+ font-size: 14px;
+ text-align: center;
+ color: #ffffff;
+ cursor: pointer;
+ background: #5ba7e9;
+}
+
+div.mw_dialog_close:hover {
+ background: #6ab1eb;
+}
