@@ -1,39 +1,21 @@
 ﻿/* ФОРМЫ */
 
 /* Формы постинга сообщений и тем */
-input.form_recepient {
+input {
  display: block;
  margin: 10px;
  height: 24px;
  width: 150px;
- font-size: 14px;
- color: #505050;
 }
 
-input.form_topic {
- display: block;
- margin: 10px;
- height: 24px;
- width: 150px;
- font-size: 14px;
- color: #505050;
-}
-
-textarea.form_message {
+textarea {
  display: block;
  margin: 3px 0px 10px 10px;
  height: 72px;
  width: 300px;
- font-size: 14px;
- font-family: Helvetica;
- color: #505050;
 }
 
-input.submit_button {
- display: block;
- margin: 5px 10px;
- height: 24px;
- width: 150px;
+input.submit {
  color: #ffffff;
  font-size: 14px;
  cursor: pointer;
@@ -41,71 +23,34 @@ input.submit_button {
  border: none;
 }
 
-input.submit_button:hover {
+input.submit:hover {
  background: #6ab1eb;
 }
 
 /* Кнопки форматирования сообщений */
-div.format_block {
+.format_block {
  margin: 5px 0px 0px 10px;
 }
 
-img.format_button:hover {
+.format_button:hover {
  cursor: pointer;
  opacity: 0.85;
 }
 
-/* Формы входа и регистрации */
-input.r_l_field {
- display: block;
+/* Псевдокнопка (ссылка текст в рамке) */
+.button {
+ display: inline-block;
  margin: 10px;
- height: 24px;
- width: 150px;
+ padding: 4px;
+ width: 142px;
  font-size: 14px;
- color: #505050;
-}
-
-/* Форма изменения профиля */
-input.pe_edit_field {
- display: block;
- margin: 0px 0px 3px 0px;
- height: 21px;
- width: 150px;
- font-size: 14px;
- color: #505050;
-}
-
-input.pe_edit_field_last {
- display: block;
- margin: 0px 0px 1px 0px;
- height: 21px;
- width: 150px;
- font-size: 14px;
- color: #505050;
-}
-
-div.pe_avatar_wrap {
- margin-top: 5px;
- overflow: hidden;
- height: 24px;
- width: 152px;
  text-align: center;
  color: #ffffff;
- font-size: 14px;
+ cursor: pointer;
+ text-decoration: none;
  background: #5ba7e9;
 }
 
-div.pe_avatar_wrap:hover {
+.button:hover {
  background: #6ab1eb;
-}
-
-div.pe_avatar_text {
- margin-top: 3px;
-}
-
-input.pe_avatar_button {
- font-size:30;
- margin-top: -30px;
- margin-left: -30px;
- opacity: 0;
 }

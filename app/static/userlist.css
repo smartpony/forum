@@ -1,129 +1,15 @@
 ﻿/* СПИСОК ПОЛЬЗОВАТЕЛЕЙ */
 
-/* Строки таблицы (заголовок, тёмное, светлое) */
-div.ul_table_head {
- margin: 0px 10px;
- padding: 8px;
- background: #707070;
-}
-
-div.ul_table_dark {
- margin: 0px 10px;
- padding: 8px;
- background: #ebebeb;
-}
-
-div.ul_table_light {
- margin: 0px 10px;
- padding: 8px;
- background: #f8f8f8;
-}
-
-/* Текст в ячейках заголовка */
-div.ul_table_head_login {
- display: inline-table;
- width: 36%;
- vertical-align: middle;
- text-decoration: none;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.ul_table_head_last_seen {
- display: inline-table;
- width: 18%;
- vertical-align: middle;
- text-align: center;
- text-decoration: none;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.ul_table_head_reg_date {
- display: inline-table;
- width: 18%;
- vertical-align: middle;
- text-align: center;
- text-decoration: none;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.ul_table_head_topic_count {
- display: inline-table;
- width: 13%;
- vertical-align: middle;
- text-align: center;
- text-decoration: none;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.ul_table_head_message_count {
- display: inline-table;
- width: 13%;
- vertical-align: middle;
- text-align: center;
- text-decoration: none;
- font-size: 16px;
- color: #ffffff;
-}
-
-a.ul_table_head_order {
- margin: 0px 1px;
- text-decoration: none;
- font-size: 16px;
- color: #ffffff;
-}
-
 /* Разметка столбцов */
-a.ul_table_login_admin {
+.table_login {
  display: inline-table;
  width: 36%;
  vertical-align: middle;
- color: #294aa6;
- font-weight: bold;
- text-decoration: none;
- font-size: 16px;
 }
 
-a.ul_table_login_user {
+.table_detail {
  display: inline-table;
- width: 36%;
- vertical-align: middle;
- color: #294aa6;
- text-decoration: none;
- font-size: 16px;
-}
-
-div.ul_table_last_seen {
- display: inline-table;
- width: 18%;
+ width: 15%;
  vertical-align: middle;
  text-align: center;
- font-size: 16px;
-}
-
-div.ul_table_reg_date {
- display: inline-table;
- width: 18%;
- vertical-align: middle;
- text-align: center;
- font-size: 16px;
-}
-
-div.ul_table_topic_count {
- display: inline-table;
- width: 13%;
- vertical-align: middle;
- text-align: center;
- font-size: 16px;
-}
-
-div.ul_table_message_count {
- display: inline-table;
- vertical-align: middle;
- width: 13%;
- text-align: center;
- font-size: 16px;
 }

@@ -1,43 +1,12 @@
 ﻿/* ЛИЧНОЕ СООБЩЕНИЕ НА ОТДЕЛЬНОЙ СТРАНИЦЕ */
 
-div.mr_message_body {
+.mr_message_body {
  margin: 10px;
  padding: 8px;
  border: 1px dashed #888888;
  background: #eeeeee;
 }
 
-div.mr_message_info {
- display: inline-table;
- width: 80%;
- font-size: 10px;
-}
-
-div.mr_message_text {
+.message_text {
  white-space: pre-wrap;
- font-size: 16px;
-}
-
-a.mr_sender {
- font-size: 10px;
- color: #294aa6;
- text-decoration: none;
-}
-
-/* Ответить */
-a.mr_new {
- display: inline-block;
- margin: 10px;
- padding: 4px;
- width: 142px;
- font-size: 14px;
- text-align: center;
- color: #ffffff;
- cursor: pointer;
- text-decoration: none;
- background: #5ba7e9;
-}
-
-a.mr_new:hover {
- background: #6ab1eb;
 }

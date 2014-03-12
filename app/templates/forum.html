@@ -1,37 +1,38 @@
 {% extends "base.html" %}
 
-{% block title %}
+{% block head %}
     <title>Forum</title>
+    <link rel="stylesheet" type="text/css" href="/static/forum.css">
 {% endblock %}
 
 {% block content %}
 <h1>Forum</h1>
 
-<div class="f_table_head">
-    <div class="f_table_head_main">Topic</div>
-    <div class="f_table_head_counters">Replies and views</div>
-    <div class="f_table_head_editor">Last post</div>
+<div class="table_line darkest">
+    <div class="table_main table_head normal white">Topic</div>
+    <div class="table_counters normal white">Replies and views</div>
+    <div class="table_editor normal white">Last post</div>
 </div>
 
 {% for topic in all_topics[pagination.first:pagination.last] %}
-<div class="f_table_{{loop.cycle('light', 'dark')}}">
-    <div class="f_table_avatar">
+<div class="table_line {{loop.cycle('light', 'dark')}}">
+    <div class="table_avatar">
         <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
             <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
         </a>
     </div>
-    <div class="f_table_main">
-        <a class="c_topic" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
-        <div class="c_detail">posted by <a class="c_user" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
+    <div class="table_main">
+        <a class="big" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
+        <div class="tiny">posted by <a class="tiny" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
     </div>
-    <div class="f_table_counters">
-        <div class="f_message_counter">replies: {{topic.mes_count-1}}</div>
-        <div class="c_detail">views: {{topic.ForumTopic.views}}</div>
+    <div class="table_counters">
+        <div class="normal">replies: {{topic.mes_count-1}}</div>
+        <div class="tiny">views: {{topic.ForumTopic.views}}</div>
     </div>
-    <div class="f_table_editor">
+    <div class="table_editor">
         {% if topic.ForumTopic.editor.id != Null %}
-        by <a class="f_editor" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
-        <div class="c_detail">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
+        <div class="normal">by </div><a class="normal" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
+        <div class="tiny">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
         {% else %}
         no posts
         {% endif %}
@@ -39,16 +40,16 @@
 </div>
 {% endfor %}
 
-<div class="c_pages">
-    <a class="c_page_firstlast" href="{{url_for('forum', page=1)}}">First</a>
+<div class="pages">
+    <a class="page_firstlast" href="{{url_for('forum', page=1)}}">First</a>
 {% for page_number in pagination.pages_list %}
     {% if page_number == pagination.page %}
-    <a class="c_current_page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    <a class="current_page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
     {% else %}
-    <a class="c_page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    <a class="page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
     {% endif %}
 {% endfor %}
-    <a class="c_page_firstlast" href="{{url_for('forum', page=pagination.pages)}}">Last</a>
+    <a class="page_firstlast" href="{{url_for('forum', page=pagination.pages)}}">Last</a>
 </div>
 
 <hr>
@@ -57,7 +58,7 @@
 <form method="post" onsubmit="return PostingFormValidate()">
     {{form_topic.hidden_tag()}}
     {{form_message.hidden_tag()}}
-    {{form_topic.topic(placeholder='New topic', class='form_topic', onkeyup="PostingFormUnmark(this)")}}
+    {{form_topic.topic(placeholder='New topic', class='normal', onkeyup="PostingFormUnmark(this)")}}
     <div class="format_block">
         <img class="format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
         <img class="format_button" src="/static/button_italic.png" onclick="makeFormated('i')">
@@ -65,8 +66,8 @@
         <img class="format_button" src="/static/button_url.png" onclick="makeURL('url')">
         <img class="format_button" src="/static/button_img.png" onclick="makeIMG('img')">
     </div>
-    {{form_message.message(placeholder='Enter your text here', class='form_message', onkeyup="PostingFormUnmark(this)")}}
-    <input class="submit_button" type="submit" value="Post">
+    {{form_message.message(placeholder='Enter your text here', class='normal', onkeyup="PostingFormUnmark(this)")}}
+    <input class="submit" type="submit" value="Post">
 </form>
 {% endif %}
 

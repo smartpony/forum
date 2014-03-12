@@ -1,7 +1,8 @@
 ﻿{% extends "base.html" %}
 
-{% block title %}
+{% block head %}
     <title>Mail: {{message.subject}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/mail_read.css">
 {% endblock %}
 
 
@@ -9,14 +10,14 @@
 <h1>{{message.subject}}</h1>
 
 <div class="mr_message_body">
-    <div class="mr_message_info">
-        from <a class="mr_sender" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>,
+    <div class="tiny">
+        from <a class="tiny" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>,
         {{message.date.strftime('%H:%M, %d %b %Y')}}
     </div>
     <hr>
-    <div class="mr_message_text">{{message.text|safe}}</div>
+    <div class="message_text normal">{{message.text|safe}}</div>
 </div>
 
-<a class="mr_new" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject)}}">Reply</a>
+<a class="button" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject)}}">Reply</a>
 
 {% endblock %}

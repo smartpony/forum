@@ -25,9 +25,9 @@ class User(db.Model):
     # Почта
     email = db.Column(db.Text, nullable=False)
     # Город
-    city = db.Column(db.Text, default='unknouwn')
+    city = db.Column(db.Text, default='unknown')
     # Страна
-    country = db.Column(db.Text, default='unknouwn')
+    country = db.Column(db.Text, default='unknown')
     # Аватар, 0 - /static/avatar/system_anonymous.jpg,
     # 1 - /static/avatar/user_username.ext
     db_avatar = db.Column(db.Boolean, default=False)

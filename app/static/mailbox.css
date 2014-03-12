@@ -1,119 +1,37 @@
 ﻿/* ЛИЧНЫЕ СООБЩЕНИЯ */
 
 /* Выбор ящика */
-div.mb_box_select {
+.box_select {
  margin: 10px 10px 15px 10px;
 }
 
-a.mb_box_item {
+.box_item {
  padding: 3px 6px;
- font-size: 16px;
- color: #ffffff;
- text-decoration: none;
  background: #707070;
 }
 
-a.mb_box_item:hover {
+.box_item:hover {
  background: #7c7c7c;
 }
 
-a.mb_box_item_selected {
- padding: 3px 6px;
- font-size: 16px;
- color: #ffffff;
- text-decoration: none;
+.selected {
  background: #5ba7e9;
 }
 
-a.mb_box_item_selected:hover {
+.selected:hover {
  background: #6ab1eb;
-}
-
-/* Строки таблицы (заголовок, тёмное, светлое) */
-div.mb_table_head {
- margin: 0px 10px;
- padding: 8px;
- background: #707070;
-}
-
-div.mb_table_dark {
- margin: 0px 10px;
- padding: 8px;
- background: #ebebeb;
-}
-
-div.mb_table_light {
- margin: 0px 10px;
- padding: 8px;
- background: #f8f8f8;
-}
-
-/* Текст в ячейках заголовка */
-div.mb_table_head_main {
- display: inline-table;
- width: 61%;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.mb_table_head_archive {
- display: inline-table;
- width: 18%;
- font-size: 16px;
- text-align: center;
- color: #ffffff;
-}
-
-div.mb_table_head_trash {
- display: inline-table;
- width: 18%;
- font-size: 16px;
- text-align: center;
- color: #ffffff;
 }
 
 /* Разметка столбцов */
-div.mb_table_main {
+.table_main {
  display: inline-table;
  width: 61%;
  vertical-align: middle;
 }
 
-div.mb_table_archive {
+.table_move {
  display: inline-table;
  width: 18%;
  vertical-align: middle;
  text-align: center;
-}
-
-div.mb_table_trash {
- display: inline-table;
- width: 18%;
- vertical-align: middle;
- text-align: center;
-}
-
-/* Текст в ячейках таблицы */
-div.mb_message_select {
- padding-left: 0px;
- line-height: 22px;
- font-size: 15px;
-}
-
-/* Создать новое сообщение */
-a.mb_new {
- display: inline-block;
- margin: 10px;
- padding: 4px;
- width: 142px;
- font-size: 14px;
- text-align: center;
- color: #ffffff;
- cursor: pointer;
- text-decoration: none;
- background: #5ba7e9;
-}
-
-a.mb_new:hover {
- background: #6ab1eb;
 }

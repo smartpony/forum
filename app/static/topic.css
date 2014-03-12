@@ -1,59 +1,37 @@
 ﻿/* ТЕМА */
 
-a.t_delete_topic {
- margin-left: 0px;
- display: inline;
- font-size: 10px;
- color: #980000;
- font-weight: normal;
- text-decoration: none;
+.avatar {
+ float: left;
+ padding: 12px 5px 5px 5px;
+ width: 50px;
 }
 
-div.t_message_block {
- display: left;
+.message_block {
  margin-left: 65px;
  margin-bottom: 10px;
  border: 1px dashed #888888;
  background: #eeeeee;
 }
 
-div.t_avatar {
- float: left;
- padding: 12px 5px 5px 5px;
- width: 50px;
-}
-
-div.t_message_body {
+.message_body {
  padding: 8px;
 }
 
-div.t_message_info {
+.message_info {
  display: inline-table;
  width: 80%;
- font-size: 10px;
 }
 
-div.t_message_options {
+.message_options {
  display: inline-table;
  width: 19%;
  text-align: right;
- font-size: 10px;
 }
 
-div.t_message_text {
+.message_text {
  white-space: pre-wrap;
- font-size: 16px;
 }
 
-a.t_edit_del {
+.edit_del {
  margin-left: 8px;
- font-size: 10px;
- color: #980000;
- text-decoration: none;
-}
-
-a.t_message_number {
- font-size: 10px;
- color: #294aa6;
- text-decoration: none;
 }

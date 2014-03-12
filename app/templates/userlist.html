@@ -1,64 +1,67 @@
 ﻿{% extends "base.html" %}
 
-{% block title %}
+{% block head %}
     <title>Users list</title>
+    <link rel="stylesheet" type="text/css" href="/static/userlist.css">
 {% endblock %}
 
 {% block content %}
 <h1>Users</h1>
 
-<div class="ul_table_head">
-    <div class="ul_table_head_login">
+<div class="table_line darkest">
+    <div class="table_login normal white">
         Login
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='login', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='login', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
+        <a href="{{url_for('userlist', sort='login', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a href="{{url_for('userlist', sort='login', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
-    <div class="ul_table_head_last_seen">
+    <div class="table_detail normal white">
         Last seen
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='last_seen', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='last_seen', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
+        <a href="{{url_for('userlist', sort='last_seen', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a href="{{url_for('userlist', sort='last_seen', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
-    <div class="ul_table_head_reg_date">
+    <div class="table_detail normal white">
         Registered
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='reg_date', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='reg_date', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
+        <a href="{{url_for('userlist', sort='reg_date', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a href="{{url_for('userlist', sort='reg_date', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
-    <div class="ul_table_head_topic_count">
+    <div class="table_detail normal white">
         Topics
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='topics', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='topics', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
+        <a href="{{url_for('userlist', sort='topics', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a href="{{url_for('userlist', sort='topics', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
-    <div class="ul_table_head_message_count">
+    <div class="table_detail normal white">
         Messages
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='messages', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a class="ul_table_head_order" href="{{url_for('userlist', sort='messages', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
+        <a href="{{url_for('userlist', sort='messages', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
+        <a href="{{url_for('userlist', sort='messages', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
     </div>
 </div>
 
 {% for user in users_list[pagination.first:pagination.last] %}
-<div class="ul_table_{{loop.cycle('light', 'dark')}}">
-    {% if user.role == 2 %}
-    <a class="ul_table_login_user" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
+<div class="table_line {{loop.cycle('light', 'dark')}}">
+    <div class="table_login">
+    {% if user.role < 2 %}
+        <b><a class="normal" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a></b>
     {% else %}
-    <a class="ul_table_login_admin" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
+        <a class="normal" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
     {% endif %}
-    <div class="ul_table_last_seen">{{user.last_seen.strftime('%d %b %Y')}}</div>
-    <div class="ul_table_reg_date">{{user.reg_date.strftime('%d %b %Y')}}</div>
-    <div class="ul_table_topic_count">{{user.topic_count}}</div>
-    <div class="ul_table_message_count">{{user.message_count}}</div>
+    </div>
+    <div class="table_detail normal">{{user.last_seen.strftime('%d %b %Y')}}</div>
+    <div class="table_detail normal">{{user.reg_date.strftime('%d %b %Y')}}</div>
+    <div class="table_detail normal">{{user.topic_count}}</div>
+    <div class="table_detail normal">{{user.message_count}}</div>
 </div>
 {% endfor %}
 
-<div class="c_pages">
-    <a class="c_page_firstlast" href="{{url_for('userlist', page=1)}}">First</a>
+<div class="pages">
+    <a class="page_firstlast" href="{{url_for('userlist', page=1)}}">First</a>
 {% for page_number in pagination.pages_list %}
     {% if page_number == pagination.page %}
-    <a class="c_current_page_number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
+    <a class="current_page_number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
     {% else %}
-    <a class="c_page_number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
+    <a class="page_number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
     {% endif %}
 {% endfor %}
-    <a class="c_page_firstlast" href="{{url_for('userlist', page=pagination.pages)}}">Last</a>
+    <a class="page_firstlast" href="{{url_for('userlist', page=pagination.pages)}}">Last</a>
 </div>
 
 {% endblock %}

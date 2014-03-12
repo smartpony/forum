@@ -1,93 +1,32 @@
 ﻿/* СПИСОК ТЕМ */
 
-/* Строки таблицы (заголовок, тёмное, светлое) */
-div.f_table_head {
- margin: 0px 10px;
- padding: 8px;
- background: #707070;
+/* Столбцы таблицы */
+.table_head {
+ margin-right: 55px;
 }
 
-div.f_table_dark {
- margin: 0px 10px;
- padding: 8px 4px;
- background: #ebebeb;
-}
-
-div.f_table_light {
- margin: 0px 10px;
- padding: 8px;
- background: #f8f8f8;
-}
-
-/* Текст в ячейках заголовка */
-div.f_table_head_main {
+.table_avatar {
  display: inline-table;
- width: 61%;
  vertical-align: middle;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.f_table_head_counters {
- display: inline-table;
- width: 18%;
- vertical-align: middle;
- text-align: center;
- font-size: 16px;
- color: #ffffff;
-}
-
-div.f_table_head_editor {
- display: inline-table;
- width: 18%;
- vertical-align: middle;
- text-align: center;
- font-size: 16px;
- color: #ffffff;
-}
-
-/* Разметка столбцов */
-div.f_table_avatar {
- display: inline-table;
  width: 55px;
- text-align: center;
+}
+
+.table_main {
+ display: inline-table;
+ width: 57%;
  vertical-align: middle;
 }
 
-div.f_table_main {
+.table_counters {
  display: inline-table;
- width: 61%;
- vertical-align: middle;
-}
-
-div.f_table_counters {
- display: inline-table;
- width: 16%;
+ width: 15%;
  vertical-align: middle;
  text-align: center;
 }
 
-div.f_table_editor {
+.table_editor {
  display: inline-table;
- width: 16%;
+ width: 15%;
  vertical-align: middle;
  text-align: center;
- font-size: 14px;
-}
-
-/* Текст в ячейках таблицы */
-div.f_message_counter {
- line-height: 22px;
- font-size: 15px;
-}
-
-div.f_view_counter {
- font-size: 10px;
-}
-
-a.f_editor {
- line-height: 22px;
- font-size: 15px;
- color: #294aa6;
- text-decoration: none;
 }

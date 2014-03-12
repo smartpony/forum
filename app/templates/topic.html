@@ -1,61 +1,60 @@
 ﻿{% extends "base.html" %}
 
-{% block title %}
+{% block head %}
     <title>Topic: {{topic.name}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/topic.css">
 {% endblock %}
 
 {% block content %}
 <h1>{{topic.name}}
 {% if topic.author == current_user or current_user.role < 2 %}
-<a class="t_delete_topic" href="{{url_for('delete_topic', topic_id=topic.id)}}">(delete)</a>
+<sup><a href="{{url_for('delete_topic', topic_id=topic.id)}}"><img src="/static/icon_del.png"></a><sup>
 {% endif %}
 </h1>
 
 <hr>
 
 {% for message in topic.message[pagination.first:pagination.last] %}
+<div class="avatar">
+    <a href="{{url_for('user_profile', user_id=message.author.id)}}">
+        <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
+    </a>
+</div>
 
-    <div class="t_avatar">
-        <a href="{{url_for('user_profile', user_id=message.author.id)}}">
-            <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
-        </a>
-    </div>
-
-<div class="t_message_block">
-
-    <div class="t_message_body" id="{{loop.index}}">
-        <div class="t_message_info"><a class="t_message_number" href="{{request.url}}#{{loop.index}}">#{{loop.index}}:</a>
-            posted by <a class="c_user" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
+<div class="message_block">
+    <div class="message_body" id="{{loop.index}}">
+        <div class="message_info tiny"><a class="tiny" href="{{request.url}}#{{loop.index}}">#{{loop.index}}:</a>
+            posted by <a class="tiny" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
             {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
             edited
             {% if message.editor and message.editor != message.author %}
-            by <a class="c_user" href="{{url_for('user_profile', user_id=message.editor_id)}}">{{message.editor.login}}</a>
+            by <a class="tiny" href="{{url_for('user_profile', user_id=message.editor_id)}}">{{message.editor.login}}</a>
             {% endif %}
             at {{message.date_edit.strftime('%H:%M, %d %b %Y')}}
             {% endif %}
         </div>
         {% if message.author == current_user or current_user.role < 2 %}
-        <div class="t_message_options">
-            <a class="t_edit_del" href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
-            <a class="t_edit_del" href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
+        <div class="message_options tiny">
+            <a class="edit_del tiny red" href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
+            <a class="edit_del tiny red" href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
         </div>
         {% endif %}
         <hr>
-        <div class="t_message_text">{{message.text|safe}}</div>
+        <div class="message_text normal">{{message.text|safe}}</div>
     </div>
 </div>
 {% endfor %}
 
-<div class="c_pages">
-    <a class="c_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=1)}}">First</a>
+<div class="pages">
+    <a class="page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=1)}}">First</a>
 {% for page_number in pagination.pages_list %}
     {% if page_number == pagination.page %}
-    <a class="c_current_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    <a class="current_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
     {% else %}
-    <a class="c_page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    <a class="page_number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
     {% endif %}
 {% endfor %}
-    <a class="c_page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">Last</a>
+    <a class="page_firstlast" href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">Last</a>
 </div>
 
 <hr>
@@ -70,8 +69,8 @@
         <img class="format_button" src="/static/button_url.png" onclick="makeURL('url')">
         <img class="format_button" src="/static/button_img.png" onclick="makeIMG('img')">
     </div>
-    {{form_message.message(placeholder='Enter your text here', class="form_message", onkeyup="PostingFormUnmark(this)")}}
-    <input class="submit_button" type="submit" value="Post">
+    {{form_message.message(placeholder='Enter your text here', class="normal", onkeyup="PostingFormUnmark(this)")}}
+    <input class="submit" type="submit" value="Post">
 </form>
 {% endif %}
 

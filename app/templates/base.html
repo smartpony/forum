@@ -1,18 +1,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    {% block title %}{% endblock %}
+    {% block head %}{% endblock %}
     <link rel="stylesheet" type="text/css" href="/static/common.css">
     <link rel="stylesheet" type="text/css" href="/static/base.css">
     <link rel="stylesheet" type="text/css" href="/static/form.css">
-    <link rel="stylesheet" type="text/css" href="/static/forum.css">
-    <link rel="stylesheet" type="text/css" href="/static/topic.css">
-    <link rel="stylesheet" type="text/css" href="/static/userlist.css">
-    <link rel="stylesheet" type="text/css" href="/static/profile.css">
-    <link rel="stylesheet" type="text/css" href="/static/profile_edit.css">
-    <link rel="stylesheet" type="text/css" href="/static/mailbox.css">
-    <link rel="stylesheet" type="text/css" href="/static/mail_read.css">
-    <link rel="stylesheet" type="text/css" href="/static/mail_write.css">
     <link rel="shortcut icon" href="/static/icon_main.png">
     <script type="text/javascript" src="/static/js/validation.js"></script>
     <script type="text/javascript" src="/static/js/format.js"></script>
@@ -20,25 +12,25 @@
 </head>
 <body>
 
-<div class="b_header">
-    <a class="b_header" href="{{url_for('forum')}}">Forum</a>
-    <a class="b_header" href="{{url_for('userlist')}}">Users</a>
+<div class="header">
+    <a class="header" href="{{url_for('forum')}}">Forum</a>
+    <a class="header" href="{{url_for('userlist')}}">Users</a>
     {% if user.is_authenticated() %}
-    <a class="b_header" href="{{url_for('my_profile')}}">Profile</a>
-    <a class="b_header" href="{{url_for('mailbox')}}">Mail</a>
+    <a class="header" href="{{url_for('my_profile')}}">Profile</a>
+    <a class="header" href="{{url_for('mailbox')}}">Mail</a>
     {% endif %}
 
-    <div class="b_header_login">
+    <div class="header_login">
         {% if user.is_authenticated() %}
-        <a class="b_header" href="{{url_for('logout')}}">Logout ({{user.login}})</a>
+        <a class="header" href="{{url_for('logout')}}">Logout ({{user.login}})</a>
         {% else %}
-        <a class="b_header" href="{{url_for('login')}}">Login</a>
-        <a class="b_header" href="{{url_for('register')}}">Register</a>
+        <a class="header" href="{{url_for('login')}}">Login</a>
+        <a class="header" href="{{url_for('register')}}">Register</a>
         {% endif %}
     </div>
 </div>
 
-<div class="b_body">
+<div class="content">
   {% block content %}{% endblock %}
 </div>
 

@@ -1,7 +1,7 @@
 ﻿/* НОВОЕ ЛИЧНОЕ СООБЩЕНИЕ */
 
 /* Диалог выбора пользователя */
-#mw_dialog_overlay {
+#overlay {
  display: none;
  opacity: 0.6;
  position: fixed;
@@ -12,7 +12,7 @@
  width: 100%;
 }
 
-#mw_dialog_box {
+#dialogbox {
  display: none;
  position: absolute;
  left: 40%;
@@ -25,35 +25,12 @@
  background: #eeeeee;
 }
 
-div.mw_select_header {
- margin-bottom: 10px;
- font-size: 16px;
- font-weight: bold;
-}
-
-#mw_dialog_input {
- margin-left: 0px;
- margin-bottom: 10px;
+#dialog_input {
+ margin: 10px 0px;
  width: 200px;
 }
 
-#mw_dialog_select {
+#dialog_select {
  width: 200px;
  margin-bottom: 10px;
-}
-
-div.mw_dialog_close {
- display: inline-block;
- margin: 10px;
- padding: 4px;
- width: 142px;
- font-size: 14px;
- text-align: center;
- color: #ffffff;
- cursor: pointer;
- background: #5ba7e9;
-}
-
-div.mw_dialog_close:hover {
- background: #6ab1eb;
 }

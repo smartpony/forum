@@ -1,25 +1,24 @@
 ﻿{% extends "base.html" %}
 
-{% block title %}
+{% block head %}
     <title>User: {{profile.login}}</title>
+    <link rel="stylesheet" type="text/css" href="/static/profile.css">
 {% endblock %}
 
 {% block content %}
-<h1>Profile</h1>
+<h1>{{profile.login}}
+{% if user == profile %}
+<sup><a href="{{url_for('edit_profile')}}"><img src="/static/icon_del.png"></a><sup>
+{% endif %}
+</h1>
 
 <hr>
 
-<div class="p_avatar"><img src="{{profile.avatar}}"></div>
+<div class="avatar_block"><img src="{{profile.avatar}}"></div>
 
-<div class="p_info_block">
-    <div class="p_info_login">{{profile.login}}</div>
-
-    {% if user == profile %}
-    <a class="p_info_edit" href="{{url_for('edit_profile')}}">(edit profile)</a>
-    {% endif %}
-    
-    <div class="p_info_text">
-        <div class="p_info_text_var">
+<div class="info_block">
+    <div class="info_text">
+        <div class="info_text_name normal">
             Role:<br>
             City:<br>
             Country:<br>
@@ -29,8 +28,8 @@
             Registered:<br>
             Last seen:
         </div>
-        
-        <div class="p_info_text_value">
+
+        <div class="info_text_value normal">
             {% if profile.role == 0 %}
             admin<br>
             {% elif profile.role == 1 %}

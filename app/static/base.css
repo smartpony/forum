@@ -6,12 +6,12 @@ body {
  color: #505050;
 }
 
-div.b_header {
+div.header {
  padding: 5px;
  background: #5ba7e9;
 }
 
-a.b_header {
+a.header {
  margin-left: 10px;
  font-size: 14px;
  color: #ffffff;
@@ -19,17 +19,17 @@ a.b_header {
  text-decoration: none;
 }
 
-a.b_header:hover {
+a.header:hover {
  text-decoration: underline;
 }
 
-div.b_header_login {
+div.header_login {
  margin-right: 10px;
  display: inline-block;
  float: right;
 }
 
-div.b_body {
+div.content {
  margin: 5px;
 }
 
