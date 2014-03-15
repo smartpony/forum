@@ -6,7 +6,7 @@
  text-align: center;
 }
 
-.page_number {
+.page-number {
  padding: 3px 6px;
  font-size: 12px;
  color: #ffffff;
@@ -14,11 +14,11 @@
  background: #707070;
 }
 
-.page_number:hover {
+.page-number:hover {
  background: #7c7c7c;
 }
 
-.current_page_number {
+.current-page-number {
  padding: 3px 6px;
  font-size: 12px;
  color: #ffffff;
@@ -26,11 +26,11 @@
  background: #5ba7e9;
 }
 
-.current_page_number:hover {
+.current-page-number:hover {
  background: #6ab1eb;
 }
 
-.page_firstlast {
+.page-firstlast {
  margin: 10px;
  padding: 3px 6px;
  font-size: 12px;
@@ -39,7 +39,7 @@
  background: #707070;
 }
 
-.page_firstlast:hover {
+.page-firstlast:hover {
  background: #7c7c7c;
 }
 
@@ -88,7 +88,7 @@ a.tiny {
 }
 
 /* Строки таблицы (заголовок, тёмное, светлое) */
-.table_line {
+.table-line {
  margin: 0px 10px;
  padding: 8px;
 }

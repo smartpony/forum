@@ -1,13 +1,13 @@
 ﻿/* СПИСОК ПОЛЬЗОВАТЕЛЕЙ */
 
 /* Разметка столбцов */
-.table_login {
+.table-login {
  display: inline-table;
  width: 36%;
  vertical-align: middle;
 }
 
-.table_detail {
+.table-detail {
  display: inline-table;
  width: 15%;
  vertical-align: middle;

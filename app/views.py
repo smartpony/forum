@@ -67,8 +67,7 @@ class Pagination(object):
         else:
             return((self.page-1)*self.per_page)
 
-    # Номер последнего элемента (+1) для страницы
-    # +1 - чтобы не писать при вызове [first:last+1]
+    # Номер последнего элемента
     @property
     def last(self):
         if self.page == self.pages:

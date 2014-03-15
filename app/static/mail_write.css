@@ -25,12 +25,12 @@
  background: #eeeeee;
 }
 
-#dialog_input {
+#dialog-input {
  margin: 10px 0px;
  width: 200px;
 }
 
-#dialog_select {
+#dialog-select {
  width: 200px;
  margin-bottom: 10px;
 }

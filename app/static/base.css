@@ -23,7 +23,7 @@ a.header:hover {
  text-decoration: underline;
 }
 
-div.header_login {
+div.header-login {
  margin-right: 10px;
  display: inline-block;
  float: right;

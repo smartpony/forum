@@ -11,18 +11,18 @@
 <hr>
 
 <form action="" method="post" name="edit" enctype=multipart/form-data onSubmit="return ProfileFormValidate()">
-    <div class="avatar_block">
+    <div class="avatar-block">
         <div class="avatar"><img src="{{user.avatar}}"></div>
-        <div class="avatar_wrap">
-            <div class="avatar_button_text">change</div>
-            {{profile_form.avatar(class="avatar_button", onChange="ShowAvatarName()")}}
+        <div class="avatar-wrap">
+            <div class="avatar-button-text">change</div>
+            {{profile_form.avatar(class="avatar-button", onChange="ShowAvatarName()")}}
         </div>
         <div class="tiny" id="new_avatar"></div>
     </div>
 
-    <div class="info_block">
-        <div class="info_text">
-            <div class="info_text_name normal">
+    <div class="info-block">
+        <div class="info-text">
+            <div class="info-text-name normal">
                 Role:<br>
                 City:<br>
                 Country:<br>
@@ -33,7 +33,7 @@
                 Last seen:
             </div>
 
-            <div class="info_text_value normal">
+            <div class="info-text-value normal">
                 {% if current_user.role == 0 %}
                 admin<br>
                 {% elif current_user.role == 1 %}
@@ -41,9 +41,9 @@
                 {% else %}
                 user<br>
                 {% endif %}
-                {{profile_form.city(class="edit_field", value=current_user.city)}}
-                {{profile_form.country(class="edit_field", value=current_user.country)}}
-                {{profile_form.email(class="edit_field last", value=current_user.email)}}
+                {{profile_form.city(class="edit-field", value=current_user.city)}}
+                {{profile_form.country(class="edit-field", value=current_user.country)}}
+                {{profile_form.email(class="edit-field last", value=current_user.email)}}
                 {{current_user.topic_count}}<br>
                 {{current_user.message_count}}<br>
                 {{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}<br>

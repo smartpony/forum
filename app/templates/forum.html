@@ -8,28 +8,28 @@
 {% block content %}
 <h1>Forum</h1>
 
-<div class="table_line darkest">
-    <div class="table_main table_head normal white">Topic</div>
-    <div class="table_counters normal white">Replies and views</div>
-    <div class="table_editor normal white">Last post</div>
+<div class="table-line darkest">
+    <div class="table-main table-head normal white">Topic</div>
+    <div class="table-counters normal white">Replies and views</div>
+    <div class="table-editor normal white">Last post</div>
 </div>
 
 {% for topic in all_topics[pagination.first:pagination.last] %}
-<div class="table_line {{loop.cycle('light', 'dark')}}">
-    <div class="table_avatar">
+<div class="table-line {{loop.cycle('light', 'dark')}}">
+    <div class="table-avatar">
         <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
             <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
         </a>
     </div>
-    <div class="table_main">
+    <div class="table-main">
         <a class="big" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
         <div class="tiny">posted by <a class="tiny" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
     </div>
-    <div class="table_counters">
+    <div class="table-counters">
         <div class="normal">replies: {{topic.mes_count-1}}</div>
         <div class="tiny">views: {{topic.ForumTopic.views}}</div>
     </div>
-    <div class="table_editor">
+    <div class="table-editor">
         {% if topic.ForumTopic.editor.id != Null %}
         <div class="normal">by </div><a class="normal" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
         <div class="tiny">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
@@ -41,15 +41,15 @@
 {% endfor %}
 
 <div class="pages">
-    <a class="page_firstlast" href="{{url_for('forum', page=1)}}">First</a>
+    <a class="page-firstlast" href="{{url_for('forum', page=1)}}">First</a>
 {% for page_number in pagination.pages_list %}
     {% if page_number == pagination.page %}
-    <a class="current_page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    <a class="current-page-number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
     {% else %}
-    <a class="page_number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    <a class="page-number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
     {% endif %}
 {% endfor %}
-    <a class="page_firstlast" href="{{url_for('forum', page=pagination.pages)}}">Last</a>
+    <a class="page-firstlast" href="{{url_for('forum', page=pagination.pages)}}">Last</a>
 </div>
 
 <hr>
@@ -59,12 +59,12 @@
     {{form_topic.hidden_tag()}}
     {{form_message.hidden_tag()}}
     {{form_topic.topic(placeholder='New topic', class='normal', onkeyup="PostingFormUnmark(this)")}}
-    <div class="format_block">
-        <img class="format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
-        <img class="format_button" src="/static/button_italic.png" onclick="makeFormated('i')">
-        <img class="format_button" src="/static/button_underlined.png" onclick="makeFormated('u')">
-        <img class="format_button" src="/static/button_url.png" onclick="makeURL('url')">
-        <img class="format_button" src="/static/button_img.png" onclick="makeIMG('img')">
+    <div class="format-block">
+        <img class="format-button" src="/static/button_bold.png" onclick="makeFormated('b')">
+        <img class="format-button" src="/static/button_italic.png" onclick="makeFormated('i')">
+        <img class="format-button" src="/static/button_underlined.png" onclick="makeFormated('u')">
+        <img class="format-button" src="/static/button_url.png" onclick="makeURL('url')">
+        <img class="format-button" src="/static/button_img.png" onclick="makeIMG('img')">
     </div>
     {{form_message.message(placeholder='Enter your text here', class='normal', onkeyup="PostingFormUnmark(this)")}}
     <input class="submit" type="submit" value="Post">

@@ -22,12 +22,12 @@
     {% else %}
         {{form_subject.topic(placeholder='Subject', class='normal', onkeyup='PostingFormUnmark(this)')}}
     {% endif %}
-    <div class="format_block">
-        <img class="format_button" src="/static/button_bold.png" onclick="makeFormated('b')">
-        <img class="format_button" src="/static/button_italic.png" onclick="makeFormated('i')">
-        <img class="format_button" src="/static/button_underlined.png" onclick="makeFormated('u')">
-        <img class="format_button" src="/static/button_url.png" onclick="makeURL('url')">
-        <img class="format_button" src="/static/button_img.png" onclick="makeIMG('img')">
+    <div class="format-block">
+        <img class="format-button" src="/static/button_bold.png" onclick="makeFormated('b')">
+        <img class="format-button" src="/static/button_italic.png" onclick="makeFormated('i')">
+        <img class="format-button" src="/static/button_underlined.png" onclick="makeFormated('u')">
+        <img class="format-button" src="/static/button_url.png" onclick="makeURL('url')">
+        <img class="format-button" src="/static/button_img.png" onclick="makeIMG('img')">
     </div>
     {{form_message.message(placeholder='Enter your text here', class="normal", onkeyup="PostingFormUnmark(this)")}}
     <input class="submit" type="submit" value="Send">
@@ -36,8 +36,8 @@
 <div id="overlay"></div>
 <div id="dialogbox">
     <div class="big">Select recepient</div>
-    <input id="dialog_input" type="text" onkeyup="selectSearch()">
-    <select id="dialog_select" size="8" onclick="selectUser(this)" ondblclick="selectUserClose()">
+    <input id="dialog-input" type="text" onkeyup="selectSearch()">
+    <select id="dialog-select" size="8" onclick="selectUser(this)" ondblclick="selectUserClose()">
         {% for user in all_users %}
         <option>{{user.login}}</option>
         {% endfor %}

@@ -6,32 +6,32 @@
  width: 50px;
 }
 
-.message_block {
+.message-block {
  margin-left: 65px;
  margin-bottom: 10px;
  border: 1px dashed #888888;
  background: #eeeeee;
 }
 
-.message_body {
+.message-body {
  padding: 8px;
 }
 
-.message_info {
+.message-info {
  display: inline-table;
  width: 80%;
 }
 
-.message_options {
+.message-options {
  display: inline-table;
  width: 19%;
  text-align: right;
 }
 
-.message_text {
+.message-text {
  white-space: pre-wrap;
 }
 
-.edit_del {
+.edit-del {
  margin-left: 8px;
 }

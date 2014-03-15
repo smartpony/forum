@@ -1,30 +1,30 @@
 ﻿/* СПИСОК ТЕМ */
 
 /* Столбцы таблицы */
-.table_head {
+.table-head {
  margin-right: 55px;
 }
 
-.table_avatar {
+.table-avatar {
  display: inline-table;
  vertical-align: middle;
  width: 55px;
 }
 
-.table_main {
+.table-main {
  display: inline-table;
  width: 57%;
  vertical-align: middle;
 }
 
-.table_counters {
+.table-counters {
  display: inline-table;
  width: 15%;
  vertical-align: middle;
  text-align: center;
 }
 
-.table_editor {
+.table-editor {
  display: inline-table;
  width: 15%;
  vertical-align: middle;

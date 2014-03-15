@@ -1,16 +1,16 @@
 ﻿/* ЛИЧНЫЕ СООБЩЕНИЯ */
 
 /* Выбор ящика */
-.box_select {
+.box-select {
  margin: 10px 10px 15px 10px;
 }
 
-.box_item {
+.box-item {
  padding: 3px 6px;
  background: #707070;
 }
 
-.box_item:hover {
+.box-item:hover {
  background: #7c7c7c;
 }
 
@@ -23,13 +23,13 @@
 }
 
 /* Разметка столбцов */
-.table_main {
+.table-main {
  display: inline-table;
  width: 61%;
  vertical-align: middle;
 }
 
-.table_move {
+.table-move {
  display: inline-table;
  width: 18%;
  vertical-align: middle;

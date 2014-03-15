@@ -1,7 +1,7 @@
 ﻿/* ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ */
 
 /* Аватар (в т.ч. на странице редактирования) */
-.avatar_block {
+.avatar-block {
  display: inline-table;
  vertical-align: top;
  margin: 7px 10px;
@@ -13,7 +13,7 @@
  border: 1px solid #888888;
 }
 
-.avatar_wrap {
+.avatar-wrap {
  margin-top: 5px;
  margin-bottom: 5px;
  overflow: hidden;
@@ -25,15 +25,15 @@
  background: #5ba7e9;
 }
 
-.avatar_wrap:hover {
+.avatar-wrap:hover {
  background: #6ab1eb;
 }
 
-.avatar_button_text {
+.avatar-button-text {
  margin-top: 3px;
 }
 
-input.avatar_button {
+input.avatar-button {
  font-size: 30;
  margin-top: -30px;
  margin-left: -30px;
@@ -42,28 +42,28 @@ input.avatar_button {
 
 /* Информация */
 
-.info_block {
+.info-block {
  display: inline-table;
  margin: 3px;
 }
 
-.info_text {
+.info-text {
  margin-bottom: 23px;
  vertical-align: top;
 }
 
-.info_text_name {
+.info-text-name {
  display: inline-table;
  margin: 0px 50px 0px 0px;
 }
 
-.info_text_value {
+.info-text-value {
  display: inline-table;
  margin: 0px;
 }
 
 /* Поля изменения профиля */
-input.edit_field {
+input.edit-field {
  display: block;
  margin: 0px 0px 2px 0px;
  height: 21px;

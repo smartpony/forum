@@ -1,12 +1,12 @@
 ﻿/* ЛИЧНОЕ СООБЩЕНИЕ НА ОТДЕЛЬНОЙ СТРАНИЦЕ */
 
-.mr_message_body {
+.message-body {
  margin: 10px;
  padding: 8px;
  border: 1px dashed #888888;
  background: #eeeeee;
 }
 
-.message_text {
+.message-text {
  white-space: pre-wrap;
 }

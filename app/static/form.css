@@ -28,11 +28,11 @@ input.submit:hover {
 }
 
 /* Кнопки форматирования сообщений */
-.format_block {
+.format-block {
  margin: 5px 0px 0px 10px;
 }
 
-.format_button:hover {
+.format-button:hover {
  cursor: pointer;
  opacity: 0.85;
 }

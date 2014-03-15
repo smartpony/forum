@@ -20,7 +20,7 @@
     <a class="header" href="{{url_for('mailbox')}}">Mail</a>
     {% endif %}
 
-    <div class="header_login">
+    <div class="header-login">
         {% if user.is_authenticated() %}
         <a class="header" href="{{url_for('logout')}}">Logout ({{user.login}})</a>
         {% else %}
