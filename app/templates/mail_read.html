@@ -18,6 +18,6 @@
     <div class="message-text normal">{{message.text|safe}}</div>
 </div>
 
-<a class="button" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject)}}">Reply</a>
+<a class="btn btn-primary" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject)}}">Reply</a>
 
 {% endblock %}

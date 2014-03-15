@@ -2,7 +2,6 @@
 
 {% block head %}
     <title>Edit profile</title>
-    <link rel="stylesheet" type="text/css" href="/static/profile.css">
 {% endblock %}
 
 {% block content %}
@@ -10,47 +9,47 @@
 
 <hr>
 
-<form action="" method="post" name="edit" enctype=multipart/form-data onSubmit="return ProfileFormValidate()">
-    <div class="avatar-block">
-        <div class="avatar"><img src="{{user.avatar}}"></div>
-        <div class="avatar-wrap">
-            <div class="avatar-button-text">change</div>
+<form action="" method="post" name="edit" enctype=multipart/form-data>
+
+    <div class="row">
+        <div class="col-md-2">
+            <img src="{{user.avatar}}">
             {{profile_form.avatar(class="avatar-button", onChange="ShowAvatarName()")}}
         </div>
-        <div class="tiny" id="new_avatar"></div>
+
+        <div class="col-md-1">
+            <p>Role:</p>
+            <p>City:</p>
+            <p>Country:</p>
+            <p>E-mail:</p>
+            <p>Topics:</p>
+            <p>Messages:</p>
+            <p>Registered:</p>
+            <p>Last seen:
+        </div>
+
+        <div class="col-md-9">
+            {% if current_user.role == 0 %}
+            <p style="margin-bottom: 8px;">admin</p>
+            {% elif current_user.role == 1 %}
+            <p style="margin-bottom: 8px;">moderator</p>
+            {% else %}
+            <p style="margin-bottom: 8px;">user</p>
+            {% endif %}
+            <p style="margin-left: -2px; margin-bottom: 6px;">{{profile_form.city(value=current_user.city, style="line-height: 18px;")}}</p>
+            <p style="margin-left: -2px; margin-bottom: 6px;">{{profile_form.country(value=current_user.country, style="line-height: 18px;")}}</p>
+            <p style="margin-left: -2px; margin-bottom: 8px;">{{profile_form.email(value=current_user.email, style="line-height: 18px;")}}</p>
+            <p>{{current_user.topic_count}}</p>
+            <p>{{current_user.message_count}}</p>
+            <p>{{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}</p>
+            <p>{{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}</p>
+        </div>
     </div>
 
-    <div class="info-block">
-        <div class="info-text">
-            <div class="info-text-name normal">
-                Role:<br>
-                City:<br>
-                Country:<br>
-                E-mail:<br>
-                Topics:<br>
-                Messages:<br>
-                Registered:<br>
-                Last seen:
-            </div>
-
-            <div class="info-text-value normal">
-                {% if current_user.role == 0 %}
-                admin<br>
-                {% elif current_user.role == 1 %}
-                moderator<br>
-                {% else %}
-                user<br>
-                {% endif %}
-                {{profile_form.city(class="edit-field", value=current_user.city)}}
-                {{profile_form.country(class="edit-field", value=current_user.country)}}
-                {{profile_form.email(class="edit-field last", value=current_user.email)}}
-                {{current_user.topic_count}}<br>
-                {{current_user.message_count}}<br>
-                {{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}<br>
-                {{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}
-            </div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <input type="submit" class="btn btn-primary" value="Save" />
         </div>
-        <input class="submit" type="submit" value="save">
     </div>
 </form>
 

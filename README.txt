@@ -5,5 +5,3 @@ flask-wtf
 flask-login
 flask-migrate
 PIL
-
-test

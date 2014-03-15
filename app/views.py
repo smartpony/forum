@@ -490,9 +490,11 @@ def edit_profile():
         current_user.city = form.city.data
         current_user.country = form.country.data
         current_user.email = form.email.data
+        db.session.commit()
 
         # Загружен ли новый аватар
-        if form.avatar.data:
+        #if form.avatar.data:
+        if False:
             # Загруженный файл из HTTP POST
             file = request.files[form.avatar.name]
             # Проверить расширение файла

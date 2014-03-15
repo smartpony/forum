@@ -2,49 +2,48 @@
 
 {% block head %}
     <title>User: {{profile.login}}</title>
-    <link rel="stylesheet" type="text/css" href="/static/profile.css">
 {% endblock %}
 
 {% block content %}
 <h1>{{profile.login}}
 {% if user == profile %}
-<sup><a href="{{url_for('edit_profile')}}"><img src="/static/icon_del.png"></a><sup>
+<a href="{{url_for('edit_profile')}}"><sup><small><i class="glyphicon glyphicon-pencil"></i></small></sup></a>
 {% endif %}
 </h1>
 
 <hr>
 
-<div class="avatar-block"><img src="{{profile.avatar}}"></div>
+<div class="row">
+    <div class="col-md-2">
+        <img src="{{profile.avatar}}">
+    </div>
 
-<div class="info-block">
-    <div class="info-text">
-        <div class="info-text-name normal">
-            Role:<br>
-            City:<br>
-            Country:<br>
-            E-mail:<br>
-            Topics:<br>
-            Messages:<br>
-            Registered:<br>
-            Last seen:
-        </div>
+    <div class="col-md-1">
+        <p>Role:</p>
+        <p>City:</p>
+        <p>Country:</p>
+        <p>E-mail:</p>
+        <p>Topics:</p>
+        <p>Messages:</p>
+        <p>Registered:</p>
+        <p>Last seen:
+    </div>
 
-        <div class="info-text-value normal">
-            {% if profile.role == 0 %}
-            admin<br>
-            {% elif profile.role == 1 %}
-            moderator<br>
-            {% else %}
-            user<br>
-            {% endif %}
-            {{profile.city}}<br>
-            {{profile.country}}<br>
-            {{profile.email}}<br>
-            {{profile.topic_count}}<br>
-            {{profile.message_count}}<br>
-            {{profile.reg_date.strftime('%H:%M, %d %b %Y')}}<br>
-            {{profile.last_seen.strftime('%H:%M, %d %b %Y')}}
-        </div>
+    <div class="col-md-9">
+        {% if profile.role == 0 %}
+        <p>admin</p>
+        {% elif profile.role == 1 %}
+        <p>moderator</p>
+        {% else %}
+        <p>user</p>
+        {% endif %}
+        <p>{{profile.city}}</p>
+        <p>{{profile.country}}</p>
+        <p>{{profile.email}}</p>
+        <p>{{profile.topic_count}}</p>
+        <p>{{profile.message_count}}</p>
+        <p>{{profile.reg_date.strftime('%H:%M, %d %b %Y')}}</p>
+        <p>{{profile.last_seen.strftime('%H:%M, %d %b %Y')}}</p>
     </div>
 </div>
 
