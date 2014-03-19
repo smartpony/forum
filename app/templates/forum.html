@@ -2,72 +2,92 @@
 
 {% block head %}
     <title>Forum</title>
-    <link rel="stylesheet" type="text/css" href="/static/forum.css">
 {% endblock %}
 
 {% block content %}
 <h1>Forum</h1>
 
-<div class="table-line darkest">
-    <div class="table-main table-head normal white">Topic</div>
-    <div class="table-counters normal white">Replies and views</div>
-    <div class="table-editor normal white">Last post</div>
-</div>
+<hr>
 
-{% for topic in all_topics[pagination.first:pagination.last] %}
-<div class="table-line {{loop.cycle('light', 'dark')}}">
-    <div class="table-avatar">
-        <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
-            <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
-        </a>
-    </div>
-    <div class="table-main">
-        <a class="big" href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
-        <div class="tiny">posted by <a class="tiny" href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
-    </div>
-    <div class="table-counters">
-        <div class="normal">replies: {{topic.mes_count-1}}</div>
-        <div class="tiny">views: {{topic.ForumTopic.views}}</div>
-    </div>
-    <div class="table-editor">
-        {% if topic.ForumTopic.editor.id != Null %}
-        <div class="normal">by </div><a class="normal" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
-        <div class="tiny">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
-        {% else %}
-        no posts
-        {% endif %}
-    </div>
-</div>
-{% endfor %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Topic</th>
+            <th>Replies and views</th>
+            <th>Last post</th>
+        </tr>
+    </thead>
 
-<div class="pages">
-    <a class="page-firstlast" href="{{url_for('forum', page=1)}}">First</a>
-{% for page_number in pagination.pages_list %}
-    {% if page_number == pagination.page %}
-    <a class="current-page-number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
-    {% else %}
-    <a class="page-number" href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
-    {% endif %}
-{% endfor %}
-    <a class="page-firstlast" href="{{url_for('forum', page=pagination.pages)}}">Last</a>
-</div>
+    <tbody>
+        {% for topic in all_topics[pagination.first:pagination.last] %}
+        <tr>
+            <td>
+                <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
+                    <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
+                </a>
+            </td>
+            <td>
+                <a href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
+                posted by <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}
+            </td>
+            <td>
+                replies: {{topic.mes_count-1}}
+                views: {{topic.ForumTopic.views}}
+            </td>
+            <td>
+                {% if topic.ForumTopic.editor.id != Null %}
+                by <a class="normal" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
+                {{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}
+                {% else %}
+                no posts
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<ul class="pagination">
+    <li><a href="{{url_for('forum', page=1)}}">&laquo;</a></li>
+    {% for page_number in pagination.pages_list %}
+    <li{% if page_number == pagination.page %} class="active"{% endif %}>
+        <a href="{{url_for('forum', page=page_number)}}">{{page_number}}</a>
+    </li>
+    {% endfor %}
+    <li><a href="{{url_for('forum', page=pagination.pages)}}">&raquo;</a></li>
+</ul>
 
 <hr>
 
 {% if user.is_authenticated() %}
-<form method="post" onsubmit="return PostingFormValidate()">
+<form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
     {{form_topic.hidden_tag()}}
     {{form_message.hidden_tag()}}
-    {{form_topic.topic(placeholder='New topic', class='normal', onkeyup="PostingFormUnmark(this)")}}
-    <div class="format-block">
-        <img class="format-button" src="/static/button_bold.png" onclick="makeFormated('b')">
-        <img class="format-button" src="/static/button_italic.png" onclick="makeFormated('i')">
-        <img class="format-button" src="/static/button_underlined.png" onclick="makeFormated('u')">
-        <img class="format-button" src="/static/button_url.png" onclick="makeURL('url')">
-        <img class="format-button" src="/static/button_img.png" onclick="makeIMG('img')">
+    <div class="form-group">
+        <div class="col-md-3">
+            {{form_topic.topic(placeholder="New topic", class="form-control", onkeyup="PostingFormUnmark(this)")}}
+        </div>
     </div>
-    {{form_message.message(placeholder='Enter your text here', class='normal', onkeyup="PostingFormUnmark(this)")}}
-    <input class="submit" type="submit" value="Post">
+    <div class="form-group">
+        <div class="col-md-6">
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('b')"}}">bold</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('i')"}}">italic</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('u')"}}">underlined</div>
+            <div class="btn btn-xs btn-primary" onclick="makeURL()"}}">url</div>
+            <div class="btn btn-xs btn-primary" onclick="makeIMG()"}}">image</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+            {{form_message.message(class="form-control", rows="4", placeholder='Enter your text here', onkeyup="PostingFormUnmark(this)")}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            <input class="btn btn-primary form-control" type="submit" value="Post">
+        </div>
+    </div>
 </form>
 {% endif %}
 

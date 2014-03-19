@@ -2,20 +2,33 @@
 
 {% block head %}
     <title>Mail: {{message.subject}}</title>
-    <link rel="stylesheet" type="text/css" href="/static/mail_read.css">
 {% endblock %}
 
 
 {% block content %}
 <h1>{{message.subject}}</h1>
 
-<div class="message-body">
-    <div class="tiny">
-        from <a class="tiny" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>,
-        {{message.date.strftime('%H:%M, %d %b %Y')}}
+<hr>
+
+<div class="row">
+    <div class="col-md-1">
+        <a href="{{url_for('user_profile', user_id=message.sender_id)}}">
+            <img src="{{message.sender.avatar_thumb}}" title="{{message.sender.login}}">
+        </a>
     </div>
-    <hr>
-    <div class="message-text normal">{{message.text|safe}}</div>
+
+    <div class="col-md-11">
+        <div class="row">
+            <div class="col-md-10">
+                from <a href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a>,
+                {{message.date.strftime('%H:%M, %d %b %Y')}}
+            </div>
+        </div>
+
+        <hr>
+
+        <p>{{message.text|safe}}</p>
+    </div>
 </div>
 
 <a class="btn btn-primary" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject)}}">Reply</a>

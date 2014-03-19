@@ -2,66 +2,71 @@
 
 {% block head %}
     <title>Users list</title>
-    <link rel="stylesheet" type="text/css" href="/static/userlist.css">
 {% endblock %}
 
 {% block content %}
 <h1>Users</h1>
 
-<div class="table-line darkest">
-    <div class="table-login normal white">
-        Login
-        <a href="{{url_for('userlist', sort='login', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a href="{{url_for('userlist', sort='login', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
-    </div>
-    <div class="table-detail normal white">
-        Last seen
-        <a href="{{url_for('userlist', sort='last_seen', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a href="{{url_for('userlist', sort='last_seen', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
-    </div>
-    <div class="table-detail normal white">
-        Registered
-        <a href="{{url_for('userlist', sort='reg_date', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a href="{{url_for('userlist', sort='reg_date', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
-    </div>
-    <div class="table-detail normal white">
-        Topics
-        <a href="{{url_for('userlist', sort='topics', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a href="{{url_for('userlist', sort='topics', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
-    </div>
-    <div class="table-detail normal white">
-        Messages
-        <a href="{{url_for('userlist', sort='messages', desc=True)}}"><img src="/static/icon_sort_desc.png"></a>
-        <a href="{{url_for('userlist', sort='messages', desc=False)}}"><img src="/static/icon_sort_asc.png"></a>
-    </div>
-</div>
+<hr>
 
-{% for user in users_list[pagination.first:pagination.last] %}
-<div class="table-line {{loop.cycle('light', 'dark')}}">
-    <div class="table-login">
-    {% if user.role < 2 %}
-        <b><a class="normal" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a></b>
-    {% else %}
-        <a class="normal" href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
-    {% endif %}
-    </div>
-    <div class="table-detail normal">{{user.last_seen.strftime('%d %b %Y')}}</div>
-    <div class="table-detail normal">{{user.reg_date.strftime('%d %b %Y')}}</div>
-    <div class="table-detail normal">{{user.topic_count}}</div>
-    <div class="table-detail normal">{{user.message_count}}</div>
-</div>
-{% endfor %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Login
+                <a href="{{url_for('userlist', sort='login', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
+                <a href="{{url_for('userlist', sort='login', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
+            </th>
+            <th class="text-center">
+                Last seen
+                <a href="{{url_for('userlist', sort='last_seen', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
+                <a href="{{url_for('userlist', sort='last_seen', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
+            </th>
+            <th class="text-center">
+                Registered
+                <a href="{{url_for('userlist', sort='reg_date', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
+                <a href="{{url_for('userlist', sort='reg_date', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
+            </th>
+            <th class="text-center">
+                Topics
+                <a href="{{url_for('userlist', sort='topics', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
+                <a href="{{url_for('userlist', sort='topics', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
+            </th>
+            <th class="text-center">
+                Messages
+                <a href="{{url_for('userlist', sort='messages', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
+                <a href="{{url_for('userlist', sort='messages', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
+            </th>
+        </tr>
+    </thead>
 
-<div class="pages">
-    <a class="page-firstlast" href="{{url_for('userlist', page=1)}}">First</a>
-{% for page_number in pagination.pages_list %}
-    {% if page_number == pagination.page %}
-    <a class="current-page-number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
-    {% else %}
-    <a class="page-number" href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
-    {% endif %}
-{% endfor %}
-    <a class="page-firstlast" href="{{url_for('userlist', page=pagination.pages)}}">Last</a>
-</div>
+    <tbody>
+        {% for user in users_list[pagination.first:pagination.last] %}
+        <tr>
+            <td>
+            {% if user.role < 2 %}
+                <b><a href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a></b>
+            {% else %}
+                <a href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
+            {% endif %}
+            </td>
+            <td class="text-center">{{user.last_seen.strftime('%d %b %Y')}}</td>
+            <td class="text-center">{{user.reg_date.strftime('%d %b %Y')}}</td>
+            <td class="text-center">{{user.topic_count}}</td>
+            <td class="text-center">{{user.message_count}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<ul class="pagination">
+    <li><a href="{{url_for('userlist', page=1)}}">&laquo;</a></li>
+    {% for page_number in pagination.pages_list %}
+    <li{% if page_number == pagination.page %} class="active"{% endif %}>
+        <a href="{{url_for('userlist', page=page_number)}}">{{page_number}}</a>
+    </li>
+    {% endfor %}
+    <li><a href="{{url_for('userlist', page=pagination.pages)}}">&raquo;</a></li>
+</ul>
 
 {% endblock %}

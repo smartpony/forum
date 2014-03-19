@@ -2,51 +2,60 @@
 
 {% block head %}
     <title>Mailbox</title>
-    <link rel="stylesheet" type="text/css" href="/static/mailbox.css">
 {% endblock %}
 
 {% block content %}
-<h1>Mail ({{box}})</h1>
+<h1>Mail ({{box}}) </h1>
 
-<div class="box-select">
-    <a class="box-item{% if box == 'inbox' %} selected{% endif %} normal white" href="{{url_for('mailbox', box='inbox')}}">Inbox</a>
-    <a class="box-item{% if box == 'sent' %} selected{% endif %} normal white" href="{{url_for('mailbox', box='sent')}}">Sent</a>
-    <a class="box-item{% if box == 'archive' %} selected{% endif %} normal white" href="{{url_for('mailbox', box='archive')}}">Archive</a>
-    <a class="box-item{% if box == 'trash' %} selected{% endif %} normal white" href="{{url_for('mailbox', box='trash')}}">Trash</a>
-</div>
+<hr>
 
-<div class="table-line darkest">
-    <div class="table-main normal white">Message</div>
-    <div class="table-move normal white">To archive</div>
-    <div class="table-move normal white">To trash</div>
-</div>
-
-{% for message in messages[pagination.first:pagination.last] %}
-<div class="table-line {{loop.cycle('light', 'dark')}}">
-    <div class="table-main">
-        <a class="big" href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a>
-        <div class="tiny">from <a class="tiny" href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a> to <a class="tiny" href="{{url_for('user_profile', user_id=message.recipient_id)}}">{{message.recipient.login}}</a>, {{message.date.strftime('%d %b %Y')}}</div>
-    </div>
-    <div class="table-move">
-        <a href="{{url_for('mail_move', message_id=message.id, directory=2)}}"><img src="/static/icon_archive.png"></a>
-    </div>
-    <div class="table-move">
-        <a href="{{url_for('mail_move', message_id=message.id, directory=3)}}"><img src="/static/icon_del.png"></a>
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-sm btn-default{% if box == 'inbox' %} active{% endif %}" href="{{url_for('mailbox', box='inbox')}}">Inbox</a>
+        <a class="btn btn-sm btn-default{% if box == 'sent' %} active{% endif %}" href="{{url_for('mailbox', box='sent')}}">Sent</a>
+        <a class="btn btn-sm btn-default{% if box == 'archive' %} active{% endif %}" href="{{url_for('mailbox', box='archive')}}">Archive</a>
+        <a class="btn btn-sm btn-default{% if box == 'trash' %} active{% endif %}" href="{{url_for('mailbox', box='trash')}}">Trash</a>
     </div>
 </div>
-{% endfor %}
 
-<div class="pages">
-    <a class="page-firstlast" href="{{url_for('mailbox', page=1, box=box)}}">First</a>
-{% for page_number in pagination.pages_list %}
-    {% if page_number == pagination.page %}
-    <a class="current-page-number" href="{{url_for('mailbox', page=page_number, box=box)}}">{{page_number}}</a>
-    {% else %}
-    <a class="page-number" href="{{url_for('mailbox', page=page_number, box=box)}}">{{page_number}}</a>
-    {% endif %}
-{% endfor %}
-    <a class="page-firstlast" href="{{url_for('mailbox', page=pagination.pages, box=box)}}">Last</a>
-</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Message</th>
+            <th class="text-center">To archive</th>
+            <th class="text-center">To trash</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for message in messages[pagination.first:pagination.last] %}
+        <tr>
+            <td>
+                <a href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a>
+                from <a href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a> to <a href="{{url_for('user_profile', user_id=message.recipient_id)}}">{{message.recipient.login}}</a>, {{message.date.strftime('%d %b %Y')}}
+            </td>
+            <td class="text-center">
+                <a href="{{url_for('mail_move', message_id=message.id, directory=2)}}"><i class="glyphicon glyphicon-log-in"></i></a>
+            </td>
+            <td class="text-center">
+                <a href="{{url_for('mail_move', message_id=message.id, directory=3)}}"><i class="glyphicon glyphicon-remove"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<ul class="pagination">
+    <li><a href="{{url_for('mailbox', page=1, box=box)}}">&laquo;</a></li>
+    {% for page_number in pagination.pages_list %}
+    <li{% if page_number == pagination.page %} class="active"{% endif %}>
+        <a href="{{url_for('mailbox', page=page_number, box=box)}}">{{page_number}}</a>
+    </li>
+    {% endfor %}
+    <li><a href="{{url_for('mailbox', page=pagination.pages, box=box)}}">&raquo;</a></li>
+</ul>
+
+<br>
 
 <a class="btn btn-primary" href="{{url_for('mail_write')}}">New message</a>
 

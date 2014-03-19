@@ -9,48 +9,92 @@
 
 <hr>
 
-<form action="" method="post" name="edit" enctype=multipart/form-data>
-
-    <div class="row">
-        <div class="col-md-2">
-            <img src="{{user.avatar}}">
-            {{profile_form.avatar(class="avatar-button", onChange="ShowAvatarName()")}}
-        </div>
-
-        <div class="col-md-1">
-            <p>Role:</p>
-            <p>City:</p>
-            <p>Country:</p>
-            <p>E-mail:</p>
-            <p>Topics:</p>
-            <p>Messages:</p>
-            <p>Registered:</p>
-            <p>Last seen:
-        </div>
-
-        <div class="col-md-9">
-            {% if current_user.role == 0 %}
-            <p style="margin-bottom: 8px;">admin</p>
-            {% elif current_user.role == 1 %}
-            <p style="margin-bottom: 8px;">moderator</p>
-            {% else %}
-            <p style="margin-bottom: 8px;">user</p>
-            {% endif %}
-            <p style="margin-left: -2px; margin-bottom: 6px;">{{profile_form.city(value=current_user.city, style="line-height: 18px;")}}</p>
-            <p style="margin-left: -2px; margin-bottom: 6px;">{{profile_form.country(value=current_user.country, style="line-height: 18px;")}}</p>
-            <p style="margin-left: -2px; margin-bottom: 8px;">{{profile_form.email(value=current_user.email, style="line-height: 18px;")}}</p>
-            <p>{{current_user.topic_count}}</p>
-            <p>{{current_user.message_count}}</p>
-            <p>{{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}</p>
-            <p>{{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}</p>
-        </div>
+<form class="form-horizontal" role="form" action="" method="post" enctype=multipart/form-data>
+    <div class="col-md-2">
+        <img src="{{user.avatar}}">
+        {{profile_form.avatar(class="avatar-button", onChange="ShowAvatarName()")}}
     </div>
 
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <input type="submit" class="btn btn-primary" value="Save" />
+    <div class="col-md-10">
+        <div class="form-group">
+            <label class="col-md-2 control-label">Role:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {% if current_user.role == 0 %}
+                    admin
+                    {% elif current_user.role == 1 %}
+                    moderator
+                    {% else %}
+                    user
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">City:</label>
+            <div class="col-md-3">
+                {{profile_form.city(value=current_user.city, class="form-control")}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Country:</label>
+            <div class="col-md-3">
+                {{profile_form.country(value=current_user.country, class="form-control")}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">E-mail:</label>
+            <div class="col-md-3">
+                {{profile_form.email(value=current_user.email, class="form-control")}}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Topics:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{current_user.topic_count}}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Messages:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{current_user.message_count}}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Registered:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{current_user.reg_date.strftime('%H:%M, %d %b %Y')}}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">Last seen:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{current_user.last_seen.strftime('%H:%M, %d %b %Y')}}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                <input class="btn btn-primary form-control" type="submit" value="Save">
+            </div>
         </div>
     </div>
 </form>
+
 
 {% endblock %}

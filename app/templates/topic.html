@@ -2,75 +2,88 @@
 
 {% block head %}
     <title>Topic: {{topic.name}}</title>
-    <link rel="stylesheet" type="text/css" href="/static/topic.css">
 {% endblock %}
 
 {% block content %}
-<h1>{{topic.name}}
-{% if topic.author == current_user or current_user.role < 2 %}
-<sup><a href="{{url_for('delete_topic', topic_id=topic.id)}}"><img src="/static/icon_del.png"></a><sup>
-{% endif %}
+<h1>
+    {{topic.name}}
+    {% if topic.author == current_user or current_user.role < 2 %}
+    <sup><a href="{{url_for('delete_topic', topic_id=topic.id)}}"><img src="/static/icon_del.png"></a><sup>
+    {% endif %}
 </h1>
 
 <hr>
 
 {% for message in topic.message[pagination.first:pagination.last] %}
-<div class="avatar">
-    <a href="{{url_for('user_profile', user_id=message.author.id)}}">
-        <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
-    </a>
-</div>
+<div class="row">
+    <div class="col-md-1">
+        <a href="{{url_for('user_profile', user_id=message.author.id)}}">
+            <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
+        </a>
+    </div>
 
-<div class="message-block">
-    <div class="message-body" id="{{loop.index}}">
-        <div class="message-info tiny"><a class="tiny" href="{{request.url}}#{{loop.index}}">#{{loop.index}}:</a>
-            posted by <a class="tiny" href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
-            {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
-            edited
-            {% if message.editor and message.editor != message.author %}
-            by <a class="tiny" href="{{url_for('user_profile', user_id=message.editor_id)}}">{{message.editor.login}}</a>
-            {% endif %}
-            at {{message.date_edit.strftime('%H:%M, %d %b %Y')}}
+    <div class="col-md-11" id="{{loop.index}}">
+        <div class="row">
+            <div class="col-md-10">
+                <a href="{{request.url}}#{{loop.index}}">#{{loop.index}}:</a>
+                posted by <a href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
+                {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
+                edited
+                {% if message.editor and message.editor != message.author %}
+                by <a href="{{url_for('user_profile', user_id=message.editor_id)}}">{{message.editor.login}}</a>
+                {% endif %}
+                at {{message.date_edit.strftime('%H:%M, %d %b %Y')}}
+                {% endif %}
+                {% if message.author == current_user or current_user.role < 2 %}
+            </div>
+            <div class="col-md-2">
+                <a href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
+                <a href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
+            </div>
             {% endif %}
         </div>
-        {% if message.author == current_user or current_user.role < 2 %}
-        <div class="message-options tiny">
-            <a class="edit-del tiny red" href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
-            <a class="edit-del tiny red" href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
-        </div>
-        {% endif %}
+
         <hr>
-        <div class="message-text normal">{{message.text|safe}}</div>
+
+        <p>{{message.text|safe}}</p>
     </div>
 </div>
 {% endfor %}
 
-<div class="pages">
-    <a class="page-firstlast" href="{{url_for('topic', topic_id=topic.id, page=1)}}">First</a>
-{% for page_number in pagination.pages_list %}
-    {% if page_number == pagination.page %}
-    <a class="current-page-number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
-    {% else %}
-    <a class="page-number" href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
-    {% endif %}
-{% endfor %}
-    <a class="page-firstlast" href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">Last</a>
-</div>
+<ul class="pagination">
+    <li><a href="{{url_for('topic', topic_id=topic.id, page=1)}}">&laquo;</a></li>
+    {% for page_number in pagination.pages_list %}
+    <li{% if page_number == pagination.page %} class="active"{% endif %}>
+        <a href="{{url_for('topic', topic_id=topic.id, page=page_number)}}">{{page_number}}</a>
+    </li>
+    {% endfor %}
+    <li><a href="{{url_for('topic', topic_id=topic.id, page=pagination.pages)}}">&raquo;</a></li>
+</ul>
 
 <hr>
 
 {% if user.is_authenticated() %}
-<form method="post" onsubmit="return PostingFormValidate()">
+<form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
     {{form_message.hidden_tag()}}
-    <div class="format-block">
-        <img class="format-button" src="/static/button_bold.png" onclick="makeFormated('b')">
-        <img class="format-button" src="/static/button_italic.png" onclick="makeFormated('i')">
-        <img class="format-button" src="/static/button_underlined.png" onclick="makeFormated('u')">
-        <img class="format-button" src="/static/button_url.png" onclick="makeURL('url')">
-        <img class="format-button" src="/static/button_img.png" onclick="makeIMG('img')">
+    <div class="form-group">
+        <div class="col-md-6">
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('b')"}}">bold</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('i')"}}">italic</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('u')"}}">underlined</div>
+            <div class="btn btn-xs btn-primary" onclick="makeURL()"}}">url</div>
+            <div class="btn btn-xs btn-primary" onclick="makeIMG()"}}">image</div>
+        </div>
     </div>
-    {{form_message.message(placeholder='Enter your text here', class="normal", onkeyup="PostingFormUnmark(this)")}}
-    <input class="submit" type="submit" value="Post">
+    <div class="form-group">
+        <div class="col-md-6">
+            {{form_message.message(class="form-control", rows="4", placeholder='Enter your text here', onkeyup="PostingFormUnmark(this)")}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            <input class="btn btn-primary form-control" type="submit" value="Post">
+        </div>
+    </div>
 </form>
 {% endif %}
 

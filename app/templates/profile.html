@@ -13,38 +13,90 @@
 
 <hr>
 
-<div class="row">
+<form class="form-horizontal" role="form" action="" method="post" enctype=multipart/form-data>
     <div class="col-md-2">
         <img src="{{profile.avatar}}">
     </div>
 
-    <div class="col-md-1">
-        <p>Role:</p>
-        <p>City:</p>
-        <p>Country:</p>
-        <p>E-mail:</p>
-        <p>Topics:</p>
-        <p>Messages:</p>
-        <p>Registered:</p>
-        <p>Last seen:
+    <div class="col-md-10">
+        <div class="form-group">
+            <label class="col-md-2 control-label">Role:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {% if profile.role == 0 %}
+                    admin
+                    {% elif profile.role == 1 %}
+                    moderator
+                    {% else %}
+                    user
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">City:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.city}}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">Country:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.country}}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">E-mail:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.email}}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">Topics:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.topic_count}}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">Messages:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.message_count}}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">Registered:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.reg_date.strftime('%H:%M, %d %b %Y')}}
+                </p>
+            </div>
+        </div>
+    
+        <div class="form-group">
+            <label class="col-md-2 control-label">Last seen:</label>
+            <div class="col-md-3">
+                <p class="form-control-static">
+                    {{profile.last_seen.strftime('%H:%M, %d %b %Y')}}
+                </p>
+            </div>
+        </div>
     </div>
-
-    <div class="col-md-9">
-        {% if profile.role == 0 %}
-        <p>admin</p>
-        {% elif profile.role == 1 %}
-        <p>moderator</p>
-        {% else %}
-        <p>user</p>
-        {% endif %}
-        <p>{{profile.city}}</p>
-        <p>{{profile.country}}</p>
-        <p>{{profile.email}}</p>
-        <p>{{profile.topic_count}}</p>
-        <p>{{profile.message_count}}</p>
-        <p>{{profile.reg_date.strftime('%H:%M, %d %b %Y')}}</p>
-        <p>{{profile.last_seen.strftime('%H:%M, %d %b %Y')}}</p>
-    </div>
-</div>
+</form>
 
 {% endblock %}

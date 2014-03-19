@@ -2,36 +2,68 @@
 
 {% block head %}
     <title>New message</title>
-    <link rel="stylesheet" type="text/css" href="/static/mail_write.css">
 {% endblock %}
 
 {% block content %}
 <h1>New message</h1>
 
-<form method="post" onsubmit="return PostingFormValidate()">
+<hr>
+
+<form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
     {{form_recepient.hidden_tag()}}
     {{form_subject.hidden_tag()}}
     {{form_message.hidden_tag()}}
-    {% if recepient %}
-        {{form_recepient.recepient(value=recepient.login, class='normal', onclick='PostingFormUnmark(this); selectUserOpen()')}}
-    {% else %}
-        {{form_recepient.recepient(placeholder='Username', class='normal', onclick='PostingFormUnmark(this); selectUserOpen()')}}
-    {% endif %}
-    {% if subject %}
-        {{form_subject.topic(value=subject, class='normal', onkeyup='PostingFormUnmark(this)')}}
-    {% else %}
-        {{form_subject.topic(placeholder='Subject', class='normal', onkeyup='PostingFormUnmark(this)')}}
-    {% endif %}
-    <div class="format-block">
-        <img class="format-button" src="/static/button_bold.png" onclick="makeFormated('b')">
-        <img class="format-button" src="/static/button_italic.png" onclick="makeFormated('i')">
-        <img class="format-button" src="/static/button_underlined.png" onclick="makeFormated('u')">
-        <img class="format-button" src="/static/button_url.png" onclick="makeURL('url')">
-        <img class="format-button" src="/static/button_img.png" onclick="makeIMG('img')">
+    <div class="form-group">
+        <div class="col-md-3">
+            {{form_recepient.recepient((if recepient: value=recepient.login else %placeholder='Username' endif ), class='form-control')}}
+        </div>
+        <a class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-book"></i></a>
     </div>
-    {{form_message.message(placeholder='Enter your text here', class="normal", onkeyup="PostingFormUnmark(this)")}}
-    <input class="submit" type="submit" value="Send">
+    {% if subject %}
+    <div class="form-group">
+        <div class="col-md-3">
+            {{form_subject.topic(% if subject %value=subject% else %placeholder='Subject'% endif %, class='form-control', onkeyup='PostingFormUnmark(this)')}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('b')"}}">bold</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('i')"}}">italic</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('u')"}}">underlined</div>
+            <div class="btn btn-xs btn-primary" onclick="makeURL()"}}">url</div>
+            <div class="btn btn-xs btn-primary" onclick="makeIMG()"}}">image</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+            {{form_message.message(class="form-control", rows="4", placeholder='Enter your text here', onkeyup="PostingFormUnmark(this)")}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            <input class="btn btn-primary form-control" type="submit" value="Send">
+        </div>
+    </div>
 </form>
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+        <div class="modal-body">
+            <p>One fine body&hellip;</p>
+        </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="overlay"></div>
 <div id="dialogbox">
@@ -44,5 +76,9 @@
     </select>
     <div class="button" onclick="selectUserClose()">Ok</div>
 </div>
+
+
+
+
 
 {% endblock %}

@@ -7,12 +7,29 @@
 {% block content %}
 <h1>Edit message</h1>
 
-{% if user.is_authenticated() %}
-<form method="post">
+<hr>
+
+<form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
     {{form_message.hidden_tag()}}
-    {{form_message.message(class="form_message")}}
-    <input class="submit_button" type="submit" value="apply">
+    <div class="form-group">
+        <div class="col-md-6">
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('b')"}}">bold</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('i')"}}">italic</div>
+            <div class="btn btn-xs btn-primary" onclick="makeFormated('u')"}}">underlined</div>
+            <div class="btn btn-xs btn-primary" onclick="makeURL()"}}">url</div>
+            <div class="btn btn-xs btn-primary" onclick="makeIMG()"}}">image</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+            {{form_message.message(class="form-control", rows="4", onkeyup="PostingFormUnmark(this)")}}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-2">
+            <input class="btn btn-primary form-control" type="submit" value="Apply">
+        </div>
+    </div>
 </form>
-{% endif %}
 
 {% endblock %}

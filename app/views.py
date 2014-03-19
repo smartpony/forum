@@ -548,7 +548,10 @@ def edit_profile():
 def mailbox(page=1, box='inbox'):
     # Нужный ящик
     if request.args.get('box'):
-        box = request.args.get('box')
+        if request.args.get('box') in ['inbox', 'sent', 'archive', 'trash']:
+            box = request.args.get('box')
+        else:
+            abort(404)
     # Нужная страница
     if request.args.get('page'):
         page = int(request.args.get('page'))

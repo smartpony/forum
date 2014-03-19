@@ -2,14 +2,12 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     {% block head %}{% endblock %}
-    <link rel="stylesheet" type="text/css" href="/static/common.css">
-    <link rel="stylesheet" type="text/css" href="/static/base.css">
     <link rel="shortcut icon" href="/static/icon_main.png">
+    <link rel="stylesheet" type="text/css" href="/static/custom.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <script type="text/javascript" src="/static/js/validation.js"></script>
     <script type="text/javascript" src="/static/js/format.js"></script>
     <script type="text/javascript" src="/static/js/custom_dialog.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 </head>
@@ -19,11 +17,11 @@
 <div class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="{{url_for('forum')}}">Forum</a></li>
-            <li><a href="{{url_for('userlist')}}">Users</a></li>
+            <li {% if request.path[:6] == '/forum' or request.path[:6] == '/topic' %}class="active"{% endif %}><a href="{{url_for('forum')}}">Forum</a></li>
+            <li {% if request.path[:9] == '/userlist' %}class="active"{% endif %}><a href="{{url_for('userlist')}}">Users</a></li>
             {% if user.is_authenticated() %}
-            <li><a href="{{url_for('my_profile')}}">Profile</a></li>
-            <li><a href="{{url_for('mailbox')}}">Mail</a></li>
+            <li {% if request.path[:8] == '/profile' %}class="active"{% endif %}><a href="{{url_for('my_profile')}}">Profile</a></li>
+            <li {% if request.path[:8] == '/mailbox' %}class="active"{% endif %}><a href="{{url_for('mailbox')}}">Mail</a></li>
             {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
