@@ -28,8 +28,8 @@
                 </a>
             </td>
             <td>
-                <a href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a>
-                posted by <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}
+                <h5><a href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a></h5>
+                <div class="tiny-text">posted by <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
             </td>
             <td>
                 replies: {{topic.mes_count-1}}

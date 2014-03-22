@@ -388,10 +388,10 @@ def delete_message(message_id):
         db.session.delete(del_mes)
         db.session.commit()
         # Если сообщение было последним, то удалить топик и вернуться в корень форума
-        if ForumTopic.query.get(topic_id).message == []:
+        if not ForumTopic.query.get(topic_id).message.all():
             db.session.delete(ForumTopic.query.get(topic_id))
             db.session.commit()
-            return(redirect(url_for('forum')))
+            return(redirect(url_for('forum')))            
         # Вернуться на страницу, откуда было вызвано удаление
         # (если это было последнее сообщение темы, то возврат в корень форума)
         return(redirect(request.referrer))

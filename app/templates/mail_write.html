@@ -2,6 +2,7 @@
 
 {% block head %}
     <title>New message</title>
+    <script type="text/javascript" src="/static/js/custom_dialog.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -9,20 +10,28 @@
 
 <hr>
 
+<!-- Основная форма -->
 <form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
     {{form_recepient.hidden_tag()}}
     {{form_subject.hidden_tag()}}
     {{form_message.hidden_tag()}}
     <div class="form-group">
         <div class="col-md-3">
-            {{form_recepient.recepient((if recepient: value=recepient.login else %placeholder='Username' endif ), class='form-control')}}
+            {% if recepient %}
+            {{form_recepient.recepient(value=recepient.login, class='form-control')}}
+            {% else %}
+            {{form_recepient.recepient(placeholder='Username', class='form-control')}}
+            {% endif %}
         </div>
-        <a class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-book"></i></a>
+        <a class="btn btn-primary" data-toggle="modal" data-target="#dialogbox"><i class="glyphicon glyphicon-book"></i></a>
     </div>
-    {% if subject %}
     <div class="form-group">
         <div class="col-md-3">
-            {{form_subject.topic(% if subject %value=subject% else %placeholder='Subject'% endif %, class='form-control', onkeyup='PostingFormUnmark(this)')}}
+            {% if subject %}
+            {{form_subject.topic(value=subject, class='form-control', onkeyup='PostingFormUnmark(this)')}}
+            {% else %}
+            {{form_subject.topic(placeholder='Subject', class='form-control', onkeyup='PostingFormUnmark(this)')}}
+            {% endif %}
         </div>
     </div>
     <div class="form-group">
@@ -46,39 +55,37 @@
     </div>
 </form>
 
-<div class="modal fade" id="myModal">
+<!-- Модальный диалог выбора польщзователя -->
+<div class="modal fade" id="dialogbox">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">Select recepient</h4>
             </div>
-        <div class="modal-body">
-            <p>One fine body&hellip;</p>
-        </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <input id="dialog-input" type="text" class="form-control" onkeyup="selectSearch()">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <select id="dialog-select" size="8" class="form-control" onclick="selectUser(this)">
+                            {% for user in all_users %}
+                            <option>{{user.login}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="selectUserClose()" data-dismiss="modal">Select</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-
-
-<div id="overlay"></div>
-<div id="dialogbox">
-    <div class="big">Select recepient</div>
-    <input id="dialog-input" type="text" onkeyup="selectSearch()">
-    <select id="dialog-select" size="8" onclick="selectUser(this)" ondblclick="selectUserClose()">
-        {% for user in all_users %}
-        <option>{{user.login}}</option>
-        {% endfor %}
-    </select>
-    <div class="button" onclick="selectUserClose()">Ok</div>
-</div>
-
-
-
-
 
 {% endblock %}
