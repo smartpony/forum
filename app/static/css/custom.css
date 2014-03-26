@@ -1,5 +1,4 @@
-﻿/* Диалог выбора пользователя */
-.tiny-text {
+﻿.tiny-text {
  font-size: 10px;
 }
 
@@ -7,4 +6,31 @@ h5 {
  margin-top: 8px;
  margin-bottom: 6px;
  font-weight: bold;
+}
+
+.valign-middle {
+ vertical-align: middle !important;
+}
+
+.topic-message {
+ padding-top: 20px !important;
+ padding-bottom: 20px !important;
+}
+
+.input-file-wrap {
+ display: inline-block;
+ width: 55px;
+ height: 24px;
+ margin-top: 5px;
+ overflow: hidden;
+}
+
+.input-file-button {
+ width: 100px;
+ font-size: 30px;
+ margin-top: -30px;
+ margin-left: -30px;
+ opacity: 0;
+ filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+ -moz-opacity: 0;
 }

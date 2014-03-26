@@ -21,9 +21,9 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Message</th>
-            <th class="text-center">To archive</th>
-            <th class="text-center">To trash</th>
+            <th class="col-md-6">Message</th>
+            <th class="col-md-3 text-center">To archive</th>
+            <th class="col-md-3 text-center">To trash</th>
         </tr>
     </thead>
 
@@ -31,13 +31,13 @@
         {% for message in messages[pagination.first:pagination.last] %}
         <tr>
             <td>
-                <a href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a>
-                from <a href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a> to <a href="{{url_for('user_profile', user_id=message.recipient_id)}}">{{message.recipient.login}}</a>, {{message.date.strftime('%d %b %Y')}}
+                <h5><a href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a></h5>
+                <div class="tiny-text">from <a href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a> to <a href="{{url_for('user_profile', user_id=message.recipient_id)}}">{{message.recipient.login}}</a>, {{message.date.strftime('%d %b %Y')}}</div>
             </td>
-            <td class="text-center">
+            <td class="text-center valign-middle">
                 <a href="{{url_for('mail_move', message_id=message.id, directory=2)}}"><i class="glyphicon glyphicon-log-in"></i></a>
             </td>
-            <td class="text-center">
+            <td class="text-center valign-middle">
                 <a href="{{url_for('mail_move', message_id=message.id, directory=3)}}"><i class="glyphicon glyphicon-remove"></i></a>
             </td>
         </tr>

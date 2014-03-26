@@ -16,7 +16,7 @@
 <div class="navbar navbar-default" role="navigation">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <li {% if request.path[:6] == '/forum' or request.path[:6] == '/topic' %}class="active"{% endif %}><a href="{{url_for('forum')}}">Forum</a></li>
+            <li {% if request.path == '/' or request.path[:6] == '/forum' %}class="active"{% endif %}><a href="{{url_for('forum')}}">Forum</a></li>
             <li {% if request.path[:9] == '/userlist' %}class="active"{% endif %}><a href="{{url_for('userlist')}}">Users</a></li>
             {% if user.is_authenticated() %}
             <li {% if request.path[:8] == '/profile' %}class="active"{% endif %}><a href="{{url_for('my_profile')}}">Profile</a></li>

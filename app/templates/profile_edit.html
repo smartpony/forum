@@ -10,12 +10,16 @@
 <hr>
 
 <form class="form-horizontal" role="form" action="" method="post" enctype=multipart/form-data>
-    <div class="col-md-2">
+    <div class="col-md-2 text-center">
         <img src="{{user.avatar}}">
-        {{profile_form.avatar(class="avatar-button", onChange="ShowAvatarName()")}}
+        <div class="input-file-wrap">
+            <div class="btn btn-xs btn-primary">change</div>
+            {{profile_form.avatar(class="input-file-button", onChange="ShowAvatarName()")}}
+        </div>
+        <div class="tiny-text" id="new-avatar"></div>
     </div>
 
-    <div class="col-md-10">
+    <div class="col-md-9">
         <div class="form-group">
             <label class="col-md-2 control-label">Role:</label>
             <div class="col-md-3">

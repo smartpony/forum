@@ -54,15 +54,15 @@ function ShowAvatarName() {
     if(new_avatar.value != "") {
         var avatar_ext = new_avatar.split(".").pop().toLowerCase();
         if(allowed_ext.indexOf(avatar_ext) != -1) {
-            document.getElementById("new_avatar").style.color = "#505050";
-            document.getElementById("new_avatar").innerHTML = new_avatar;
+            document.getElementById("new-avatar").style.color = "#505050";
+            document.getElementById("new-avatar").innerHTML = new_avatar;
         }
         else {
-            document.getElementById("new_avatar").style.color = "#f06565";
-            document.getElementById("new_avatar").innerHTML = "Only JPG, GIF or PNG";
+            document.getElementById("new-avatar").style.color = "#f06565";
+            document.getElementById("new-avatar").innerHTML = "Only JPG, GIF or PNG";
         }
     }
     else
-        document.getElementById("new_avatar").innerHTML = "";
+        document.getElementById("new-avatar").innerHTML = "";
 
 }

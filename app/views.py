@@ -193,7 +193,6 @@ def login():
 
 # --- ФОРУМ -------------------------------------
 @app.route('/')
-@app.route('/index')
 @app.route('/forum', methods=['GET', 'POST'])
 def forum(page=1):
     # Нужная страница

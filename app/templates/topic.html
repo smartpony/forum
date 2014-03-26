@@ -14,17 +14,16 @@
 
 <hr>
 
-{% for message in topic.message[pagination.first:pagination.last] %}
-<div class="row">
-    <div class="col-md-1">
-        <a href="{{url_for('user_profile', user_id=message.author.id)}}">
-            <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
-        </a>
-    </div>
-
-    <div class="col-md-11" id="{{loop.index}}">
-        <div class="row">
-            <div class="col-md-10">
+<table class="table">
+    <tbody>
+        {% for message in topic.message[pagination.first:pagination.last] %}
+        <tr>
+            <td rowspan="2" class="col-md-1 text-center">
+                <a href="{{url_for('user_profile', user_id=message.author.id)}}">
+                    <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
+                </a>
+            </td>
+            <td id="{{loop.index}}" class="tiny-text col-md-9">
                 <a href="{{request.url}}#{{loop.index}}">#{{loop.index}}:</a>
                 posted by <a href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
                 {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
@@ -34,21 +33,25 @@
                 {% endif %}
                 at {{message.date_edit.strftime('%H:%M, %d %b %Y')}}
                 {% endif %}
+            </td>
+            <td class="tiny-text col-md-2 text-right">
                 {% if message.author == current_user or current_user.role < 2 %}
-            </div>
-            <div class="col-md-2">
                 <a href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
+                &nbsp;
                 <a href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
-            </div>
-            {% endif %}
-        </div>
+                {% endif %}
+            </td>
+        </tr>
 
-        <hr>
+        <tr>
+            <td class="topic-message" colspan="2">
+                {{message.text|safe}}
+            </td>
+        </tr>
 
-        <p>{{message.text|safe}}</p>
-    </div>
-</div>
-{% endfor %}
+        {% endfor %}
+    </tbody>
+</table>
 
 <ul class="pagination">
     <li><a href="{{url_for('topic', topic_id=topic.id, page=1)}}">&laquo;</a></li>

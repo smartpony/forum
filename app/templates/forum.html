@@ -12,17 +12,17 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th></th>
-            <th>Topic</th>
-            <th>Replies and views</th>
-            <th>Last post</th>
+            <th class="col-md-1"></th>
+            <th class="col-md-5">Topic</th>
+            <th class="col-md-3 text-center">Replies and views</th>
+            <th class="col-md-3 text-center">Last post</th>
         </tr>
     </thead>
 
     <tbody>
         {% for topic in all_topics[pagination.first:pagination.last] %}
         <tr>
-            <td>
+            <td class="text-center">
                 <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
                     <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
                 </a>
@@ -31,14 +31,14 @@
                 <h5><a href="{{url_for('topic', topic_id=topic.ForumTopic.id)}}">{{topic.ForumTopic.name}}</a></h5>
                 <div class="tiny-text">posted by <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">{{topic.ForumTopic.author.login}}</a>, {{topic.ForumTopic.time_first.strftime('%d %b %Y')}}</div>
             </td>
-            <td>
+            <td class="text-center valign-middle">
                 replies: {{topic.mes_count-1}}
-                views: {{topic.ForumTopic.views}}
+                <div class="tiny-text">views: {{topic.ForumTopic.views}}</div>
             </td>
-            <td>
+            <td class="text-center valign-middle">
                 {% if topic.ForumTopic.editor.id != Null %}
                 by <a class="normal" href="{{url_for('user_profile', user_id=topic.ForumTopic.editor.id)}}">{{topic.ForumTopic.editor.login}}</a>
-                {{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}
+                <div class="tiny-text">{{topic.ForumTopic.time_last.strftime('%H:%M, %d %b %Y')}}</div>
                 {% else %}
                 no posts
                 {% endif %}

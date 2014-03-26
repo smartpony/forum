@@ -12,27 +12,27 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>
+            <th class="col-md-4">
                 Login
                 <a href="{{url_for('userlist', sort='login', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
                 <a href="{{url_for('userlist', sort='login', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
             </th>
-            <th class="text-center">
+            <th class="col-md-2 text-center">
                 Last seen
                 <a href="{{url_for('userlist', sort='last_seen', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
                 <a href="{{url_for('userlist', sort='last_seen', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
             </th>
-            <th class="text-center">
+            <th class="col-md-2 text-center">
                 Registered
                 <a href="{{url_for('userlist', sort='reg_date', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
                 <a href="{{url_for('userlist', sort='reg_date', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
             </th>
-            <th class="text-center">
+            <th class="col-md-2 text-center">
                 Topics
                 <a href="{{url_for('userlist', sort='topics', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
                 <a href="{{url_for('userlist', sort='topics', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
             </th>
-            <th class="text-center">
+            <th class="col-md-2 text-center">
                 Messages
                 <a href="{{url_for('userlist', sort='messages', desc=True)}}"><small><i class="glyphicon glyphicon-arrow-up"></i></small></a>
                 <a href="{{url_for('userlist', sort='messages', desc=False)}}"><small><i class="glyphicon glyphicon-arrow-down"></i></small></a>
