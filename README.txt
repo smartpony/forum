@@ -4,4 +4,4 @@ flask-sqlalchemy
 flask-wtf
 flask-login
 flask-migrate
-PIL
+pillow 2.3.0 (binary for Windows)

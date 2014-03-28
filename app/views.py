@@ -12,6 +12,7 @@ import os
 from cgi import escape
 from math import ceil
 from PIL import Image, ImageOps
+import re
 
 # Импорт других файлов проекта
 from app import app, db, lm
@@ -83,6 +84,27 @@ class Pagination(object):
             return(True)
         else:
             return(False)
+
+
+# --- ФОРМАТИРОВАНИЕ СООБЩЕНИЙ ------------------
+def message_format(text, to_html):
+    # Замена форумных тегов на HTML
+    if to_html:
+        text = escape(text)
+        text = text.replace('[b]', '<b>').replace('[\b]', '<\b>').\
+            replace('[i]', '<i>').replace('[\i]', '<\i>').\
+            replace('[u]', '<u>').replace('[\u]', '<\u>')
+        text = re.sub('\[a href="(.*)"\](.*)\[/a\]', '<a href="\\1">\\2</a>', text)
+        text = re.sub('\[img src="(.*)"\]', '<img src="\\1">', text)
+    # Выдача текста для редактирования в виде форумных тегов и с оратным экранированием
+    else:
+        text = escape(text)
+        text = text.replace('<b>', '[b]').replace('<\b>', '[\b]').\
+            replace('<i>', '[i]').replace('<\i>', '[\i]').\
+            replace('<u>', '[u]').replace('<\u>', '[\u]')
+        text = re.sub('<a href="(.*)"\>(.*)</a>', '\[a href="\\1"\]\\2\[/a\]', text)
+        text = re.sub('<img src="(.*)">', '\[img src="\\1"\]', text)
+    return(text)
 
 
 # --- ЗАГРУЗКА ПОЛЬЗОВАТЕЛЯ ---------------------
@@ -210,9 +232,10 @@ def forum(page=1):
     if form_topic.validate_on_submit() and form_message.validate_on_submit():
         # Данные из формы c экранированием спецсимволов
         data_topic = form_topic.topic.data
-        data_message = escape(form_message.message.data)
+        data_message = message_format(form_message.message.data, True)
+        #data_message = escape(form_message.message.data)
         # Применение форматирования
-        data_message = data_message.replace('[', '<').replace(']', '>')
+        #data_message = data_message.replace('[', '<').replace(']', '>')
         # Создание темы и обновление счётчиков у пользователя
         new_topic = ForumTopic(name=data_topic, author_id=current_user.id)
         current_user.message_count += 1
@@ -345,8 +368,10 @@ def edit_message(message_id):
 
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
-        # Сохранить данные из формы
-        edit_message.text = form_message.message.data
+        # Данные из формы c экранированием спецсимволов
+        edit_message.text = escape(form_message.message.data)
+        # Применение форматирования
+        edit_message.text = edit_message.text.replace('[', '<').replace(']', '>')
         # Отметка о дате изменения
         edit_message.date_edit =  datetime.utcnow()
         # Отметка о последнем редакторе
@@ -358,7 +383,7 @@ def edit_message(message_id):
     # Является ли пользователь автором сообщения или админом/модером
     if edit_message.author == current_user or current_user.role < 2:
         # Вывод старого сообщения в форме
-        form_message.message.data = edit_message.text
+        form_message.message.data = edit_message.text.replace('<', '[').replace('>', ']')
         # Вывод странички
         return(render_template('message_edit.html',
             user=current_user,
@@ -492,8 +517,7 @@ def edit_profile():
         db.session.commit()
 
         # Загружен ли новый аватар
-        #if form.avatar.data:
-        if False:
+        if form.avatar.data:
             # Загруженный файл из HTTP POST
             file = request.files[form.avatar.name]
             # Проверить расширение файла
@@ -608,7 +632,7 @@ def mail_read(message_id):
 # --- НАПИСАТЬ ЛИЧНОЕ СООБЩЕНИЕ -----------------
 @app.route('/mailbox/message/new', methods=['GET', 'POST'])
 @login_required
-def mail_write(recepient=None, subject=None):
+def mail_write(recepient=None, subject=None, previous_text=''):
     # Форма для нового сообщения
     form_recepient = RecepientForm()
     form_subject = TopicForm()
@@ -619,6 +643,17 @@ def mail_write(recepient=None, subject=None):
         recepient = User.query.get(request.args.get('recepient'))
     if request.args.get('subject'):
         subject = 'Re: ' + request.args.get('subject')
+    # Цитата с выделением
+    if request.args.get('previous_text'):
+        previous_text = request.args.get('previous_text')
+        quote = ''
+        for line in previous_text.split('\n'):
+            if line[:3] == '>> ':
+                quote += '>> ' + line + '\n'
+            else:
+                for i in range(0, len(line), 50):
+                    quote += '>> ' + previous_text[i:i+50] + '\n'
+        form_message.message.data = quote
 
     # Если отправлена форма с новым сообщением
     if form_recepient.validate_on_submit() and \
