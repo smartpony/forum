@@ -22,8 +22,8 @@
     <thead>
         <tr>
             <th class="col-md-6">Message</th>
-            <th class="col-md-3 text-center">To archive</th>
-            <th class="col-md-3 text-center">To trash</th>
+            <th class="col-md-3 text-center">{% if box in ['archive', 'trash'] %}Restore{% else %}To archive{% endif %}</th>
+            <th class="col-md-3 text-center">{% if box == 'trash' %}Delete{% else %}To trash{% endif %}</th>
         </tr>
     </thead>
 
@@ -31,11 +31,15 @@
         {% for message in messages[pagination.first:pagination.last] %}
         <tr>
             <td>
-                <h5><a href="{{url_for('mail_read', message_id=message.id)}}">{{message.subject}}</a></h5>
+                <h5><a href="{{url_for('mail_read', message_id=message.id)}}">{% if not message.read %}<i class="glyphicon glyphicon-envelope"></i> {% endif %}{{message.subject}}</a></h5>
                 <div class="tiny-text">from <a href="{{url_for('user_profile', user_id=message.sender_id)}}">{{message.sender.login}}</a> to <a href="{{url_for('user_profile', user_id=message.recipient_id)}}">{{message.recipient.login}}</a>, {{message.date.strftime('%d %b %Y')}}</div>
             </td>
             <td class="text-center valign-middle">
+                {% if box in ['archive', 'trash'] %}
+                <a href="{% if message.sender == user %}{{url_for('mail_move', message_id=message.id, directory=1)}}{% else %}{{url_for('mail_move', message_id=message.id, directory=0)}}{% endif %}"><i class="glyphicon glyphicon-log-out"></i></a>
+                {% else %}
                 <a href="{{url_for('mail_move', message_id=message.id, directory=2)}}"><i class="glyphicon glyphicon-log-in"></i></a>
+                {% endif %}
             </td>
             <td class="text-center valign-middle">
                 <a href="{{url_for('mail_move', message_id=message.id, directory=3)}}"><i class="glyphicon glyphicon-remove"></i></a>

@@ -589,6 +589,11 @@ def mail_read(message_id):
     if not message:
         abort(404)
 
+    # Пометить как прочитанное
+    if not message.read:
+        message.read = True
+        db.session.commit()
+
     # Является ли пользователь владельцем сообщения
     if message.owner == current_user:
         return(render_template('mail_read.html',
@@ -641,7 +646,8 @@ def mail_write(recepient=None, subject=None):
                 directory=1,
                 recipient_id=recipient_id,
                 subject=data_subject,
-                text=data_message)
+                text=data_message,
+                read=True)
             db.session.add(new_message)
             new_message = Mailbox(sender_id=current_user.id,
                 owner_id=recipient_id,
