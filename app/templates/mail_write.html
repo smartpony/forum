@@ -2,7 +2,6 @@
 
 {% block head %}
     <title>New message</title>
-    <script type="text/javascript" src="/static/js/custom_dialog.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -18,9 +17,9 @@
     <div class="form-group">
         <div class="col-md-3">
             {% if recepient %}
-            {{form_recepient.recepient(value=recepient.login, class='form-control')}}
+            {{form_recepient.recepient(value=recepient.login, class='form-control', onkeyup="PostingFormUnmark(this)")}}
             {% else %}
-            {{form_recepient.recepient(placeholder='Username', class='form-control')}}
+            {{form_recepient.recepient(placeholder='Username', class='form-control', onkeyup="PostingFormUnmark(this)")}}
             {% endif %}
         </div>
         <a class="btn btn-primary" data-toggle="modal" data-target="#dialogbox"><i class="glyphicon glyphicon-book"></i></a>
