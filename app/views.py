@@ -91,17 +91,16 @@ def message_format(text, to_html):
     # Замена форумных тегов на HTML
     if to_html:
         text = escape(text)
-        text = text.replace('[b]', '<b>').replace('[\b]', '<\b>').\
-            replace('[i]', '<i>').replace('[\i]', '<\i>').\
-            replace('[u]', '<u>').replace('[\u]', '<\u>')
+        text = text.replace('[b]', '<b>').replace('[/b]', '</b>').\
+            replace('[i]', '<i>').replace('[/i]', '</i>').\
+            replace('[u]', '<u>').replace('[/u]', '</u>')
         text = re.sub('\[a href="(.*)"\](.*)\[/a\]', '<a href="\\1">\\2</a>', text)
         text = re.sub('\[img src="(.*)"\]', '<img src="\\1">', text)
-    # Выдача текста для редактирования в виде форумных тегов и с оратным экранированием
+    # Выдача текста для редактирования в виде форумных тегов и с обратным экранированием
     else:
-        text = escape(text)
-        text = text.replace('<b>', '[b]').replace('<\b>', '[\b]').\
-            replace('<i>', '[i]').replace('<\i>', '[\i]').\
-            replace('<u>', '[u]').replace('<\u>', '[\u]')
+        text = text.replace('<b>', '[b]').replace('</b>', '[/b]').\
+            replace('<i>', '[i]').replace('</i>', '[/i]').\
+            replace('<u>', '[u]').replace('</u>', '[/u]')
         text = re.sub('<a href="(.*)"\>(.*)</a>', '\[a href="\\1"\]\\2\[/a\]', text)
         text = re.sub('<img src="(.*)">', '\[img src="\\1"\]', text)
     return(text)
@@ -230,12 +229,9 @@ def forum(page=1):
 
     # Если отправлена форма постинга
     if form_topic.validate_on_submit() and form_message.validate_on_submit():
-        # Данные из формы c экранированием спецсимволов
+        # Данные из формы c применением форматирования
         data_topic = form_topic.topic.data
         data_message = message_format(form_message.message.data, True)
-        #data_message = escape(form_message.message.data)
-        # Применение форматирования
-        #data_message = data_message.replace('[', '<').replace(']', '>')
         # Создание темы и обновление счётчиков у пользователя
         new_topic = ForumTopic(name=data_topic, author_id=current_user.id)
         current_user.message_count += 1
@@ -292,10 +288,8 @@ def topic(topic_id, page=1):
 
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
-        # Данные из формы c экранированием спецсимволов
-        data_message = escape(form_message.message.data)
-        # Применение форматирования
-        data_message = data_message.replace('[', '<').replace(']', '>')
+        # Данные из формы c применением форматирования
+        data_message = message_format(form_message.message.data, True)
         # Создание сообщения
         new_mes = ForumMessage(topic_id=topic_id, author_id=current_user.id, text=data_message)
         current_topic.time_last = datetime.utcnow()
@@ -368,10 +362,8 @@ def edit_message(message_id):
 
     # Если отправлена форма постинга
     if form_message.validate_on_submit():
-        # Данные из формы c экранированием спецсимволов
-        edit_message.text = escape(form_message.message.data)
-        # Применение форматирования
-        edit_message.text = edit_message.text.replace('[', '<').replace(']', '>')
+        # Данные из формы c применением форматирования
+        edit_message.text = message_format(form_message.message.data, True)
         # Отметка о дате изменения
         edit_message.date_edit =  datetime.utcnow()
         # Отметка о последнем редакторе
@@ -638,33 +630,14 @@ def mail_write(recepient=None, subject=None, previous_text=''):
     form_subject = TopicForm()
     form_message = MessageForm()
 
-    # Пользователь, которому предназначен ответ
-    if request.args.get('recepient'):
-        recepient = User.query.get(request.args.get('recepient'))
-    if request.args.get('subject'):
-        subject = 'Re: ' + request.args.get('subject')
-    # Цитата с выделением
-    if request.args.get('previous_text'):
-        previous_text = request.args.get('previous_text')
-        quote = ''
-        for line in previous_text.split('\n'):
-            if line[:3] == '>> ':
-                quote += '>> ' + line + '\n'
-            else:
-                for i in range(0, len(line), 50):
-                    quote += '>> ' + previous_text[i:i+50] + '\n'
-        form_message.message.data = quote
-
     # Если отправлена форма с новым сообщением
     if form_recepient.validate_on_submit() and \
         form_subject.validate_on_submit() and \
         form_message.validate_on_submit():
-            # Данные из формы c экранированием спецсимволов
+            # Данные из формы c применением форматирования
             data_recipient = form_recepient.recepient.data
             data_subject = form_subject.topic.data
-            data_message = escape(form_message.message.data)
-            # Применение форматирования
-            data_message = data_message.replace('[', '<').replace(']', '>')
+            data_message = form_message.message.data#message_format(form_message.message.data, True)
             # От кого и кому отправлено сообщение
             sender_id = current_user.id
             recipient_id = User.query.filter_by(login=data_recipient).first()
@@ -694,6 +667,27 @@ def mail_write(recepient=None, subject=None, previous_text=''):
             db.session.commit()
             # Перейти в отправленные
             return(redirect(url_for('mailbox', box='sent')))
+
+    # Заполнение полей надо деать после проверки отправки, иначе
+    # form_message.message.data останется =quote и не перезапишется
+    # теми данными, которые ввёл пользователь
+
+    # Пользователь, которому предназначен ответ
+    if request.args.get('recepient'):
+        recepient = User.query.get(request.args.get('recepient'))
+    if request.args.get('subject'):
+        subject = 'Re: ' + request.args.get('subject')
+    # Цитата с выделением
+    if request.args.get('previous_text'):
+        previous_text = message_format(request.args.get('previous_text'), False)
+        quote = ''
+        for line in previous_text.split('\n'):
+            if line[:3] == '>> ':
+                quote += '>> ' + line + '\n'
+            else:
+                for i in range(0, len(line), 50):
+                    quote += '>> ' + line[i:i+50] + '\n'
+        form_message.message.data = quote
 
     # Все пользователей для выбора в качестве адреса
     all_users = User.query.all()
