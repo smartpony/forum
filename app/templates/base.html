@@ -19,7 +19,7 @@
             <li {% if request.path[:9] == '/userlist' %}class="active"{% endif %}><a href="{{url_for('userlist')}}">Users</a></li>
             {% if user.is_authenticated() %}
             <li {% if request.path[:8] == '/profile' %}class="active"{% endif %}><a href="{{url_for('my_profile')}}">Profile</a></li>
-            <li {% if request.path[:8] == '/mailbox' %}class="active"{% endif %}><a href="{{url_for('mailbox')}}">Mail</a></li>
+            <li {% if request.path[:8] == '/mailbox' %}class="active"{% endif %}><a href="{{url_for('mailbox')}}">Mail{% if user.unread_mail %} <sup><small>{{user.unread_mail}}</small></sup>{% endif %}</a></li>
             {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">

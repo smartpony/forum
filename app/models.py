@@ -68,6 +68,15 @@ class User(db.Model):
         else:
             return('/static/avatar/system_anonymous_thumb.png')
 
+    # Вернуть количество непрочитанных писем
+    @property
+    def unread_mail(self):
+        count = 0
+        for message in self.mail_all.filter(Mailbox.directory=='0'):
+            if not message.read:
+                count += 1
+        return(count)
+
     # Вывод при обращении к объекту класса
     def __repr__(self):
         return('<User ID%d>' % self.id)
@@ -161,3 +170,7 @@ class Mailbox(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     # Прочитано получателем
     read = db.Column(db.Boolean, default=False)
+    
+    # Вывод при обращении к объекту класса
+    def __repr__(self):
+        return('<Personal message ID%d>' % self.id)
