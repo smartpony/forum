@@ -24,7 +24,7 @@
             </td>
         </tr>
         <tr>
-            <td class="message-text" colspan="2">{{message.text|safe}}</td>
+            <td class="message-text" colspan="2">{% for line in message.text.split('\n') %}{% if line[:2] == '>>' %}<div class="text-muted">{{line|safe}}</div>{% else %}<div>{{line|safe}}</div>{% endif %}{% endfor %}</td>
         </tr>
     </tbody>
 </table>

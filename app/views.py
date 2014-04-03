@@ -687,6 +687,7 @@ def mail_write(recepient=None, subject=None, previous_text=''):
             else:
                 for i in range(0, len(line), 50):
                     quote += '>> ' + line[i:i+50] + '\n'
+        quote += '\n'
         form_message.message.data = quote
 
     # Все пользователей для выбора в качестве адреса
