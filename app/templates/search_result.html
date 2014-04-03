@@ -1,0 +1,52 @@
+﻿{% extends "base.html" %}
+
+{% block head %}
+    <title>Search</title>
+{% endblock %}
+
+{% block content %}
+<h1>Search results</h1>
+
+<hr>
+
+<table class="table">
+    <tbody>
+        {% for message in results %}
+        <tr>
+            <td class="message-text" colspan="3"><strong>Topic: <a href="{{url_for('topic', topic_id=message.topic_id)}}">{{message.topic.name}}</strong></td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="col-md-1 text-center">
+                <a href="{{url_for('user_profile', user_id=message.author.id)}}">
+                    <img src="{{message.author.avatar_thumb}}" title="{{message.author.login}}">
+                </a>
+            </td>
+            <td id="{{loop.index}}" class="tiny-text col-md-9">
+                posted by <a href="{{url_for('user_profile', user_id=message.author_id)}}">{{message.author.login}}</a>,
+                {{message.date.strftime('%H:%M, %d %b %Y')}}{% if message.date_edit %},
+                edited
+                {% if message.editor and message.editor != message.author %}
+                by <a href="{{url_for('user_profile', user_id=message.editor_id)}}">{{message.editor.login}}</a>
+                {% endif %}
+                at {{message.date_edit.strftime('%H:%M, %d %b %Y')}}
+                {% endif %}
+            </td>
+            <td class="tiny-text col-md-2 text-right">
+                {% if message.author == current_user or current_user.role < 2 %}
+                <a href="{{url_for('edit_message', message_id=message.id)}}">Edit</a>
+                &nbsp;
+                <a href="{{url_for('delete_message', message_id=message.id)}}">Delete</a>
+                {% endif %}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="message-text" colspan="2">{{message.text|safe}}</td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

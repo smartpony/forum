@@ -3,16 +3,16 @@
 function PostingFormValidate() {
     var res = true;
 
-    // Введён ли текст сообщения
+    // Введён ли текст сообщения + проверка наличия поля для сообщения
     var $message = $("#message");
-    if(!$message.val()) {
+    if($message.length && !$message.val()) {
         $message.css({
             "border":"1px solid #f06565",
             "boxShadow":"0 0 1px 1px #f5b3b3"
         });
         res = false;
     }
-    // Введена ли тема + проверка наличия темы (для страницы топика)
+    // Введена ли тема + проверка наличия темы
     var $topic = $("#topic");
     if($topic.length && !$topic.val()) {
         $topic.css({
@@ -21,10 +21,19 @@ function PostingFormValidate() {
         });
         res = false;
     }
-    // Введён ли адресат сообщения + проверка наличия поля адреса (для личных сообщений)
+    // Введён ли адресат сообщения + проверка наличия поля адреса
     var $recepient = $("#recepient");
     if($recepient.length && !$recepient.val()) {
         $recepient.css({
+            "border":"1px solid #f06565",
+            "boxShadow":"0 0 1px 1px #f5b3b3"
+        });
+        res = false;
+    }
+    // Введён ли текст поиска + проверка наличия поля поиска
+    var $words = $("#words");
+    if($words.length && !$words.val()) {
+        $words.css({
             "border":"1px solid #f06565",
             "boxShadow":"0 0 1px 1px #f5b3b3"
         });

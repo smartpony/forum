@@ -17,7 +17,7 @@
     <div class="form-group">
         <div class="col-md-3">
             {% if recepient %}
-            {{form_recepient.recepient(value=recepient.login, class='form-control', onkeyup="PostingFormUnmark(this)")}}
+            {{form_recepient.recepient(value=recepient, class='form-control', onkeyup="PostingFormUnmark(this)")}}
             {% else %}
             {{form_recepient.recepient(placeholder='Username', class='form-control', onkeyup="PostingFormUnmark(this)")}}
             {% endif %}

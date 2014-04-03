@@ -17,10 +17,13 @@ import os
 # модуль, либо standalone-приложение
 app = Flask(__name__)
 
-# Файл БД
+# Основной файл БД
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, '../base.db')
 app.config['SQLALCHEMY_MIGRATE_REPO'] = os.path.join(basedir, '../db_repository')
+
+# Файл БД для работы поиска (индексированные данные из основной БД)
+WHOOSH_BASE = os.path.join(basedir, '../search.db')
 
 # Инициализация работы ОРМ
 db = SQLAlchemy(app)
@@ -32,6 +35,7 @@ app.config['SECRET_KEY'] = 'just qwerty'
 # Инициализация системы логинов
 lm = LoginManager()
 lm.init_app(app)
+
 
 # Импорт обработчиков запросов клиентов
 from app import views

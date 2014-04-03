@@ -17,7 +17,7 @@ import re
 # Импорт других файлов проекта
 from app import app, db, lm
 from models import User, ForumTopic, ForumMessage, Mailbox
-from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm, RecepientForm
+from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm, RecepientForm, SearchForm
 
 
 # --- ОФОРМЛЕНИЕ --------------------------------
@@ -421,6 +421,23 @@ def delete_message(message_id):
     return(redirect(request.referrer))
 
 
+# --- ПОИСК ПО ФОРУМУ ---------------------------
+@app.route('/search', methods=['GET', 'POST'])
+def forum_search():
+    search_form = SearchForm()
+    
+    if search_form.validate_on_submit():
+        string = search_form.words.data
+        res = ForumMessage.query.whoosh_search(string).all()
+        return(render_template('search_result.html',
+            user=current_user,
+            results=res))
+
+    return(render_template('search.html',
+        user=current_user,
+        search_form=search_form))
+
+
 # --- СПИСОК ПОЛЬЗОВАТЕЛЕЙ ----------------------
 @app.route('/userlist')
 def userlist(page=1):
@@ -624,7 +641,7 @@ def mail_read(message_id):
 # --- НАПИСАТЬ ЛИЧНОЕ СООБЩЕНИЕ -----------------
 @app.route('/mailbox/message/new', methods=['GET', 'POST'])
 @login_required
-def mail_write(recepient=None, subject=None, previous_text=''):
+def mail_write(reply=None):
     # Форма для нового сообщения
     form_recepient = RecepientForm()
     form_subject = TopicForm()
@@ -668,20 +685,21 @@ def mail_write(recepient=None, subject=None, previous_text=''):
             # Перейти в отправленные
             return(redirect(url_for('mailbox', box='sent')))
 
-    # Заполнение полей надо деать после проверки отправки, иначе
+    # Заполнение полей надо делать после проверки отправки, иначе
     # form_message.message.data останется =quote и не перезапишется
     # теми данными, которые ввёл пользователь
 
-    # Пользователь, которому предназначен ответ
-    if request.args.get('recepient'):
-        recepient = User.query.get(request.args.get('recepient'))
-    if request.args.get('subject'):
-        subject = 'Re: ' + request.args.get('subject')
-    # Цитата с выделением
-    if request.args.get('previous_text'):
-        previous_text = message_format(request.args.get('previous_text'), False)
+    # Если это ответное сообщение
+    reply = request.args.get('reply')
+    recepient = ''
+    subject = ''
+    if reply:
+        previous_message = Mailbox.query.get(reply)
+        recepient = previous_message.sender.login
+        subject = 'Re: ' + previous_message.subject
+        text = message_format(previous_message.text, False)
         quote = ''
-        for line in previous_text.split('\n'):
+        for line in text.split('\n'):
             if line[:3] == '>> ':
                 quote += '>> ' + line + '\n'
             else:

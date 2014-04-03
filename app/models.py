@@ -3,7 +3,9 @@
 #
 
 # Импорт главного объекта БД
-from app import db
+from app import app, db
+# Полнотекстовый поиск
+from flask.ext import whooshalchemy
 
 from datetime import datetime
 
@@ -112,6 +114,7 @@ class ForumTopic(db.Model):
 # Сообщения форума
 class ForumMessage(db.Model):
     __tablename__ = 'ForumMessage'
+    __searchable__ = ['text']
 
     # ID сообщения
     id = db.Column(db.Integer, primary_key=True)
@@ -174,3 +177,6 @@ class Mailbox(db.Model):
     # Вывод при обращении к объекту класса
     def __repr__(self):
         return('<Personal message ID%d>' % self.id)
+
+# Занесение индексов в базу для полнотекстового поиска
+whooshalchemy.whoosh_index(app, ForumMessage)

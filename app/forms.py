@@ -30,3 +30,6 @@ class ProfileForm(Form):
     country = TextField()
     email = TextField()
     avatar = FileField()
+
+class SearchForm(Form):
+    words = TextField(validators=[DataRequired()])

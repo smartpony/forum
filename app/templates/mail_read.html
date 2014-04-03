@@ -29,6 +29,6 @@
     </tbody>
 </table>
 
-<a class="btn btn-primary" href="{{url_for('mail_write', recepient=message.sender.id, subject=message.subject, previous_text=message.text)}}">Reply</a>
+<a class="btn btn-primary" href="{{url_for('mail_write', reply=message.id)}}">Reply</a>
 
 {% endblock %}
