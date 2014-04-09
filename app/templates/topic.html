@@ -8,7 +8,7 @@
 <h1>
     {{topic.name}}
     {% if topic.author == current_user or current_user.role < 2 %}
-    <sup><a href="{{url_for('delete_topic', topic_id=topic.id)}}"><img src="/static/icon_del.png"></a><sup>
+    <sup><a href="{{url_for('delete_topic', topic_id=topic.id)}}"><sup><small><i class="glyphicon glyphicon-remove"></i></small></sup></a><sup>
     {% endif %}
 </h1>
 

@@ -22,6 +22,9 @@
             <li {% if request.path[:8] == '/profile' %}class="active"{% endif %}><a href="{{url_for('my_profile')}}">Profile</a></li>
             <li {% if request.path[:8] == '/mailbox' %}class="active"{% endif %}><a href="{{url_for('mailbox')}}">Mail{% if user.unread_mail %} <sup><small>{{user.unread_mail}}</small></sup>{% endif %}</a></li>
             {% endif %}
+            {% if user.role == 0 %}
+            <li {% if request.path[:8] == '/fill' %}class="active"{% endif %}><a href="{{url_for('fill')}}">Fill</a></li>
+            {% endif %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated() %}
