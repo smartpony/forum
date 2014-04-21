@@ -4,6 +4,7 @@
 
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField, FileField
+from wtforms_html5 import IntegerField
 from wtforms.validators import DataRequired
 
 class RecepientForm(Form):
@@ -33,3 +34,7 @@ class ProfileForm(Form):
 
 class SearchForm(Form):
     words = TextField(validators=[DataRequired()])
+
+class FillForm(Form):
+    topics = IntegerField()
+    messages = IntegerField()

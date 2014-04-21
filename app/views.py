@@ -18,7 +18,8 @@ import re
 # Импорт других файлов проекта
 from app import app, db, lm
 from models import User, ForumTopic, ForumMessage, Mailbox
-from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm, RecepientForm, SearchForm
+from forms import TopicForm, MessageForm, LoginForm, RegisterForm, ProfileForm,\
+    RecepientForm, SearchForm, FillForm
 
 
 # --- ОФОРМЛЕНИЕ --------------------------------
@@ -758,9 +759,14 @@ def mail_move(directory, message_id):
 @app.route('/fill', methods=['GET', 'POST'])
 @login_required
 def fill():
+    fill_form = FillForm()
+
     if request.method == 'POST':
         FILE = 'text.txt'
         file_size = os.stat(FILE).st_size
+
+        topics_number = int(fill_form.topics.data)
+        messages_number = int(fill_form.messages.data)
 
         # Создать тему
         def make_topic(file_str, file_size):
@@ -770,14 +776,14 @@ def fill():
             '''
             
             random.seed()
-            offset = random.randrange(0, file_size-1)
+            offset = random.randint(0, file_size-1)
             file = open(file_str)
             file.seek(offset)
 
             topic = ''
             started = False
             end = [' ', '.', '!', '?', '\n']
-            number = random.randrange(1, 4)
+            number = random.randint(1, 4)
             for line in file:
                 for char in line:
                     # Если слово ещё не началось
@@ -799,23 +805,23 @@ def fill():
                 if not number and started and topic[-1] in end:
                     topic = topic.replace('\n', ' ')[:-1]
                     return(topic)
-            
+
         # Создать сообщение
         def make_message(file_str, file_size):
             '''
             Функция открывает файл со случайным смещением и
-            и возвращает от 1 до 7 предложений, идущих подряд
+            и возвращает от 1 до 8 предложений, идущих подряд
             '''
             
             random.seed()
-            offset = random.randrange(0, file_size-1)
+            offset = random.randint(0, file_size-1)
             file = open(file_str)
             file.seek(offset)
             
             message = ''
             started = False
             end = ['.', '!', '?']
-            number = random.randrange(1, 8)
+            number = random.randint(1, 8)
             for line in file:
                 for char in line:
                     # Если предложение ещё не началось
@@ -836,29 +842,39 @@ def fill():
                             message += char            
                 if not number and started and message[-1] in end:
                     message = message.replace('\n', ' ')
+                    if message[0] == ' ':
+                        message = message[1:]
                     return(message)
-    
-        new_topic = ForumTopic(name=make_topic(FILE, file_size), author_id=current_user.id)
-        current_user.message_count += 1
-        current_user.topic_count += 1
-        db.session.add(new_topic)
-        # Коммит в этом месте нужен, чтобы появился ID
-        db.session.commit()
-        # Создание сообщения
-        new_mes = ForumMessage(topic_id=new_topic.id, author_id=current_user.id, text=make_message(FILE, file_size))
-        db.session.add(new_mes)
-        db.session.commit()
-        
-        for count in range(1000):
-            new_mes = ForumMessage(topic_id=new_topic.id, author_id=random.randrange(1, 4), text=make_message(FILE, file_size))
-            db.session.add(new_mes)
-        db.session.commit()
-        
-  
+
+        # Выборка всех пользователей для использования в качестве авторов
+        all_users = User.query.all()
+
+        for t_count in range(random.randint(1, topics_number+1)):
+            # Создание топика
+            author=random.choice(all_users)
+            new_topic = ForumTopic(name=make_topic(FILE, file_size),
+                author_id=author.id)
+            author.message_count += 1
+            author.topic_count += 1
+            db.session.add(new_topic)
+            # Коммит в этом месте нужен, чтобы появился ID
+            db.session.commit()
+            # Создание сообщений
+            for m_count in range(random.randint(1, messages_number+1)):
+                author=random.choice(all_users)
+                new_mes = ForumMessage(topic_id=new_topic.id,
+                    author_id=author.id,
+                    text=make_message(FILE, file_size))
+                author.message_count += 1
+                db.session.add(new_mes)
+            db.session.commit()
+
         return(redirect(request.referrer))
 
     return(render_template('fill.html',
-        user=current_user))
+        user=current_user,
+        form=fill_form))
+
 
 # --- ВЫХОД -------------------------------------
 @app.route('/logout')
