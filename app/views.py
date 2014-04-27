@@ -135,13 +135,12 @@ def load_user(id):
     return(User.query.get(int(id)))
 
 
-# --- СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ ---------------------
+# --- РЕГИСТРАЦИЯ -------------------------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     # Форма регистрации
     form = RegisterForm()
 
-    # Если отправлена форма
     if request.method == 'POST':
         # Данные из формы
         user_login = form.login.data
@@ -156,25 +155,66 @@ def register():
                 user=current_user,
                 text='"Passwod" and "Confirm password" must be the same'))
 
+        # Код для подтверждения почты
+        confirm_code = hex(random.randint(0x000000000000000,0xfffffffffffffff)).rstrip("L").lstrip("0x")
+
         # Регистрация
         new_user = User(login=user_login,
             password=user_password,
-            email=user_email)
+            email=user_email,
+            confirm_code=confirm_code)
         db.session.add(new_user)
         db.session.commit()
-
-        # Войти под новым пользователем
-        login_user(new_user)
 
         # Сообщение об успешной регистрации
         return(render_template('info.html',
             user=current_user,
-            text='Registered succesfully'))
+            text='Confirmation code: \
+                <a href="%s">%s</a>' % \
+                (url_for('reg_confirm',
+                    user=user_login,
+                    email=user_email,
+                    code=confirm_code),
+                confirm_code)))
 
     # Вернуть страницу
     return(render_template('register.html',
         user=current_user,
         register_form=form))
+
+
+# --- ПОДТВЕРЖДЕНИЕ ПОЧТЫ ПРИ РЕГИСТРАЦИИ -------
+@app.route('/reg_confirm')
+def reg_confirm():
+    user = request.args.get('user')
+    email = request.args.get('email')
+    code = request.args.get('code')
+
+    reg_user = User.query.filter_by(login=user).first()
+
+    # Проверка существования объекта
+    if not reg_user:
+        abort(404)
+
+    # Проверка переданных данных
+    if reg_user.email == email and reg_user.confirm_code == code:
+        reg_user.confirm_code = ''
+        reg_user.active = True
+        db.session.commit()
+
+        # Войти под новым пользователем
+        login_user(reg_user)
+
+        # Здесь должен быть код, отправляющий письмо
+        # <ПУСТО>
+
+        return(render_template('info.html',
+            user=current_user,
+            text='Registered succesfully with email %s' % current_user.email))
+    else:
+        return(render_template('info.html',
+            user=current_user,
+            text='There is an error in your confirmation code.'))
 
 
 # --- ВХОД ПОЛЬЗОВАТЕЛЯ -------------------------
@@ -195,14 +235,18 @@ def login():
             (User.password==hashlib.sha256(user_password).hexdigest())) \
             .first()
 
-        # Если пользователь найден, войти
-        if user is not None:
+        # Если пользователь найден и не заблокирован, войти
+        if user and user.is_active():
             login_user(user)
             current_user.last_seen = datetime.utcnow()
             db.session.commit()
             # Вернуться в корень форума
             return(redirect(url_for('forum')))
         # Если пользователь не найден, выдать ошибку
+        elif user and not user.is_active():
+            return(render_template('info.html',
+                user=current_user,
+                text='User %s is blocked or not activated yet.' % user.login))
         else:
             return(render_template('info.html',
                 user=current_user,
@@ -574,6 +618,36 @@ def edit_profile():
     return(render_template('profile_edit.html',
         user=current_user,
         profile_form=form))
+
+
+# --- БЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ -------------------
+@app.route('/profile/<user_id>/block')
+def block_user(user_id):
+    user = User.query.get(user_id)
+
+    # Проверка существования объекта
+    if not user:
+        abort(404)
+
+    user.active = False
+    db.session.commit()
+
+    return(redirect(request.referrer))
+
+
+# --- РАЗБЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ ----------------
+@app.route('/profile/<user_id>/unblock')
+def unblock_user(user_id):
+    user = User.query.get(user_id)
+
+    # Проверка существования объекта
+    if not user:
+        abort(404)
+
+    user.active = True
+    db.session.commit()
+
+    return(redirect(request.referrer))
 
 
 # --- ЛИЧНЫЕ СООБЩЕНИЯ --------------------------

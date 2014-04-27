@@ -46,6 +46,8 @@
             <td>
             {% if user.role < 2 %}
                 <b><a href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a></b>
+            {% elif not user.active %}
+                <del><a href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a></del>
             {% else %}
                 <a href="{{url_for('user_profile', user_id=user.id)}}">{{user.login}}</a>
             {% endif %}

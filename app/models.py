@@ -21,6 +21,10 @@ class User(db.Model):
     # Пароль
     password = db.Column(db.Text, nullable=False)
 
+    # Код подтверждения почты при регистрации
+    confirm_code = db.Column(db.Text)
+    # Блокировка/неподтверждённая регистрация
+    active = db.Column(db.Boolean, default=False)
     # Статус (0 - админ, 1 - модератор, 2 - пользователь)
     role = db.Column(db.Integer, default=2, nullable=False)
 
@@ -48,7 +52,7 @@ class User(db.Model):
     def is_authenticated(self):
         return(True)
     def is_active(self):
-        return(True)
+        return(self.active)
     def is_anonymous(self):
         return(False)
     def get_id(self):

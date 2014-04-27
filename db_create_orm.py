@@ -21,6 +21,7 @@ PASSWORD = '1'
 # Админ
 admin = User(login='Administrator',
     role=0,
+    active=True,
     password=hashlib.sha256(PASSWORD).hexdigest(),
     email=ADMIN_EMAIL,
     db_avatar=True)
@@ -28,6 +29,7 @@ db.session.add(admin)
 # Модер
 moder = User(login='Moderator',
     role=1,
+    active=True,
     password=hashlib.sha256(PASSWORD).hexdigest(),
     email=MODER_EMAIL,
     db_avatar=True)
@@ -35,6 +37,7 @@ db.session.add(moder)
 # Просто пользователь
 user = User(login='user',
     role=2,
+    active=True,
     password=hashlib.sha256(PASSWORD).hexdigest(),
     email=USER_EMAIL)
 db.session.add(user)
