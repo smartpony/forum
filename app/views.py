@@ -637,10 +637,13 @@ def block_user(user_id):
     if not user:
         abort(404)
 
-    user.active = False
-    db.session.commit()
-
-    return(redirect(request.referrer))
+    # Нельзя трогать себя
+    if user != current_user:
+        user.active = False
+        db.session.commit()
+        return(redirect(request.referrer))
+    else:
+        abort(404)
 
 
 # --- РАЗБЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ ----------------
@@ -652,10 +655,13 @@ def unblock_user(user_id):
     if not user:
         abort(404)
 
-    user.active = True
-    db.session.commit()
-
-    return(redirect(request.referrer))
+    # Нельзя трогать себя
+    if user != current_user:
+        user.active = True
+        db.session.commit()
+        return(redirect(request.referrer))
+    else:
+        abort(404)    
 
 
 # --- ЛИЧНЫЕ СООБЩЕНИЯ --------------------------
