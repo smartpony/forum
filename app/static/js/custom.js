@@ -53,9 +53,14 @@ function PostingFormUnmark(object) {
 
 
 // --- ВАЛИДАЦИЯ ПРИ РЕДАКТИРОВАНИИ ПРОФИЛЯ -----
-// Вывод имени выбранного файла аватара
-function ShowAvatarName() {
-    var new_avatar = $("#avatar").val();
+// Вывод имени файла выбранного аватара
+function ShowAvatarName(source) {
+    if(source == "hdd")
+        var new_avatar = $("#avatar_from_hdd").val();
+    else {
+        var new_avatar = $("#dialog-input").val();
+        $("#avatar_from_inet").val(new_avatar);
+    }
     var allowed_ext = ["jpg", "jpeg", "gif", "png"];
     // Исключить полный путь и оставить только имя
     new_avatar = new_avatar.replace(/^.*[\\\/]/, "");

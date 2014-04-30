@@ -10,6 +10,7 @@ from datetime import datetime
 import hashlib
 import os
 import random
+import urllib2
 from cgi import escape
 from math import ceil
 from PIL import Image, ImageOps
@@ -572,9 +573,12 @@ def edit_profile():
         db.session.commit()
 
         # Загружен ли новый аватар
-        if form.avatar.data:
-            # Загруженный файл из HTTP POST
-            file = request.files[form.avatar.name]
+        if form.avatar_from_hdd.data or form.avatar_from_inet.data:
+            if form.avatar_from_hdd.data:
+                file = request.files[form.avatar_from_hdd.name]
+            else:
+                file = urllib2.urlopen(form.avatar_from_inet.data).read()
+
             # Проверить расширение файла
             allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
             file_ext = file.filename.split('.')[-1].lower()

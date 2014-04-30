@@ -12,10 +12,15 @@
 <form class="form-horizontal" role="form" action="" method="post" enctype=multipart/form-data>
     <div class="col-md-2 text-center">
         <img src="{{user.avatar}}">
+
         <div class="input-file-wrap">
-            <div class="btn btn-xs btn-primary">change</div>
-            {{profile_form.avatar(class="input-file-button", onChange="ShowAvatarName()")}}
+            <div class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-hdd"></i></div>
+            {{profile_form.avatar_from_hdd(class="input-file-button", onChange="ShowAvatarName('hdd')", title="Upload avatar")}}
         </div>
+        <div class="btn btn-xs btn-primary"  data-toggle="modal" data-target="#dialogbox" title="Choose avatar from Internet" style="cursor: default;"><i class="glyphicon glyphicon-globe"></i></div>
+        <!-- Тут хранится значение из модального окна для ввода ссылка -->
+        {{profile_form.avatar_from_inet(type="hidden")}}
+
         <div class="tiny-text" id="new-avatar"></div>
     </div>
 
@@ -100,5 +105,26 @@
     </div>
 </form>
 
+<!-- Модальный диалог ввода ссылки для аватара -->
+<div class="modal fade" id="dialogbox">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Enter link to picture</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input id="dialog-input" type="text" class="form-control" onkeyup="selectSearch()">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="ShowAvatarName('inet')" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

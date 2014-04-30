@@ -20,7 +20,7 @@ h5 {
 
 .input-file-wrap {
  display: inline-block;
- width: 55px;
+ width: 24px;
  height: 24px;
  margin-top: 5px;
  overflow: hidden;
@@ -28,7 +28,7 @@ h5 {
 
 .input-file-button {
  width: 100px;
- font-size: 30px;
+ font-size: 22px;
  margin-top: -30px;
  margin-left: -30px;
  opacity: 0;
