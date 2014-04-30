@@ -610,6 +610,14 @@ def edit_profile():
                 avatar.thumbnail(mask.size, Image.ANTIALIAS)
                 avatar.putalpha(mask)
                 avatar.save('app' + current_user.avatar_thumb)
+                # Аватар заблокированного пользователя
+                avatar = Image.open(file_path_name)
+                text = Image.open('app/static/avatar/system_blocked.png')
+                # Осветление - смещение всех значений цветов для каждой точки на 100
+                avatar_light = avatar.point(lambda x: x+100)
+                # Вставка текста поверх картинки, аргументы - вставка, координаты, маска
+                avatar_light.paste(text, (0, 0), text)
+                avatar_light.save('app' + current_user.avatar.rstrip('.png') + '_blocked.png')
 
         # Редирект на страницу профиля
         return(redirect(url_for('my_profile')))

@@ -62,9 +62,15 @@ class User(db.Model):
     @property
     def avatar(self):
         if self.db_avatar:
-            return('/static/avatar/user_%s.png' % self.login)
+            if self.active:
+                return('/static/avatar/user_%s.png' % self.login)
+            else:
+                return('/static/avatar/user_%s_blocked.png' % self.login)
         else:
-            return('/static/avatar/system_anonymous.png')
+            if self.active:
+                return('/static/avatar/system_anonymous.png')
+            else:
+                return('/static/avatar/system_anonymous_blocked.png')
 
     # Вернуть нужную строчку для уменьшенного аватара
     @property
