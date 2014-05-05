@@ -9,13 +9,13 @@
 
 <hr>
 
-<form class="form-horizontal" role="form" action="" method="post" enctype=multipart/form-data>
+<form id="profile-edit-form" class="form-horizontal" role="form" action="" method="post" enctype=multipart/form-data>
     <div class="col-md-2 text-center">
         <img src="{{user.avatar}}">
 
         <div class="input-file-wrap">
             <div class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-hdd"></i></div>
-            {{profile_form.avatar_from_hdd(class="input-file-button", onChange="ShowAvatarName('hdd')", title="Upload avatar")}}
+            {{profile_form.avatar_from_hdd(class="input-file-button", title="Upload avatar")}}
         </div>
         <div class="btn btn-xs btn-primary"  data-toggle="modal" data-target="#dialogbox" title="Choose avatar from Internet" style="cursor: default;"><i class="glyphicon glyphicon-globe"></i></div>
         <!-- Тут хранится значение из модального окна для ввода ссылка -->
@@ -121,7 +121,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="ShowAvatarName('inet')" data-dismiss="modal">OK</button>
+                <button id="inet-avatar-submit" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
             </div>
         </div>
     </div>

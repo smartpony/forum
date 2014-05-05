@@ -5,7 +5,7 @@
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField, FileField
 from wtforms_html5 import IntegerField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo
 
 class RecepientForm(Form):
     recepient = TextField(validators=[DataRequired()])
@@ -21,10 +21,10 @@ class LoginForm(Form):
     password = TextField()
 
 class RegisterForm(Form):
-    login = TextField()
-    email = TextField()
-    password = TextField()
-    password_confirm = TextField()
+    login = TextField(validators=[DataRequired()])
+    email = TextField(validators=[DataRequired()])
+    password = TextField(validators=[DataRequired()])
+    password_confirm = TextField(validators=[DataRequired()])
 
 class ProfileForm(Form):
     city = TextField()
@@ -32,7 +32,6 @@ class ProfileForm(Form):
     email = TextField()
     avatar_from_hdd = FileField()
     avatar_from_inet = TextField()
-
 
 class SearchForm(Form):
     words = TextField(validators=[DataRequired()])

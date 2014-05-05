@@ -9,11 +9,14 @@
 
 <hr>
 
-<form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
+<form id="search-form" class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
     {{search_form.hidden_tag()}}
     <div class="form-group">
         <div class="col-md-3">
             {{search_form.words(class="form-control", onkeyup="PostingFormUnmark(this)")}}
+        </div>
+        <div id="search-alert" class="col-md-3 tiny-text text-danger" style="padding-top: 11px; display: none;">
+            String is less then 4 character
         </div>
     </div>
     <div class="form-group">

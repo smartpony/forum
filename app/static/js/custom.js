@@ -1,6 +1,54 @@
-﻿// --- ВАЛИДАЦИЯ ФОРМ ПОСТИНГА ------------------
+﻿// --- ВАЛИДАЦИЯ РЕГИСТРАЦИИ --------------------
+function regValidate(event) {
+    res = true;
+
+    // Введён ли логин + проверка наличия поля
+    var $login = $("#login");
+    if($login.length && !$login.val()) {
+        $login.css({
+            "border":"1px solid #f06565",
+            "boxShadow":"0 0 1px 1px #f5b3b3"
+        });
+        res = false;
+    }
+    // Введён ли email + проверка наличия поля
+    var $email = $("#email");
+    if($email.length && !$email.val()) {
+        $email.css({
+            "border":"1px solid #f06565",
+            "boxShadow":"0 0 1px 1px #f5b3b3"
+        });
+        res = false;
+    }
+    // Введён ли пароль + проверка наличия поля
+    var $password = $("#password");
+    if($password.length && !$password.val()) {
+        $password.css({
+            "border":"1px solid #f06565",
+            "boxShadow":"0 0 1px 1px #f5b3b3"
+        });
+        res = false;
+    }
+    // Правильно ли введено подтверждение пароля + проверка наличия поля
+    var $password_confirm = $("#password_confirm");
+    var $password_alert = $("#password-alert");
+    if($password.length)
+        if($password.val() != $password_confirm.val()) {
+            $password_alert.show();
+            $password_confirm.css({
+                "border":"1px solid #f06565",
+                "boxShadow":"0 0 1px 1px #f5b3b3"
+            });
+            res = false;
+        }
+    return res;
+}
+// register
+$(document).on("submit", "#registration-form", regValidate);
+
+// --- ВАЛИДАЦИЯ ФОРМ ПОСТИНГА ------------------
 // Обработка сабмита формы. Если найдены пустые поля - выделить их красным и вернуть false.
-function PostingFormValidate() {
+function postingFormValidate(event) {
     var res = true;
 
     // Введён ли текст сообщения + проверка наличия поля для сообщения
@@ -41,20 +89,13 @@ function PostingFormValidate() {
     }
     return res;
 }
-
-// При вводе данных снимать красное выделение.
-function PostingFormUnmark(object) {
-  if($(object).val())
-    $(object).css({
-        "border": "1px solid #abadb3",
-        "boxShadow": ""
-    });
-}
-
+// forum, topic, mail_write
+$(document).on("submit", "#posting-form", postingFormValidate);
 
 // --- ВАЛИДАЦИЯ ПРИ РЕДАКТИРОВАНИИ ПРОФИЛЯ -----
 // Вывод имени файла выбранного аватара
-function ShowAvatarName(source) {
+function showAvatarName(event) {
+    source = event.data.source;
     if(source == "hdd")
         var new_avatar = $("#avatar_from_hdd").val();
     else {
@@ -75,17 +116,47 @@ function ShowAvatarName(source) {
     else
         $("#new-avatar").text("");
 }
+// profile_edit
+$(document).on("change", "#avatar_from_hdd", {source: "hdd"}, showAvatarName);
+$(document).on("click", "#inet-avatar-submit", {source: "inet"}, showAvatarName);
 
 // Выбран ли аватар
-function ProfileFormValidate() {
+function profileFormValidate(event) {
     if($("#new-avatar").text() == "Only JPG, GIF or PNG")
         return false;
     else
         return true;
 }
+// profile_edit
+$(document).on("submit", "#profile-edit-form", profileFormValidate);
 
+// --- ВАЛИДАЦИЯ ФОРМЫ ПОИСКА -------------------
+function searchFormValidate(event) {
+    var text = $("#words").val();
+    var $search_alert = $("#search-alert");
+    if(text.length < 4) {
+        $search_alert.show();
+        return false;
+    }
+    else
+        return true;
+}
+// search
+$(document).on("submit", "#search-form", searchFormValidate);
+
+// --- СНЯТИЕ ВЫДЕЛЕНИЯ -------------------------
+function postingFormUnmark(event) {
+  if($(this).val())
+    $(this).css({
+        "border": "1px solid #abadb3",
+        "boxShadow": ""
+    });
+}
+// register, forum, topic, mail_write
+$(document).on("keyup", "#login, #email, #password, #password_confirm, #topic, #message, #recepient", postingFormUnmark);
 
 // --- ФОРМАТИРОВАНИЕ ---------------------------
+// Форматирование текста
 function makeFormated(event) {
     tag = event.data.tag;
     // Выбор элемента
@@ -113,25 +184,33 @@ function makeFormated(event) {
     // Вернуть текст в поле
     $textarea.val(edited_text);
 }
-
+// forum, topic, mail_write
 $(document).on("click", "#btn-bold", {tag: "b"}, makeFormated);
 $(document).on("click", "#btn-italic", {tag: "i"}, makeFormated);
 $(document).on("click", "#btn-underlined", {tag: "u"}, makeFormated);
 $(document).on("click", "#btn-url", {tag: "url"}, makeFormated);
 $(document).on("click", "#btn-image", {tag: "img"}, makeFormated);
 
+// Прозрачность аватара при наведении курсора
+ // ???????????????????
+
 
 // --- ДИАЛОГ ВЫБОРА ПОЛЬЗОВАТЕЛЯ ---------------
 // Сохранить выбранного пользователя в нужном поле (при закрытии)
 // и вызвать функцию снятия красного выделения
-function selectUserClose() {
+function selectUserClose(event) {
     var $recepient = $('#recepient');
     $recepient.val($('#dialog-select').val());
-    PostingFormUnmark($recepient);
+    $recepient.css({
+        "border": "1px solid #abadb3",
+        "boxShadow": ""
+    });
 }
+// mail_write
+$(document).on("click", "#select-user-submit", selectUserClose);
 
 // Выбирать пользователя из списка по ходу ввода
-function selectSearch() {
+function selectSearch(event) {
     var start_with = new RegExp('^'+$('#dialog-input').val()+'.*', 'ig');
     $('#dialog-select option').each(function() {
         if (this.text.match(start_with) != null) {
@@ -140,8 +219,12 @@ function selectSearch() {
         }
     });
 }
+// mail_write
+$(document).on("keyup", "#dialog-input", selectSearch);
 
 // При клике на элемент в списке копировать его в поле ввода
-function selectUser(object) {
-    $('#dialog-input').val($(object).val());
+function selectUser(event) {
+    $('#dialog-input').val($(this).val());
 }
+// mail_write
+$(document).on("click", "#dialog-select", selectUser);

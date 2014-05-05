@@ -24,7 +24,7 @@
         <tr>
             <td class="text-center">
                 <a href="{{url_for('user_profile', user_id=topic.ForumTopic.author.id)}}">
-                    <img src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
+                    <img class="avatar" src="{{topic.ForumTopic.author.avatar_thumb}}" title="{{topic.ForumTopic.author.login}}">
                 </a>
             </td>
             <td>
@@ -61,7 +61,7 @@
 <hr>
 
 {% if user.is_authenticated() %}
-<form class="form-horizontal" role="form" method="post" onsubmit="return PostingFormValidate()">
+<form id="posting-form" class="form-horizontal" role="form" method="post">
     {{form_topic.hidden_tag()}}
     {{form_message.hidden_tag()}}
     <div class="form-group">
@@ -80,7 +80,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-6">
-            {{form_message.message(class="form-control", rows="4", placeholder='Enter your text here', onkeyup="PostingFormUnmark(this)")}}
+            {{form_message.message(class="form-control", rows="4", placeholder='Enter your text here')}}
         </div>
     </div>
     <div class="form-group">

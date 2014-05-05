@@ -9,7 +9,8 @@
 
 <hr>
 
-<form class="form-horizontal" role="form" action="" method="post" name="edit">
+<form id="registration-form" class="form-horizontal" role="form" action="" method="post" name="edit">
+    {{register_form.hidden_tag()}}
     <div class="form-group">
         <div class="col-md-3">
             {{register_form.login(class="form-control", placeholder="Login")}}
@@ -28,6 +29,9 @@
     <div class="form-group">
         <div class="col-md-3">
             {{register_form.password_confirm(class="form-control", type="password", placeholder="Confirm password")}}
+        </div>
+        <div id="password-alert" class="col-md-3 tiny-text text-danger" style="padding-top: 11px; display: none;">
+            Password do not matches
         </div>
     </div>
     <input class="btn btn-primary" type="submit" value="Register">

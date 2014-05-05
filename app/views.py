@@ -142,19 +142,21 @@ def register():
     # Форма регистрации
     form = RegisterForm()
 
-    if request.method == 'POST':
+    if request.method == 'POST' and form.validate_on_submit():
         # Данные из формы
         user_login = form.login.data
         user_email = form.email.data
         user_password = form.password.data
         user_password_confirm = form.password_confirm.data
 
-        if user_password == user_password_confirm:
+        '''if user_password == user_password_confirm:
             user_password = hashlib.sha256(user_password).hexdigest()
         else:
             return(render_template('info.html',
                 user=current_user,
-                text='"Passwod" and "Confirm password" must be the same'))
+                text='"Passwod" and "Confirm password" must be the same'))'''
+
+        user_password = hashlib.sha256(user_password).hexdigest()
 
         # Код для подтверждения почты
         confirm_code = hex(random.randint(0x000000000000000,0xfffffffffffffff)).rstrip("L").lstrip("0x")
@@ -275,7 +277,7 @@ def forum(page=1):
     form_message = MessageForm()
 
     # Если отправлена форма постинга
-    if form_topic.validate_on_submit() and form_message.validate_on_submit():
+    if request.method == 'POST' and form_topic.validate_on_submit() and form_message.validate_on_submit():
         # Данные из формы c применением форматирования
         data_topic = form_topic.topic.data
         data_message = message_format(form_message.message.data, True)
@@ -334,7 +336,7 @@ def topic(topic_id, page=1):
     pagination = Pagination(page, MESSAGE_PER_PAGE, current_topic.message.count())
 
     # Если отправлена форма постинга
-    if form_message.validate_on_submit():
+    if request.method == 'POST' and form_message.validate_on_submit():
         # Данные из формы c применением форматирования
         data_message = message_format(form_message.message.data, True)
         # Создание сообщения
@@ -408,7 +410,7 @@ def edit_message(message_id):
     form_message = MessageForm()
 
     # Если отправлена форма постинга
-    if form_message.validate_on_submit():
+    if request.method == 'POST' and form_message.validate_on_submit():
         # Данные из формы c применением форматирования
         edit_message.text = message_format(form_message.message.data, True)
         # Отметка о дате изменения
@@ -473,12 +475,17 @@ def delete_message(message_id):
 def forum_search():
     search_form = SearchForm()
     
-    if search_form.validate_on_submit():
+    if request.method == 'POST' and search_form.validate_on_submit():
         string = search_form.words.data
         res = ForumMessage.query.whoosh_search(string).all()
+        # Выделить искомые слова зелёным
+        res_colored = [[]]
+        for each in res:
+            res_colored += [each.text.replace(string, '<div class="found">' + string + '</div>')]
         return(render_template('search_result.html',
             user=current_user,
-            results=res))
+            results=res,
+            message_colored=res_colored))
 
     return(render_template('search.html',
         user=current_user,
@@ -573,30 +580,35 @@ def edit_profile():
         db.session.commit()
 
         # Загружен ли новый аватар
-        if form.avatar_from_hdd.data or form.avatar_from_inet.data:
+        # Примечание: аватар из интернета не тестировался из-за прокси на работе
+        input_path = form.avatar_from_hdd.data or form.avatar_from_inet.data
+        if input_path:
             if form.avatar_from_hdd.data:
-                file = request.files[form.avatar_from_hdd.name]
+                file = form.avatar_from_hdd.data
+                file_ext = file.filename.split('.')[-1].lower()
+                avatar_inet = False
             else:
-                file = urllib2.urlopen(form.avatar_from_inet.data).read()
+                file = urllib2.urlopen(input_path).read()
+                file_ext = input_path.split('.')[-1].lower()
+                avatar_inet = True
 
             # Проверить расширение файла
             allowed_file_ext = ('jpg', 'jpeg', 'gif', 'png')
-            file_ext = file.filename.split('.')[-1].lower()
             # Если расширение допустимое, то удалить старые файлы, закачать
             # новый аватар, сделать для него превью и поставить пользователю
             if '.' in file.filename and file_ext in allowed_file_ext:
                 if not current_user.avatar:
                     os.remove('app' + current_user.avatar)
                     os.remove('app' + current_user.avatar_thumb)
-                file_path_name = 'app/static/avatar/user_' + current_user.login + '.' + file_ext
-                file.save(file_path_name)
+                path_to_file = 'app/static/avatar/user_' + current_user.login + '.' + file_ext
+                file.save(path_to_file)
                 current_user.db_avatar = True
                 db.session.commit()
                 # Превью
                 # Конвертирование в RGB из-за того, что индексированные изображения
                 # сильно теряют в качестве при ресайзе
-                avatar = Image.open(file_path_name).convert('RGB')
-                os.remove(file_path_name)
+                avatar = Image.open(path_to_file).convert('RGB')
+                os.remove(path_to_file)
                 # Обрезать до квадрата (порядок для кропа - лево, верх, право, низ)
                 # и уменьшить до 150х150
                 av_size = avatar.size
@@ -615,7 +627,7 @@ def edit_profile():
                 avatar.putalpha(mask)
                 avatar.save('app' + current_user.avatar_thumb)
                 # Аватар заблокированного пользователя
-                avatar = Image.open(file_path_name)
+                avatar = Image.open(path_to_file)
                 text = Image.open('app/static/avatar/system_blocked.png')
                 # Осветление - смещение всех значений цветов для каждой точки на 100
                 avatar_light = avatar.point(lambda x: x+100)
@@ -742,13 +754,14 @@ def mail_write(reply=None):
     form_message = MessageForm()
 
     # Если отправлена форма с новым сообщением
-    if form_recepient.validate_on_submit() and \
+    if request.method == 'POST' and \
+        form_recepient.validate_on_submit() and \
         form_subject.validate_on_submit() and \
         form_message.validate_on_submit():
             # Данные из формы c применением форматирования
             data_recipient = form_recepient.recepient.data
             data_subject = form_subject.topic.data
-            data_message = form_message.message.data#message_format(form_message.message.data, True)
+            data_message = message_format(form_message.message.data, True)
             # От кого и кому отправлено сообщение
             sender_id = current_user.id
             recipient_id = User.query.filter_by(login=data_recipient).first()
