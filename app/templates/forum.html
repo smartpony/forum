@@ -63,7 +63,6 @@
 {% if user.is_authenticated() %}
 <form id="posting-form" class="form-horizontal" role="form" method="post">
     {{form_topic.hidden_tag()}}
-    {{form_message.hidden_tag()}}
     <div class="form-group">
         <div class="col-md-3">
             {{form_topic.topic(placeholder="New topic", class="form-control", onkeyup="PostingFormUnmark(this)")}}

@@ -646,6 +646,7 @@ def edit_profile():
 
 # --- БЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ -------------------
 @app.route('/profile/<user_id>/block')
+@login_required
 def block_user(user_id):
     user = User.query.get(user_id)
 
@@ -664,6 +665,7 @@ def block_user(user_id):
 
 # --- РАЗБЛОКИРОВКА ПОЛЬЗОВАТЕЛЯ ----------------
 @app.route('/profile/<user_id>/unblock')
+@login_required
 def unblock_user(user_id):
     user = User.query.get(user_id)
 

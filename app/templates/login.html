@@ -10,6 +10,7 @@
 <hr>
 
 <form class="form-horizontal" role="form" action="" method="post" name="edit">
+    {{login_form.hidden_tag()}}
     <div class="form-group">
         <div class="col-md-3">
             {{login_form.login(class="form-control", placeholder="Login")}}

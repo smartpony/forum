@@ -24,7 +24,7 @@ class RegisterForm(Form):
     login = TextField(validators=[DataRequired()])
     email = TextField(validators=[DataRequired()])
     password = TextField(validators=[DataRequired()])
-    password_confirm = TextField(validators=[DataRequired()])
+    password_confirm = TextField(validators=[DataRequired(), EqualTo('password')])
 
 class ProfileForm(Form):
     city = TextField()
